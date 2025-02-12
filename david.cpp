@@ -9,7 +9,6 @@ struct motorcycle {
     int y;
     int rotation;
     Pedal pedal;
-
 };
 
 double accelerate(double velocity, int forward)

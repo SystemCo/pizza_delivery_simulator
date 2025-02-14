@@ -1,9 +1,12 @@
+#include "fonts.h"
+
+void show_david(Rect* r);
 
 enum Pedal { Forward, Neutral, Backward };
-enum Turn  { Left, Neutral, Right };
+enum Turn  { Left, Straight, Right };
 
 class Motorcycle {
-pub:
+public:
     int pos_x;
     int pos_y;
     int rotation;

@@ -20,6 +20,7 @@
 #include <GL/glx.h>
 #include "log.h"
 #include "fonts.h"
+#include "dcarter.h"
 
 //defined types
 typedef float Flt;
@@ -61,10 +62,12 @@ public:
 	int xres, yres;
 	char keys[65536];
 	int mouse_cursor_on;
+        int credits;
 	Global() {
 		xres = 640;
 		yres = 480;
 		memset(keys, 0, 65536);
+                credits = 0;
 		// mouse value 1 = true = mouse is a regular mouse.
 		mouse_cursor_on = 1;
 	}
@@ -521,8 +524,19 @@ int check_keys(XEvent *e)
 			gl.mouse_cursor_on = !gl.mouse_cursor_on;
 			x11.show_mouse_cursor(gl.mouse_cursor_on);
 			break;
-		case XK_s:
-			break;
+		case XK_c:
+                        //credits
+                        // =================================================
+                        // Optimize the following 4 lines
+                        // if (gl.credits)
+                        //    gl.credits = 1;
+                        //else 
+                        //    gl.credits = 0;
+			//break;
+                        gl.credits = !gl.credits;
+                        printf("pressed c");
+                        fflush(stdout);
+                        break;
 		case XK_Down:
 			break;
 		case XK_equal:
@@ -804,6 +818,10 @@ void render()
 	ggprint8b(&r, 16, 0x00ff0000, "3350 - Asteroids");
 	ggprint8b(&r, 16, 0x00ffff00, "n bullets: %i", g.nbullets);
 	ggprint8b(&r, 16, 0x00ffff00, "n asteroids: %i", g.nasteroids);
+        ggprint8b(&r, 16, 0x00ff00ff, "Press C for credits");
+        //show_francisco();
+        if (gl.credits)
+            show_david(&r);
 	//-------------------------------------------------------------------------
 	//Draw the ship
 	glColor3fv(g.ship.color);

@@ -1,5 +1,4 @@
-#include "dcarter.h"
-#include "fonts.h"
+#include "headers.h"
 
 void show_david(Rect* r)
 {

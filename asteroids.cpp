@@ -18,9 +18,7 @@
 //#include <GL/glu.h>
 #include <X11/keysym.h>
 #include <GL/glx.h>
-#include "log.h"
-#include "fonts.h"
-#include "dcarter.h"
+#include "headers.h"
 
 //defined types
 typedef float Flt;

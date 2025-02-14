@@ -1,24 +1,36 @@
+#ifndef _DCARTER_H_
+#define _DCARTER_H_
 #include "fonts.h"
-
 void show_david(Rect* r);
-
 enum Pedal { Forward, Neutral, Backward };
 enum Turn  { Left, Straight, Right };
 
-class Motorcycle {
-public:
-    int pos_x;
-    int pos_y;
-    int rotation;
-    float velocity; // from -1 to 1
-    Pedal pedal;
-    Turn turn;
-    Motorcycle();
-    
-    void set_pedal(Pedal);
-    void set_turn(Turn);
-    void move();
-    void render();
+// From Bigfoot Framework
+
+class Percent { // float from -1 to 1
+    private:
+        float val;
+    public:
+        Percent(float);
+        void set(float);
+        float get();
 };
 
+class Motorcycle {
+    private:
+        int pos_x;
+        int pos_y;
+        int rotation;
+        Percent velocity;
+        Pedal pedal;
+        Turn turn;
+    public:
+        Motorcycle();
 
+        void set_pedal(Pedal);
+        void set_turn(Turn);
+        void move();
+        void render();
+};
+
+#endif //_DCARTER_H_

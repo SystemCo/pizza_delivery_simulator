@@ -5,7 +5,7 @@
 //
 #include <stdio.h>
 #include <stdarg.h>
-#include "defs.h"
+#include "headers.h"
 #define FILENAME "x.x"
 static FILE *fpxx;
 

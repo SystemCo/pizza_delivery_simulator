@@ -5,15 +5,6 @@
 #include <X11/keysym.h>
 #include <GL/glx.h>
 
-class Global {
-public:
-	int xres, yres;
-	char keys[65536];
-	int mouse_cursor_on;
-        int credits;
-	Global();
-};
-
 class Image { // from the rainforest framework
 public:
     int width, height;
@@ -21,6 +12,17 @@ public:
     ~Image() { delete [] data; }
     Image(const char *fname);
     
+};
+
+class Global {
+public:
+	int xres, yres;
+	char keys[65536];
+	int mouse_cursor_on;
+        int credits;
+        Image* bike_img;
+        GLuint bikeTexture;
+	Global();
 };
 
 class X11_wrapper { // from Asteroids framework

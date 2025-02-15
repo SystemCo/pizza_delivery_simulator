@@ -28,7 +28,10 @@ Image::Image(const char *fname) { // From the rainforest framework
         //printf("ppmname **%s**\n", ppmname);
         char ts[100];
         //system("convert eball.jpg eball.ppm");
-        sprintf(ts, "convert %s %s", fname, ppmname);
+        // changed the bash call because "convert" command depreciated. 
+        // Old line was:
+        // sprintf(ts, "convert %s %s", fname, ppmname);
+        sprintf(ts, "magick %s %s", fname, ppmname);
         if( system(ts) )
             std::cout << "system function failed\n";
 

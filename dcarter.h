@@ -3,6 +3,7 @@
 #include "fonts.h"
 void show_david(Rect* r);
 void init_opengl_bike();
+void render_bike();
 enum Pedal { Forward, Neutral, Backward };
 enum Turn  { Left, Straight, Right };
 

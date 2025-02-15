@@ -20,6 +20,7 @@ public:
 	char keys[65536];
 	int mouse_cursor_on;
         int credits;
+        int show_bike;
         Image* bike_img;
         GLuint bikeTexture;
 	Global();

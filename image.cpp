@@ -34,7 +34,6 @@ Image::Image(const char *fname) { // From the rainforest framework
         sprintf(ts, "magick %s %s", fname, ppmname);
         if( system(ts) )
             std::cout << "system function failed\n";
-
     }
     //sprintf(ts, "%s", name);
     FILE *fpi = fopen(ppmname, "r");

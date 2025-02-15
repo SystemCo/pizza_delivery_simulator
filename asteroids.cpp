@@ -62,7 +62,8 @@ Global::Global() {
     yres = 480;
     memset(keys, 0, 65536);
     credits = 0;
-    bike_img = new Image("./images/motorcycle.png");
+    show_bike = 0;
+    bike_img = new Image("./images/motorcycle.ppm");
     // mouse value 1 = true = mouse is a regular mouse.
     mouse_cursor_on = 1;
 }
@@ -404,6 +405,9 @@ int check_keys(XEvent *e)
                         //    gl.credits = 0;
 			//break;
                         gl.credits = !gl.credits;
+                        break;
+                case XK_b:
+                        gl.show_bike = !gl.show_bike;
                         break;
 		case XK_Down:
 			break;
@@ -782,6 +786,8 @@ void render()
 		glVertex2f(b->pos[0]+1.0f, b->pos[1]+1.0f);
 		glEnd();
 	}
+        if (gl.show_bike)
+            render_bike();
 }
 
 

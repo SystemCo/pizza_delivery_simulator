@@ -759,6 +759,7 @@ void physics()
 			g.ship.vel[1] *= speed;
 		}
 	}
+
 	if (gl.keys[XK_space]) {
 		//a little time between each bullet
 		struct timespec bt;

@@ -8,7 +8,7 @@
 //#include <string.h>
 //#include <cstdlib>
 
-Image::Image(const char *fname) { // From bigfoot framework
+Image::Image(const char *fname) { // From the rainforest framework
     if (fname[0] == '\0')
         return;
     //printf("fname **%s**\n", fname);
@@ -29,19 +29,25 @@ Image::Image(const char *fname) { // From bigfoot framework
         char ts[100];
         //system("convert eball.jpg eball.ppm");
         sprintf(ts, "convert %s %s", fname, ppmname);
-        system(ts);
+        if( system(ts) )
+            std::cout << "system function failed\n";
+
     }
     //sprintf(ts, "%s", name);
     FILE *fpi = fopen(ppmname, "r");
     if (fpi) {
         char line[200];
-        fgets(line, 200, fpi);
-        fgets(line, 200, fpi);
+        if ( fgets(line, 200, fpi) == NULL)
+            std::cout << "error reading image file";
+        if ( fgets(line, 200, fpi) == NULL)
+            std::cout << "error reading image file";
         //skip comments and blank lines
         while (line[0] == '#' || strlen(line) < 2)
-            fgets(line, 200, fpi);
+            if ( fgets(line, 200, fpi) == NULL)
+                std::cout << "error reading image file";
         sscanf(line, "%i %i", &width, &height);
-        fgets(line, 200, fpi);
+        if ( fgets(line, 200, fpi) == NULL)
+            std::cout << "error reading image file";
         //get pixel data
         int n = width * height * 3;         
         data = new unsigned char[n];            
@@ -54,7 +60,8 @@ Image::Image(const char *fname) { // From bigfoot framework
     }
     if (!ppmFlag)
         unlink(ppmname);
-}
+} 
+// rainforest end
 
 // =============================================================
 // Asteroids framework start

@@ -14,7 +14,7 @@ public:
 	Global();
 };
 
-class Image { // from the Bigfoot framework
+class Image { // from the rainforest framework
 public:
     int width, height;
     unsigned char *data;

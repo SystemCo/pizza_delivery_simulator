@@ -25,6 +25,7 @@ void init_opengl_bike()
 void render_bike()
 {
     float wid = 60.0f;
+    glColor3f(1.0, 1.0, 1.0); // white?
     glPushMatrix();
     glTranslatef((float)(gl.xres/2), (float)(gl.yres/2), 0.0f);
     // std::cout << gl.xres << "\n" << gl.yres << "\n";

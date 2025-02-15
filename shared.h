@@ -4,26 +4,7 @@
 #include <X11/Xlib.h>
 #include <X11/keysym.h>
 #include <GL/glx.h>
-
-struct texture {
-    GLuint id;
-    GLenum format;
-    GLenum min_filter;
-    GLenum mag_filter;
-    uint16_t w, h;
-};
-
-void png_to_gl_texture(texture*, char const*);
-
-class Image { // from the rainforest framework
-public:
-    int width, height;
-    unsigned char *data;
-    ~Image() { delete [] data; }
-    Image(const char *fname);
-    
-};
-
+#include "dcarter.h"
 class Global {
 public:
 	int xres, yres;
@@ -31,8 +12,7 @@ public:
 	int mouse_cursor_on;
         int credits;
         int show_bike;
-        Image* bike_img;
-        GLuint bikeTexture;
+        Motorcycle bike;
 	Global();
 };
 

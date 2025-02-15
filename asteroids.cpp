@@ -63,7 +63,7 @@ Global::Global() {
     memset(keys, 0, 65536);
     credits = 0;
     show_bike = 0;
-    bike_img = new Image("./images/motorcycle.png");
+    //bike_img = new Image("./images/motorcycle.png");
     
     // mouse value 1 = true = mouse is a regular mouse.
     mouse_cursor_on = 1;
@@ -242,10 +242,7 @@ void init_opengl(void)
 	//Do this to allow fonts
 	glEnable(GL_TEXTURE_2D);
 	initialize_fonts();
-
-        // needed to draw an image from a file
-        init_opengl_bike();
-
+        gl.bike.img->init_gl();
 }
 
 void normalize2d(Vec v)
@@ -379,6 +376,21 @@ int check_keys(XEvent *e)
 		gl.keys[key] = 0;
 		if (key == XK_Shift_L || key == XK_Shift_R)
 			shift = 0;
+                switch (key) {
+                    case XK_Left:
+                        gl.bike.set_turn(Turn::Straight);
+                        break;
+                    case XK_Right:
+                        gl.bike.set_turn(Turn::Straight);
+                        break;
+                    case XK_Up:
+                        gl.bike.set_pedal(Pedal::Neutral);
+                        break;
+                    case XK_Down:
+                        gl.bike.set_pedal(Pedal::Neutral);
+                        break;
+                }
+
 		return 0;
 	}
 	if (e->type == KeyPress) {
@@ -411,8 +423,17 @@ int check_keys(XEvent *e)
                 case XK_b:
                         gl.show_bike = !gl.show_bike;
                         break;
+                case XK_Left:
+                        gl.bike.set_turn(Turn::Left);
+                        break;
+                case XK_Right:
+                        gl.bike.set_turn(Turn::Right);
+                        break;
 		case XK_Down:
+                        gl.bike.set_pedal(Pedal::Backward);
 			break;
+                case XK_Up:
+                        gl.bike.set_pedal(Pedal::Forward);
 		case XK_equal:
 			break;
 		case XK_minus:
@@ -680,6 +701,7 @@ void physics()
 		if (tdif < -0.3)
 			g.mouseThrustOn = false;
 	}
+        gl.bike.move();
 }
 
 void render()
@@ -789,7 +811,7 @@ void render()
 		glEnd();
 	}
         if (gl.show_bike)
-            render_bike();
+            gl.bike.render();
 }
 
 

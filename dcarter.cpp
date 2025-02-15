@@ -25,11 +25,14 @@ void init_opengl_bike()
 void render_bike()
 {
     float wid = 60.0f;
-    glColor3f(1.0, 1.0, 1.0); // white?
+    //glColor3f(1.0, 1.0, 1.0); // white?
+    glColor4f(1.0, 1.0, 1.0, 1.0); // white?
     glPushMatrix();
     glTranslatef((float)(gl.xres/2), (float)(gl.yres/2), 0.0f);
-    // std::cout << gl.xres << "\n" << gl.yres << "\n";
+
     glBindTexture(GL_TEXTURE_2D, gl.bikeTexture);
+    //glBindTexture(GL_TEXTURE_2D, gl.new_bike.id);
+    
     //glRotatef(g.bike.angle, 0.0f, 0.0f, 1.0f);
     
     glBegin(GL_QUADS);

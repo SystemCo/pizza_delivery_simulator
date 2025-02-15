@@ -64,6 +64,7 @@ Global::Global() {
     credits = 0;
     show_bike = 0;
     bike_img = new Image("./images/motorcycle.png");
+    
     // mouse value 1 = true = mouse is a regular mouse.
     mouse_cursor_on = 1;
 }
@@ -244,6 +245,7 @@ void init_opengl(void)
 
         // needed to draw an image from a file
         init_opengl_bike();
+
 }
 
 void normalize2d(Vec v)

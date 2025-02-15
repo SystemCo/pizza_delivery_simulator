@@ -5,6 +5,16 @@
 #include <X11/keysym.h>
 #include <GL/glx.h>
 
+struct texture {
+    GLuint id;
+    GLenum format;
+    GLenum min_filter;
+    GLenum mag_filter;
+    uint16_t w, h;
+};
+
+void png_to_gl_texture(texture*, char const*);
+
 class Image { // from the rainforest framework
 public:
     int width, height;

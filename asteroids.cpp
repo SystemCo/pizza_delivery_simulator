@@ -378,10 +378,10 @@ int check_keys(XEvent *e)
 			shift = 0;
                 switch (key) {
                     case XK_Left:
-                        gl.bike.set_turn(Turn::Straight);
+                        gl.bike.unleft();
                         break;
                     case XK_Right:
-                        gl.bike.set_turn(Turn::Straight);
+                        gl.bike.unright();
                         break;
                     case XK_Up:
                         gl.bike.set_pedal(Pedal::Neutral);
@@ -424,10 +424,10 @@ int check_keys(XEvent *e)
                         gl.show_bike = !gl.show_bike;
                         break;
                 case XK_Left:
-                        gl.bike.set_turn(Turn::Left);
+                        gl.bike.set_left();
                         break;
                 case XK_Right:
-                        gl.bike.set_turn(Turn::Right);
+                        gl.bike.set_right();
                         break;
 		case XK_Down:
                         gl.bike.set_pedal(Pedal::Backward);

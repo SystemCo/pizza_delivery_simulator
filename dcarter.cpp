@@ -53,8 +53,7 @@ Motorcycle::Motorcycle()
     pos_x = 250;
     pos_y = 250;
     angle = 0;
-    pedal = Pedal::Neutral;
-    turn = Turn::Straight;
+    pedal = Neutral;
     img = new Image("./images/motorcycle.png");
 
     //setup_opengl(this);
@@ -113,34 +112,34 @@ void Motorcycle::unright()
 void Motorcycle::set_turn()
 {
     if ( this->left && !this->right)
-        this->turn = Turn::Left;
+        this->turn = Left;
     else if ( this->right && !this->left)
-        this->turn = Turn::Right;
+        this->turn = Right;
     else
-        this->turn = Turn::Straight;
+        this->turn = Straight;
 }
 void Motorcycle::move()
 {
     float vel = velocity.get();
     switch (pedal) {
-        case Pedal::Forward:
+        case Forward:
             velocity.set(vel+0.1);
             break;
-        case Pedal::Neutral:
+        case Neutral:
             velocity.set(vel*0.99);
             break;
-        case Pedal::Backward:
+        case Backward:
             velocity.set(vel-0.1);
             break;
     }
     this->set_turn();
     switch (turn) {
-    case Turn::Straight:
+    case Straight:
        break;
-    case Turn::Left:
+    case Left:
        angle += 1.5f;
        break;
-    case Turn::Right:
+    case Right:
        angle -= 1.5f;
        break;
     }

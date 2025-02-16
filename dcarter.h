@@ -2,7 +2,6 @@
 #define _DCARTER_H_
 #include "fonts.h"
 #include "shared.h"
-// #include <bool.h>
 void show_david(Rect* r);
 void init_opengl_bike();
 void render_bike();

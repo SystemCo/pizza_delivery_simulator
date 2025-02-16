@@ -2,6 +2,7 @@
 #define _DCARTER_H_
 #include "fonts.h"
 #include "shared.h"
+// #include <bool.h>
 void show_david(Rect* r);
 void init_opengl_bike();
 void render_bike();
@@ -35,17 +36,23 @@ class Motorcycle {
         float pos_x;
         float pos_y;
         float angle;
+        bool left;
+        bool right;
         Percent velocity;
         Pedal pedal;
         Turn turn;
+        void set_turn();
     public:
         Image *img;
         Motorcycle();
 
         void set_pedal(Pedal);
-        void set_turn(Turn);
         void move();
         void render();
+        void set_left();
+        void unleft();
+        void set_right();
+        void unright();
 };
 
 #endif //_DCARTER_H_

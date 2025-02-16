@@ -6,18 +6,18 @@
 #define SPEED 4
 
 extern Global gl;
+
 void show_david(Rect* r)
 {
     ggprint8b(r, 16, 0x00ff00ff, "David - The Sweaty One");
 }
+
 void Image::init_gl()
 {
     glGenTextures(1, &texture);
     int w = width;
     int h = height;
-
     glBindTexture(GL_TEXTURE_2D, texture);
-
     //glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);
     glTexImage2D(GL_TEXTURE_2D, 0, 3, w, h, 0,
@@ -75,11 +75,6 @@ void Motorcycle::render()
     
     glBegin(GL_QUADS);
 
-   // glVertex2f(-wid,-wid);
-   // glVertex2f(-wid, wid);
-   // glVertex2f( wid, wid);
-   // glVertex2f( wid,-wid);
-
     glTexCoord2f(0.0f, 1.0f); glVertex2i(-wid,-wid);
     glTexCoord2f(0.0f, 0.0f); glVertex2i(-wid, wid);
     glTexCoord2f(1.0f, 0.0f); glVertex2i( wid, wid);
@@ -97,9 +92,32 @@ void Motorcycle::set_pedal(Pedal pedal)
 {
     this->pedal = pedal;
 }
-void Motorcycle::set_turn(Turn turn)
+
+void Motorcycle::set_left()
 {
-    this->turn = turn;
+    this->left = true;
+}
+void Motorcycle::unleft()
+{
+    this->left = false;
+}
+void Motorcycle::set_right()
+{
+    this->right = true;
+}
+void Motorcycle::unright()
+{
+    this->right = false;
+}
+
+void Motorcycle::set_turn()
+{
+    if ( this->left && !this->right)
+        this->turn = Turn::Left;
+    else if ( this->right && !this->left)
+        this->turn = Turn::Right;
+    else
+        this->turn = Turn::Straight;
 }
 void Motorcycle::move()
 {
@@ -115,6 +133,7 @@ void Motorcycle::move()
             velocity.set(vel-0.1);
             break;
     }
+    this->set_turn();
     switch (turn) {
     case Turn::Straight:
        break;

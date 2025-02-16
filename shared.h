@@ -13,6 +13,7 @@ public:
         int credits;
         int show_bike;
         Motorcycle bike;
+        enum Screen { Title, Pause, Credits } screen;
 	Global();
 };
 

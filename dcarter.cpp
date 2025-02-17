@@ -22,21 +22,18 @@ void show_image(float wid, int pos_x, int pos_y, float angle, Image* img)
     glTranslatef(pos_x, pos_y, 0.0f);
 
     glBindTexture(GL_TEXTURE_2D, img->texture);
-    
+   // glBindTexture(GL_TEXTURE_2D, g.silhouetteTexture);
+   // glEnable(GL_ALPHA_TEST);
+   // glAlphaFunc(GL_GREATER, 0.0f);
+   // glColor4ub(255,255,255,255);
+
     glRotatef(angle, 0.0f, 0.0f, 1.0f);
     
     glBegin(GL_QUADS);
-/**
-    glTexCoord2f(0.0f, 1.0f); glVertex2i(-wid,-height);
-    glTexCoord2f(0.0f, 0.0f); glVertex2i(-wid, height);
-    glTexCoord2f(1.0f, 0.0f); glVertex2i( wid, height);
-    glTexCoord2f(1.0f, 1.0f); glVertex2i( wid,-height);
-**/
-    glTexCoord2f(1.0f, 1.0f); glVertex2i(-wid,-height);
-    glTexCoord2f(1.0f, 0.0f); glVertex2i(-wid, height);
-    glTexCoord2f(0.0f, 0.0f); glVertex2i( wid, height);
-    glTexCoord2f(0.0f, 1.0f); glVertex2i( wid,-height);
-
+        glTexCoord2f(1.0f, 1.0f); glVertex2i(-wid,-height);
+        glTexCoord2f(1.0f, 0.0f); glVertex2i(-wid, height);
+        glTexCoord2f(0.0f, 0.0f); glVertex2i( wid, height);
+        glTexCoord2f(0.0f, 1.0f); glVertex2i( wid,-height);
     glEnd();
     glPopMatrix();
 }
@@ -90,7 +87,7 @@ Motorcycle::Motorcycle()
 
 void Motorcycle::render()
 {
-    show_image(160.0f, pos_x, pos_y, angle, img);
+    show_image(30.0f, pos_x, pos_y, angle, img);
 }
 void Motorcycle::set_pedal(Pedal pedal)
 {

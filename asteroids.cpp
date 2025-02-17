@@ -63,7 +63,6 @@ Global::Global() {
     memset(keys, 0, 65536);
     credits = 0;
     show_bike = 0;
-    //bike_img = new Image("./images/motorcycle.png");
 
     // mouse value 1 = true = mouse is a regular mouse.
     mouse_cursor_on = 1;
@@ -126,7 +125,7 @@ class Game {
         Ship ship;
         Asteroid *ahead;
         Bullet *barr;
-        Image background = Image("./images/Stars.png");
+        Image background = Image("./images/stars.gif");
         //Image background = Image("my.ppm");
         int nasteroids;
         int nbullets;

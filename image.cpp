@@ -31,7 +31,7 @@ Image::Image(const char *fname) { // From the rainforest framework
         // changed the bash call because "convert" command depreciated. 
         // Old line was:
         // sprintf(ts, "convert %s %s", fname, ppmname);
-        sprintf(ts, "magick %s %s", fname, ppmname);
+        sprintf(ts, "convert %s %s", fname, ppmname);
         if( system(ts) )
             std::cout << "Magick Convert failed\n";
     }

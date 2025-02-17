@@ -710,6 +710,7 @@ void physics()
 void render()
 {
 	Rect r;
+	glClearColor(0.0, 0.0, 0.0, 1.0);
 	glClear(GL_COLOR_BUFFER_BIT);
         show_image(gl.xres/2, gl.xres/2, gl.yres/2, 0.0f, &g.background); // display background
 	//

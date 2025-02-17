@@ -26,6 +26,6 @@ Now you can!
 * libGLU
 
 ## Build:
-run make
-run ./asteroids
+* run make
+* run ./asteroids
 

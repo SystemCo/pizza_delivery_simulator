@@ -80,7 +80,7 @@ Motorcycle::Motorcycle()
     pos_y = 250;
     angle = 0;
     pedal = Neutral;
-    img = new Image("./images/motorcycle.png");
+    img = new Image("./images/motorcycle.gif");
 
     //setup_opengl(this);
 }

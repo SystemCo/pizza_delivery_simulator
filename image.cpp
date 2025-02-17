@@ -28,7 +28,7 @@ Image::Image(const char *fname) { // From the rainforest framework
         //printf("ppmname **%s**\n", ppmname);
         char ts[100];
         //system("convert eball.jpg eball.ppm");
-        // changed the bash call because "convert" command depreciated. 
+        // changed the bash call because "convert" command depreciated.
         // Old line was:
         // sprintf(ts, "convert %s %s", fname, ppmname);
         sprintf(ts, "convert %s %s", fname, ppmname);
@@ -51,8 +51,8 @@ Image::Image(const char *fname) { // From the rainforest framework
         if ( fgets(line, 200, fpi) == NULL)
             std::cout << "error reading image file";
         //get pixel data
-        int n = width * height * 3;         
-        data = new unsigned char[n];            
+        int n = width * height * 3;
+        data = new unsigned char[n];
         for (int i=0; i<n; i++)
             data[i] = fgetc(fpi);
         //printf("%s", data);
@@ -211,8 +211,7 @@ void X11_wrapper::show_mouse_cursor(const int onoff)
     //it will undo the last change done by XDefineCursor
     //(thus do only use ONCE XDefineCursor and then XUndefineCursor):
 }
+
 // =============================================================
 // Asteroids framework end
-
-
 

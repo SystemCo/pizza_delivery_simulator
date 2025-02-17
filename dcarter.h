@@ -20,6 +20,8 @@ public:
     
 };
 
+void show_image(float wid, int pos_x, int pos_y, float angle, Image* img);
+
 class Percent { // float from -1 to 1
     private:
         float val;

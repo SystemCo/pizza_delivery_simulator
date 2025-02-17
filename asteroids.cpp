@@ -126,6 +126,8 @@ public:
 	Ship ship;
 	Asteroid *ahead;
 	Bullet *barr;
+        Image background = Image("./images/Stars.png");
+        //Image background = Image("my.ppm");
 	int nasteroids;
 	int nbullets;
 	struct timespec bulletTimer;
@@ -243,6 +245,7 @@ void init_opengl(void)
 	glEnable(GL_TEXTURE_2D);
 	initialize_fonts();
         gl.bike.img->init_gl();
+        g.background.init_gl();
 }
 
 void normalize2d(Vec v)
@@ -708,6 +711,7 @@ void render()
 {
 	Rect r;
 	glClear(GL_COLOR_BUFFER_BIT);
+        show_image(gl.xres/2, gl.xres/2, gl.yres/2, 0.0f, &g.background); // display background
 	//
 	r.bot = gl.yres - 20;
 	r.left = 10;

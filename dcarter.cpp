@@ -12,6 +12,35 @@ void show_david(Rect* r)
     ggprint8b(r, 16, 0x00ff00ff, "David - The Sweaty One");
 }
 
+void show_image(float wid, int pos_x, int pos_y, float angle, Image* img)
+{
+    //printf("hello world");
+    float height = wid * img->height/img->width;
+    glColor3f(1.0, 1.0, 1.0);
+    //glColor3f(0, 0, 0);
+    glPushMatrix();
+    glTranslatef(pos_x, pos_y, 0.0f);
+
+    glBindTexture(GL_TEXTURE_2D, img->texture);
+    
+    glRotatef(angle, 0.0f, 0.0f, 1.0f);
+    
+    glBegin(GL_QUADS);
+/**
+    glTexCoord2f(0.0f, 1.0f); glVertex2i(-wid,-height);
+    glTexCoord2f(0.0f, 0.0f); glVertex2i(-wid, height);
+    glTexCoord2f(1.0f, 0.0f); glVertex2i( wid, height);
+    glTexCoord2f(1.0f, 1.0f); glVertex2i( wid,-height);
+**/
+    glTexCoord2f(1.0f, 1.0f); glVertex2i(-wid,-height);
+    glTexCoord2f(1.0f, 0.0f); glVertex2i(-wid, height);
+    glTexCoord2f(0.0f, 0.0f); glVertex2i( wid, height);
+    glTexCoord2f(0.0f, 1.0f); glVertex2i( wid,-height);
+
+    glEnd();
+    glPopMatrix();
+}
+
 void Image::init_gl()
 {
     glGenTextures(1, &texture);
@@ -61,31 +90,7 @@ Motorcycle::Motorcycle()
 
 void Motorcycle::render()
 {
-    float wid = 60.0f;
-    glColor3f(1.0, 1.0, 1.0); // white?
-    //glColor4f(1.0, 1.0, 1.0, 1.0); // white?
-    glPushMatrix();
-    glTranslatef(pos_x, pos_y, 0.0f);
-
-    glBindTexture(GL_TEXTURE_2D, img->texture);
-    //glBindTexture(GL_TEXTURE_2D, gl.new_bike.id);
-    
-    glRotatef(angle, 0.0f, 0.0f, 1.0f);
-    
-    glBegin(GL_QUADS);
-
-    glTexCoord2f(0.0f, 1.0f); glVertex2i(-wid,-wid);
-    glTexCoord2f(0.0f, 0.0f); glVertex2i(-wid, wid);
-    glTexCoord2f(1.0f, 0.0f); glVertex2i( wid, wid);
-    glTexCoord2f(1.0f, 1.0f); glVertex2i( wid,-wid);
-
-    // left ?
-    //    glTexCoord2f(1.0f, 1.0f); glVertex2i(-wid,-wid);
-    //    glTexCoord2f(1.0f, 0.0f); glVertex2i(-wid, wid);
-    //    glTexCoord2f(0.0f, 0.0f); glVertex2i( wid, wid);
-    //    glTexCoord2f(0.0f, 1.0f); glVertex2i( wid,-wid);
-    glEnd();
-    glPopMatrix();
+    show_image(160.0f, pos_x, pos_y, angle, img);
 }
 void Motorcycle::set_pedal(Pedal pedal)
 {

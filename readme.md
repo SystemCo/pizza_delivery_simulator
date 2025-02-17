@@ -18,4 +18,14 @@ Now you can!
         * Initiate and close deliveries
         * Daily options selections
 
+## Build requirements:
+* Currently only supports linux
+* c++11 compatible compiler
+* libX11
+* libGL
+* libGLU
+
+## Build:
+run make
+run ./asteroids
 

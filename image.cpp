@@ -11,7 +11,7 @@
 Image::Image(const char *fname) { // From the rainforest framework
     if (fname[0] == '\0')
         return;
-    //printf("fname **%s**\n", fname);
+    printf("fname **%s**\n", fname);
     int ppmFlag = 0;
     char name[40];
     strcpy(name, fname);
@@ -33,7 +33,7 @@ Image::Image(const char *fname) { // From the rainforest framework
         // sprintf(ts, "convert %s %s", fname, ppmname);
         sprintf(ts, "magick %s %s", fname, ppmname);
         if( system(ts) )
-            std::cout << "system function failed\n";
+            std::cout << "Magick Convert failed\n";
     }
     //sprintf(ts, "%s", name);
     FILE *fpi = fopen(ppmname, "r");
@@ -55,6 +55,7 @@ Image::Image(const char *fname) { // From the rainforest framework
         data = new unsigned char[n];            
         for (int i=0; i<n; i++)
             data[i] = fgetc(fpi);
+        //printf("%s", data);
         fclose(fpi);
     } else {
         printf("ERROR opening image: %s\n",ppmname);

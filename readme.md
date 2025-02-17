@@ -10,12 +10,12 @@ Now you can!
 * Programming in C++
 * Graphics package with OpenGL
 * Inputs
-*   Keyboard
-*       A - D -> Turning
-*       W - S -> Accelerate / Decelerate + Forward / Reverse
-*       Esc -> Pause Menu
-*   Mouse
-*       Initiate and close deliveries
-*       Daily options selections
+    * Keyboard
+        * A - D -> Turning
+        * W - S -> Accelerate / Decelerate + Forward / Reverse
+        * Esc -> Pause Menu
+    *   Mouse
+        * Initiate and close deliveries
+        * Daily options selections
 
 

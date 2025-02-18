@@ -126,7 +126,6 @@ class Game {
         Asteroid *ahead;
         Bullet *barr;
         Image background = Image("./images/stars.gif");
-        //Image background = Image("my.ppm");
         int nasteroids;
         int nbullets;
         struct timespec bulletTimer;
@@ -716,7 +715,7 @@ void render()
     Rect r;
     glClearColor(0.0, 0.0, 0.0, 1.0);
     glClear(GL_COLOR_BUFFER_BIT);
-    show_image(gl.xres/2, gl.xres/2, gl.yres/2, 0.0f, &g.background); // display background
+    g.background.show(gl.xres/2, gl.xres/2, gl.yres/2, 0.0f); // display background
                                                                       //
     r.bot = gl.yres - 20;
     r.left = 10;

@@ -5,4 +5,5 @@
 #include "log.h"
 #include "shared.h"
 #include "dcarter.h"
+#include "image.h"
 #endif //_HEADERS_H_

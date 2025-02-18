@@ -5,6 +5,8 @@
 #include <X11/keysym.h>
 #include <GL/glx.h>
 #include "dcarter.h"
+
+
 class Global {
 public:
 	int xres, yres;

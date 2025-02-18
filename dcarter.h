@@ -2,23 +2,12 @@
 #define _DCARTER_H_
 #include "fonts.h"
 #include "shared.h"
+#include "image.h"
 void show_david(Rect* r);
 void init_opengl_bike();
 void render_bike();
 enum Pedal { Forward, Neutral, Backward };
 enum Turn  { Left, Straight, Right };
-
-class Image { // from the rainforest framework
-public:
-    int width, height;
-    unsigned char *data;
-    GLuint texture;
-
-    ~Image() { delete [] data; }
-    Image(const char *fname);
-    void init_gl();
-    
-};
 
 void show_image(float wid, int pos_x, int pos_y, float angle, Image* img);
 

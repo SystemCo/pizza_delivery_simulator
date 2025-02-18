@@ -12,9 +12,10 @@ void show_david(Rect* r)
     ggprint8b(r, 16, 0x00ff00ff, "David - The Sweaty One");
 }
 
-void show_image(float wid, int pos_x, int pos_y, float angle, Image* img)
+void Image::show(float wid, int pos_x, int pos_y, float angle)
 {
     //printf("hello world");
+    Image* img = this;
     float height = wid * img->height/img->width;
     glColor3f(1.0, 1.0, 1.0);
     //glColor3f(0, 0, 0);
@@ -23,9 +24,9 @@ void show_image(float wid, int pos_x, int pos_y, float angle, Image* img)
 
     glBindTexture(GL_TEXTURE_2D, img->texture);
    // glBindTexture(GL_TEXTURE_2D, g.silhouetteTexture);
-   // glEnable(GL_ALPHA_TEST);
-   // glAlphaFunc(GL_GREATER, 0.0f);
-   // glColor4ub(255,255,255,255);
+    glEnable(GL_ALPHA_TEST);
+    glAlphaFunc(GL_GREATER, 0.0f);
+    glColor4ub(255,255,255,255);
 
     glRotatef(angle, 0.0f, 0.0f, 1.0f);
     
@@ -37,19 +38,6 @@ void show_image(float wid, int pos_x, int pos_y, float angle, Image* img)
     glEnd();
     glPopMatrix();
 }
-
-void Image::init_gl()
-{
-    glGenTextures(1, &texture);
-    int w = width;
-    int h = height;
-    glBindTexture(GL_TEXTURE_2D, texture);
-    //glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);
-    glTexImage2D(GL_TEXTURE_2D, 0, 3, w, h, 0,
-            GL_RGB, GL_UNSIGNED_BYTE, data);
-}
-
 Percent::Percent()
 {
     this->val = 0;
@@ -82,12 +70,13 @@ Motorcycle::Motorcycle()
     pedal = Neutral;
     img = new Image("./images/motorcycle.gif");
 
-    //setup_opengl(this);
+    img->init_gl();
+    //setup_opengl(this.img);
 }
 
 void Motorcycle::render()
 {
-    show_image(30.0f, pos_x, pos_y, angle, img);
+    img->show(30.0f, pos_x, pos_y, angle);
 }
 void Motorcycle::set_pedal(Pedal pedal)
 {

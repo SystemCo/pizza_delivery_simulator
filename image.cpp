@@ -8,7 +8,8 @@
 //#include <string.h>
 //#include <cstdlib>
 
-Image::Image(const char *fname) { // From the rainforest framework
+Image::Image(const char *fname)
+{ // From the rainforest framework
     if (fname[0] == '\0')
         return;
     printf("fname **%s**\n", fname);
@@ -64,6 +65,70 @@ Image::Image(const char *fname) { // From the rainforest framework
     if (!ppmFlag)
         unlink(ppmname);
 } 
+
+void Image::init_gl()
+{
+    //OpenGL initialization
+    glGenTextures(1, &texture);
+    int w = width;
+    int h = height;
+    glBindTexture(GL_TEXTURE_2D, texture);
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);
+/** Alpha mode is the only mode unless it doesn't work.
+    glTexImage2D(GL_TEXTURE_2D, 0, 3, w, h, 0,
+            GL_RGB, GL_UNSIGNED_BYTE, data);
+*/
+    unsigned char *silhouetteData = this->buildAlphaData();
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0,
+            GL_RGBA, GL_UNSIGNED_BYTE, silhouetteData);
+    free(silhouetteData);
+
+}
+
+
+unsigned char* Image::buildAlphaData()
+{
+    //Add 4th component to an RGB stream...
+    //RGBA
+    //When you do this, OpenGL is able to use the A component to determine
+    //transparency information.
+    //It is used in this application to erase parts of a texture-map from view.
+    int i;
+    int a,b,c;
+    unsigned char *newdata, *ptr;
+    unsigned char *data = (unsigned char *)this->data;
+    newdata = (unsigned char *)malloc(this->width * this->height * 4);
+    ptr = newdata;
+    for (i=0; i<this->width * this->height * 3; i+=3) {
+        a = *(data+0);
+        b = *(data+1);
+        c = *(data+2);
+        *(ptr+0) = a;
+        *(ptr+1) = b;
+        *(ptr+2) = c;
+        //-----------------------------------------------
+        //get largest color component...
+        //*(ptr+3) = (unsigned char)((
+        //		(int)*(ptr+0) +
+        //		(int)*(ptr+1) +
+        //		(int)*(ptr+2)) / 3);
+        //d = a;
+        //if (b >= a && b >= c) d = b;
+        //if (c >= a && c >= b) d = c;
+        //*(ptr+3) = d;
+        //-----------------------------------------------
+        //this code optimizes the commented code above.
+        //code contributed by student: Chris Smith
+        //
+        *(ptr+3) = (a|b|c);
+        //-----------------------------------------------
+        ptr += 4;
+        data += 3;
+    }
+    return newdata;
+}
+
 // rainforest end
 
 // =============================================================

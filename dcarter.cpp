@@ -194,3 +194,21 @@ void Motorcycle::move()
         pic->pos_y = 0;
 }
 
+int resolution_scale(int width, int height)
+{
+    float img_proportion = width / height;
+    float resolution_proportion = gl.xres / gl.yres;
+    int output = 0;
+    if (resolution_proportion > img_proportion) {
+        output = img_proportion * gl.xres/2;
+    } else {
+        output = img_proportion * gl.yres;
+    }
+    return output;
+}
+
+int resolution_scale(Image* img)
+{
+    return resolution_scale(img->width, img->height);
+}
+

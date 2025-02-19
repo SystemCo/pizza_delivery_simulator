@@ -13,12 +13,11 @@ void show_david(Rect* r)
     ggprint8b(r, 16, 0x00ff00ff, "David - The Sweaty One");
 }
 
-void Image::show(float wid, int pos_x, int pos_y, float angle)
+void Image::show(float wid, int pos_x, int pos_y, float angle, int flipped)
 {
     Image* img = this;
     float height = wid * img->height/img->width;
     glColor3f(1.0, 1.0, 1.0);
-    //glColor3f(0, 0, 0);
     glPushMatrix();
     glTranslatef(pos_x, pos_y, 0.0f);
 
@@ -30,12 +29,25 @@ void Image::show(float wid, int pos_x, int pos_y, float angle)
     glRotatef(angle, 0.0f, 0.0f, 1.0f);
     
     glBegin(GL_QUADS);
-        glTexCoord2f(1.0f, 1.0f); glVertex2i(-wid,-height);
-        glTexCoord2f(1.0f, 0.0f); glVertex2i(-wid, height);
-        glTexCoord2f(0.0f, 0.0f); glVertex2i( wid, height);
-        glTexCoord2f(0.0f, 1.0f); glVertex2i( wid,-height);
+    if (flipped) {
+        glTexCoord2i(0, 1); glVertex2i(-wid,-height);
+        glTexCoord2i(0, 0); glVertex2i(-wid, height);
+        glTexCoord2i(1, 0); glVertex2i( wid, height);
+        glTexCoord2i(1, 1); glVertex2i( wid,-height);
+    } else {
+        //glTexCoord2f(1.0f, 1.0f); glVertex2i(-wid,-height);
+        glTexCoord2i(1, 1); glVertex2i(-wid,-height);
+        glTexCoord2i(1, 0); glVertex2i(-wid, height);
+        glTexCoord2i(0, 0); glVertex2i( wid, height);
+        glTexCoord2i(0, 1); glVertex2i( wid,-height);
+    }
     glEnd();
     glPopMatrix();
+}
+
+void Image::show(float wid, int pos_x, int pos_y, float angle)
+{
+    this->show(wid, pos_x, pos_y, angle, 0);
 }
 
 Percent::Percent()
@@ -79,6 +91,10 @@ Entity::Entity(const char infile[])
     angle - 0;
     img = new Image(infile);
     img->init_gl();
+}
+void Entity::render(int flipped)
+{
+    img->show(scale, pos_x, pos_y, angle, flipped);
 }
 void Entity::render()
 {

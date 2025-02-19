@@ -12,6 +12,7 @@ public:
     void init_gl();
     unsigned char* buildAlphaData();
     void show(float, int, int, float);    
+    void show(float, int, int, float, int);
 };
 
 

@@ -31,6 +31,7 @@ class Entity {
     Image *img;
     Entity(int, int, float, float, const char[]);
     Entity(const char[]);
+    void render(int flipped);
     void render();
 };
 

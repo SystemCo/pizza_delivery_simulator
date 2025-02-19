@@ -5,6 +5,7 @@
 #define TO_RAD(x) ((x+90) / 360.0f) * PI * 2.0
 #define SPEED 4
 
+/** This is the global variable for the whole project. Declared in asteroids.cpp */
 extern Global gl;
 
 void show_david(Rect* r)
@@ -12,9 +13,9 @@ void show_david(Rect* r)
     ggprint8b(r, 16, 0x00ff00ff, "David - The Sweaty One");
 }
 
-void show_image(float wid, int pos_x, int pos_y, float angle, Image* img)
+void Image::show(float wid, int pos_x, int pos_y, float angle)
 {
-    //printf("hello world");
+    Image* img = this;
     float height = wid * img->height/img->width;
     glColor3f(1.0, 1.0, 1.0);
     //glColor3f(0, 0, 0);
@@ -22,10 +23,9 @@ void show_image(float wid, int pos_x, int pos_y, float angle, Image* img)
     glTranslatef(pos_x, pos_y, 0.0f);
 
     glBindTexture(GL_TEXTURE_2D, img->texture);
-   // glBindTexture(GL_TEXTURE_2D, g.silhouetteTexture);
-   // glEnable(GL_ALPHA_TEST);
-   // glAlphaFunc(GL_GREATER, 0.0f);
-   // glColor4ub(255,255,255,255);
+    glEnable(GL_ALPHA_TEST);
+    glAlphaFunc(GL_GREATER, 0.0f);
+    glColor4ub(255,255,255,255);
 
     glRotatef(angle, 0.0f, 0.0f, 1.0f);
     
@@ -36,18 +36,6 @@ void show_image(float wid, int pos_x, int pos_y, float angle, Image* img)
         glTexCoord2f(0.0f, 1.0f); glVertex2i( wid,-height);
     glEnd();
     glPopMatrix();
-}
-
-void Image::init_gl()
-{
-    glGenTextures(1, &texture);
-    int w = width;
-    int h = height;
-    glBindTexture(GL_TEXTURE_2D, texture);
-    //glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);
-    glTexImage2D(GL_TEXTURE_2D, 0, 3, w, h, 0,
-            GL_RGB, GL_UNSIGNED_BYTE, data);
 }
 
 Percent::Percent()
@@ -74,20 +62,51 @@ float Percent::get()
     return this->val;
 }
 
+Entity::Entity(int pos_x, int pos_y, float scale, float angle, const char infile[])
+{
+    this->pos_x = pos_x;
+    this->pos_y = pos_y;
+    this->scale = scale;
+    this->angle = angle;
+    img = new Image(infile);
+    img->init_gl();
+}
+Entity::Entity(const char infile[])
+{
+    pos_x = 0;
+    pos_y = 0;
+    scale = 50.0f;
+    angle - 0;
+    img = new Image(infile);
+    img->init_gl();
+}
+void Entity::render()
+{
+    img->show(scale, pos_x, pos_y, angle);
+}
+
 Motorcycle::Motorcycle()
 {
+    pic = new Entity(250, 250, 30.0, 0.0, "./images/motorcycle.gif");
+    fflush(stdout);
+/*
     pos_x = 250;
     pos_y = 250;
     angle = 0;
+    img = new Image("./images/motorcycle.gif");
+*/
     pedal = Neutral;
-    img = new Image("./images/motorcycle.png");
 
-    //setup_opengl(this);
+    //setup_opengl(this.img);
+    // you can't set up opengl anywhere but main.
+    // opengl setup uses weird implicit global variables that go out of scope
+    // unless specifically initialized within the main initialization function.
 }
 
 void Motorcycle::render()
 {
-    show_image(30.0f, pos_x, pos_y, angle, img);
+    pic->render();
+    //img->show(30.0f, pos_x, pos_y, angle);
 }
 void Motorcycle::set_pedal(Pedal pedal)
 {
@@ -110,7 +129,6 @@ void Motorcycle::unright()
 {
     this->right = false;
 }
-
 void Motorcycle::set_turn()
 {
     if ( this->left && !this->right)
@@ -120,6 +138,7 @@ void Motorcycle::set_turn()
     else
         this->turn = Straight;
 }
+
 void Motorcycle::move()
 {
     float vel = velocity.get();
@@ -139,27 +158,59 @@ void Motorcycle::move()
     case Straight:
        break;
     case Left:
-       angle += 1.5f;
+       pic->angle += 1.5f;
        break;
     case Right:
-       angle -= 1.5f;
+       pic->angle -= 1.5f;
        break;
     }
-    angle = fmod(angle, 360.0);
-    float rad = TO_RAD(angle);
-    pos_x = pos_x + vel * SPEED * std::cos(rad);
-    pos_y = pos_y + vel * SPEED * std::sin(rad);
-
-    if (pos_x < 0)
-        pos_x = gl.xres;
-    if (pos_x > gl.xres)
-        pos_x = 0;
-
-    if (pos_y < 0)
-        pos_y = gl.yres;
-    if (pos_y > gl.yres)
-        pos_y = 0;
-
-
+    pic->angle = fmod(pic->angle, 360.0);
+    float rad = TO_RAD(pic->angle);
+    pic->pos_x = pic->pos_x + vel * SPEED * std::cos(rad);
+    pic->pos_y = pic->pos_y + vel * SPEED * std::sin(rad);
+    if (pic->pos_x < 0)
+        pic->pos_x = gl.xres;
+    if (pic->pos_x > gl.xres)
+        pic->pos_x = 0;
+    if (pic->pos_y < 0)
+        pic->pos_y = gl.yres;
+    if (pic->pos_y > gl.yres)
+        pic->pos_y = 0;
+}
+void title_physics()
+{
+    static int frame = 0; 
+    int* pos_x = &gl.moto_side->pos_x;
+    int* pos_y = &gl.moto_side->pos_y;
+    float* angle = &gl.moto_side->angle;
+    if       (frame < 100) {
+        *pos_x += 10;
+        *pos_y += 10;
+    }else if (frame < 200) {
+        *pos_x -= 10;
+    }else if (frame < 300) {
+        *pos_y += 5;
+    }else if (frame < 400) {
+        *angle += 0.1;
+    }else if (frame < 500) {
+        *pos_x -= 3;
+        *pos_y += 4;
+    }
+    // Always jump edges. May not want to do this in the full animation
+    if (*pos_x < 0)
+        *pos_x += gl.xres;
+    *pos_x %= gl.xres;
+    if (*pos_y < 0)
+        *pos_y += gl.xres;
+    *pos_y %= gl.yres;
+    frame += 1;
+    frame %= 500;
+}
+void title_render()
+{
+    glClearColor(0.0, 0.0, 0.0, 1.0);
+    glClear(GL_COLOR_BUFFER_BIT);
+    gl.background.show(gl.xres/2, gl.xres/2, gl.yres/2, 0.0f); // display background
+    gl.moto_side->render();
 }
 

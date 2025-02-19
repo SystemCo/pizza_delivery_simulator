@@ -1,25 +1,31 @@
-CFLAGS = -I ./include
+#CFLAGS = -I ./include
+CFLAGS = 
 ##LIB    = ./libggfonts.so
 LFLAGS = -lrt -lX11 -lGLU -lGL -pthread -lm -lpng #-lXrandr
 
-all: dcarter.o log.o timers.o image.o asteroids 
 
-dcarter.o: dcarter.cpp dcarter.h
-	g++ -c dcarter.cpp
+all: objects/dcarter.o objects/log.o objects/timers.o \
+	objects/image.o asteroids 
 
-log.o: log.cpp log.h
-	g++ -c log.cpp
+objects/dcarter.o: dcarter.cpp dcarter.h
+	g++ -c -o objects/dcarter.o dcarter.cpp
 
-timers.o: timers.cpp
-	g++ -c timers.cpp
+objects/log.o: log.cpp log.h
+	g++ -c -o objects/log.o log.cpp
 
-image.o: image.cpp shared.h dcarter.h
-	g++ -c image.cpp
+objects/timers.o: timers.cpp
+	g++ -c -o objects/timers.o timers.cpp
 
-asteroids: asteroids.cpp dcarter.o log.o timers.o image.o #dcarter.cpp log.cpp timers.cpp dcarter.h image.cpp shared.h
-	g++ $(CFLAGS) asteroids.cpp log.o timers.o dcarter.o image.o libggfonts.a -Wall -Wextra $(LFLAGS) -oasteroids
+objects/image.o: image.cpp shared.h dcarter.h
+	g++ -c -o objects/image.o image.cpp
+
+asteroids: asteroids.cpp objects/dcarter.o objects/log.o \
+	objects/timers.o objects/image.o
+	g++ $(CFLAGS) asteroids.cpp objects/log.o objects/timers.o \
+		objects/dcarter.o objects/image.o libggfonts.a \
+		-Wall -Wextra $(LFLAGS) -oasteroids
 
 clean:
 	rm -f asteroids
-	rm -f *.o
+	rm -f objects/*.o
 

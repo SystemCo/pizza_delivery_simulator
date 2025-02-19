@@ -180,16 +180,31 @@ void Motorcycle::move()
 void title_physics()
 {
     static int frame = 0; 
+    int* pos_x = &gl.moto_side->pos_x;
+    int* pos_y = &gl.moto_side->pos_y;
+    float* angle = &gl.moto_side->angle;
     if       (frame < 100) {
-        gl.moto_side->pos_x += 10;
-        gl.moto_side->pos_x %= gl.xres;
-        gl.moto_side->pos_y += 10;
-        gl.moto_side->pos_y %= gl.yres;
+        *pos_x += 10;
+        *pos_y += 10;
     }else if (frame < 200) {
+        *pos_x -= 10;
     }else if (frame < 300) {
+        *pos_y += 5;
     }else if (frame < 400) {
+        *angle += 0.1;
     }else if (frame < 500) {
+        *pos_x -= 3;
+        *pos_y += 4;
     }
+    // Always jump edges. May not want to do this in the full animation
+    if (*pos_x < 0)
+        *pos_x += gl.xres;
+    *pos_x %= gl.xres;
+    if (*pos_y < 0)
+        *pos_y += gl.xres;
+    *pos_y %= gl.yres;
+    frame += 1;
+    frame %= 500;
 }
 void title_render()
 {

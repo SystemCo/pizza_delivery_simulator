@@ -62,15 +62,41 @@ float Percent::get()
     return this->val;
 }
 
+Entity::Entity(int pos_x, int pos_y, float scale, float angle, const char infile[])
+{
+    this->pos_x = pos_x;
+    this->pos_y = pos_y;
+    this->scale = scale;
+    this->angle = angle;
+    img = new Image(infile);
+    img->init_gl();
+}
+Entity::Entity(const char infile[])
+{
+    pos_x = 0;
+    pos_y = 0;
+    scale = 50.0f;
+    angle - 0;
+    img = new Image(infile);
+    img->init_gl();
+}
+void Entity::render()
+{
+    img->show(scale, pos_x, pos_y, angle);
+}
+
 Motorcycle::Motorcycle()
 {
+    pic = new Entity(250, 250, 30.0, 0.0, "./images/motorcycle.gif");
+    fflush(stdout);
+/*
     pos_x = 250;
     pos_y = 250;
     angle = 0;
-    pedal = Neutral;
     img = new Image("./images/motorcycle.gif");
+*/
+    pedal = Neutral;
 
-    img->init_gl();
     //setup_opengl(this.img);
     // you can't set up opengl anywhere but main.
     // opengl setup uses weird implicit global variables that go out of scope
@@ -79,7 +105,8 @@ Motorcycle::Motorcycle()
 
 void Motorcycle::render()
 {
-    img->show(30.0f, pos_x, pos_y, angle);
+    pic->render();
+    //img->show(30.0f, pos_x, pos_y, angle);
 }
 void Motorcycle::set_pedal(Pedal pedal)
 {
@@ -102,7 +129,6 @@ void Motorcycle::unright()
 {
     this->right = false;
 }
-
 void Motorcycle::set_turn()
 {
     if ( this->left && !this->right)
@@ -112,6 +138,7 @@ void Motorcycle::set_turn()
     else
         this->turn = Straight;
 }
+
 void Motorcycle::move()
 {
     float vel = velocity.get();
@@ -131,24 +158,44 @@ void Motorcycle::move()
     case Straight:
        break;
     case Left:
-       angle += 1.5f;
+       pic->angle += 1.5f;
        break;
     case Right:
-       angle -= 1.5f;
+       pic->angle -= 1.5f;
        break;
     }
-    angle = fmod(angle, 360.0);
-    float rad = TO_RAD(angle);
-    pos_x = pos_x + vel * SPEED * std::cos(rad);
-    pos_y = pos_y + vel * SPEED * std::sin(rad);
-
-    if (pos_x < 0)
-        pos_x = gl.xres;
-    if (pos_x > gl.xres)
-        pos_x = 0;
-    if (pos_y < 0)
-        pos_y = gl.yres;
-    if (pos_y > gl.yres)
-        pos_y = 0;
+    pic->angle = fmod(pic->angle, 360.0);
+    float rad = TO_RAD(pic->angle);
+    pic->pos_x = pic->pos_x + vel * SPEED * std::cos(rad);
+    pic->pos_y = pic->pos_y + vel * SPEED * std::sin(rad);
+    if (pic->pos_x < 0)
+        pic->pos_x = gl.xres;
+    if (pic->pos_x > gl.xres)
+        pic->pos_x = 0;
+    if (pic->pos_y < 0)
+        pic->pos_y = gl.yres;
+    if (pic->pos_y > gl.yres)
+        pic->pos_y = 0;
+}
+void title_physics()
+{
+    static int frame = 0; 
+    if       (frame < 100) {
+        gl.moto_side->pos_x += 10;
+        gl.moto_side->pos_x %= gl.xres;
+        gl.moto_side->pos_y += 10;
+        gl.moto_side->pos_y %= gl.yres;
+    }else if (frame < 200) {
+    }else if (frame < 300) {
+    }else if (frame < 400) {
+    }else if (frame < 500) {
+    }
+}
+void title_render()
+{
+    glClearColor(0.0, 0.0, 0.0, 1.0);
+    glClear(GL_COLOR_BUFFER_BIT);
+    gl.background.show(gl.xres/2, gl.xres/2, gl.yres/2, 0.0f); // display background
+    gl.moto_side->render();
 }
 

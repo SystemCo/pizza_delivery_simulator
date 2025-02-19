@@ -60,12 +60,15 @@ extern void timeCopy(struct timespec *dest, struct timespec *source);
 Global::Global() {
     xres = 640;
     yres = 480;
+    //screen = Playing;
+    screen = Title;
     memset(keys, 0, 65536);
     credits = 0;
     show_bike = 0;
 
     // mouse value 1 = true = mouse is a regular mouse.
     mouse_cursor_on = 1;
+    moto_side = new Entity("images/moto_side.gif");
 }
 
 Global gl;
@@ -125,7 +128,6 @@ class Game {
         Ship ship;
         Asteroid *ahead;
         Bullet *barr;
-        Image background = Image("./images/stars.gif");
         int nasteroids;
         int nbullets;
         struct timespec bulletTimer;
@@ -217,10 +219,22 @@ int main()
         // if gl.screen state is paused, don't do physics
         physicsCountdown += timeSpan;
         while (physicsCountdown >= physicsRate) {
-            physics();
+            switch (gl.screen) {
+                case Title:
+                    title_physics();
+                    break;
+                default:
+                    physics();
+            }
             physicsCountdown -= physicsRate;
         }
-        render();
+        switch (gl.screen) {
+            case Title:
+                title_render();
+                break;
+            default:
+                render();
+        }
         x11.swapBuffers();
     }
     cleanup_fonts();
@@ -248,8 +262,9 @@ void init_opengl(void)
     //Do this to allow fonts
     glEnable(GL_TEXTURE_2D);
     initialize_fonts();
-    gl.bike.img->init_gl();
-    g.background.init_gl();
+    gl.bike.pic->img->init_gl();
+    gl.background.init_gl();
+    gl.moto_side->img->init_gl();
 }
 
 void normalize2d(Vec v)
@@ -409,6 +424,9 @@ int check_keys(XEvent *e)
         }
     }
     (void)shift;
+    // if any button is pushed, exit the title menu. 
+    // Currently would break pause and credits
+    gl.screen = Playing;
     switch (key) {
         case XK_Escape:
             // Do Pause
@@ -718,7 +736,7 @@ void render()
     Rect r;
     glClearColor(0.0, 0.0, 0.0, 1.0);
     glClear(GL_COLOR_BUFFER_BIT);
-    g.background.show(gl.xres/2, gl.xres/2, gl.yres/2, 0.0f); // display background
+    gl.background.show(gl.xres/2, gl.xres/2, gl.yres/2, 0.0f); // display background
     r.bot = gl.yres - 20;
     r.left = 10;
     r.center = 0;

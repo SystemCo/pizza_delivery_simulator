@@ -6,17 +6,7 @@
 #include <GL/glx.h>
 #include "dcarter.h"
 
-int x;
-
-switch (hat) {
-    case Off:
-        off_func();
-    case Forward: 
-        forward_func();
-    case Backward:
-        backwards_func();
-}
-
+enum ScreenState { Title, Pause, Credits, Playing };
 class Global {
 public:
 	int xres, yres;
@@ -25,7 +15,9 @@ public:
         int credits;
         int show_bike;
         Motorcycle bike;
-        enum Screen { Title, Pause, Credits /**, other_things... */} screen;
+        Entity* moto_side;
+        Image background = Image("./images/stars.gif");
+        ScreenState screen;
         //TODO: 
         // implement switch statements in main func as well as other funcs
         // using screen state enum

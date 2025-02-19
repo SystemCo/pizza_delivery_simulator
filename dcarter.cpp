@@ -15,7 +15,6 @@ void show_david(Rect* r)
 
 void Image::show(float wid, int pos_x, int pos_y, float angle)
 {
-    //printf("hello world");
     Image* img = this;
     float height = wid * img->height/img->width;
     glColor3f(1.0, 1.0, 1.0);
@@ -24,7 +23,6 @@ void Image::show(float wid, int pos_x, int pos_y, float angle)
     glTranslatef(pos_x, pos_y, 0.0f);
 
     glBindTexture(GL_TEXTURE_2D, img->texture);
-   // glBindTexture(GL_TEXTURE_2D, g.silhouetteTexture);
     glEnable(GL_ALPHA_TEST);
     glAlphaFunc(GL_GREATER, 0.0f);
     glColor4ub(255,255,255,255);
@@ -39,6 +37,7 @@ void Image::show(float wid, int pos_x, int pos_y, float angle)
     glEnd();
     glPopMatrix();
 }
+
 Percent::Percent()
 {
     this->val = 0;
@@ -73,6 +72,9 @@ Motorcycle::Motorcycle()
 
     img->init_gl();
     //setup_opengl(this.img);
+    // you can't set up opengl anywhere but main.
+    // opengl setup uses weird implicit global variables that go out of scope
+    // unless specifically initialized within the main initialization function.
 }
 
 void Motorcycle::render()

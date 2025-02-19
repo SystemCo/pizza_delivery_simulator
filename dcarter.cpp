@@ -144,7 +144,6 @@ void Motorcycle::move()
         pos_x = gl.xres;
     if (pos_x > gl.xres)
         pos_x = 0;
-
     if (pos_y < 0)
         pos_y = gl.yres;
     if (pos_y > gl.yres)

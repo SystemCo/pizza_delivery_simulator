@@ -214,6 +214,7 @@ int main()
         clock_gettime(CLOCK_REALTIME, &timeCurrent);
         timeSpan = timeDiff(&timeStart, &timeCurrent);
         timeCopy(&timeStart, &timeCurrent);
+        // if gl.screen state is paused, don't do physics
         physicsCountdown += timeSpan;
         while (physicsCountdown >= physicsRate) {
             physics();
@@ -410,6 +411,8 @@ int check_keys(XEvent *e)
     (void)shift;
     switch (key) {
         case XK_Escape:
+            // Do Pause
+            // set gl.screen to pause state
             return 1;
         case XK_m:
             gl.mouse_cursor_on = !gl.mouse_cursor_on;

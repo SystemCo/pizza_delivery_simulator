@@ -5,6 +5,7 @@
 #define TO_RAD(x) ((x+90) / 360.0f) * PI * 2.0
 #define SPEED 4
 
+/** This is the global variable for the whole project. Declared in asteroids.cpp */
 extern Global gl;
 
 void show_david(Rect* r)
@@ -148,7 +149,5 @@ void Motorcycle::move()
         pos_y = gl.yres;
     if (pos_y > gl.yres)
         pos_y = 0;
-
-
 }
 

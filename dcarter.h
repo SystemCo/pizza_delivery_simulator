@@ -7,6 +7,8 @@ void show_david(Rect* r);
 void init_opengl_bike();
 void title_render();
 void title_physics();
+int  resolution_scale(int width, int height);
+int  resolution_scale(Image* img);
 enum Pedal { Forward, Neutral, Backward };
 enum Turn  { Left, Straight, Right };
 

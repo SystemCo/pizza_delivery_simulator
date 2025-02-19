@@ -5,11 +5,12 @@
 #include "image.h"
 void show_david(Rect* r);
 void init_opengl_bike();
-void render_bike();
+void title_render();
+void title_physics();
 enum Pedal { Forward, Neutral, Backward };
 enum Turn  { Left, Straight, Right };
 
-void show_image(float wid, int pos_x, int pos_y, float angle, Image* img);
+//void show_image(float wid, int pos_x, int pos_y, float angle, Image* img);
 
 class Percent { // float from -1 to 1
     private:
@@ -21,11 +22,25 @@ class Percent { // float from -1 to 1
         float get();
 };
 
+class Entity {
+    public:
+    int pos_x;
+    int pos_y;
+    float scale;
+    float angle;
+    Image *img;
+    Entity(int, int, float, float, const char[]);
+    Entity(const char[]);
+    void render();
+};
+
 class Motorcycle {
     private:
+/*
         float pos_x;
         float pos_y;
         float angle;
+*/
         bool left;
         bool right;
         Percent velocity;
@@ -33,7 +48,10 @@ class Motorcycle {
         Turn turn;
         void set_turn();
     public:
+        Entity* pic;
+        /*
         Image *img;
+        */
         Motorcycle();
 
         void set_pedal(Pedal);

@@ -2,7 +2,7 @@
 #include <iostream>
 #include <cmath>
 #define PI 3.141592653589793
-#define TO_RAD(x) ((x+90) / 360.0f) * PI * 2.0
+#define TO_RAD(x) ((x+90) / 360.0f) * PI * 2.0 // from asteroids framework
 #define SPEED 4
 
 /** This is the global variable for the whole project. Declared in asteroids.cpp */
@@ -11,38 +11,6 @@ extern Global gl;
 void show_david(Rect* r)
 {
     ggprint8b(r, 16, 0x00ff00ff, "David - The Sweaty One");
-}
-
-void Image::show(float wid, int pos_x, int pos_y, float angle, int flipped)
-{
-    Image* img = this;
-    float height = wid * img->height/img->width;
-    glColor3f(1.0, 1.0, 1.0);
-    glPushMatrix();
-    glTranslatef(pos_x, pos_y, 0.0f);
-
-    glBindTexture(GL_TEXTURE_2D, img->texture);
-    glEnable(GL_ALPHA_TEST);
-    glAlphaFunc(GL_GREATER, 0.0f);
-    glColor4ub(255,255,255,255);
-
-    glRotatef(angle, 0.0f, 0.0f, 1.0f);
-    
-    glBegin(GL_QUADS);
-    if (flipped) {
-        glTexCoord2i(1, 1); glVertex2i(-wid,-height);
-        glTexCoord2i(1, 0); glVertex2i(-wid, height);
-        glTexCoord2i(0, 0); glVertex2i( wid, height);
-        glTexCoord2i(0, 1); glVertex2i( wid,-height);
-    } else {
-        //glTexCoord2f(1.0f, 1.0f); glVertex2i(-wid,-height);
-        glTexCoord2i(0, 1); glVertex2i(-wid,-height);
-        glTexCoord2i(0, 0); glVertex2i(-wid, height);
-        glTexCoord2i(1, 0); glVertex2i( wid, height);
-        glTexCoord2i(1, 1); glVertex2i( wid,-height);
-    }
-    glEnd();
-    glPopMatrix();
 }
 
 void Image::show(float wid, int pos_x, int pos_y, float angle)
@@ -74,7 +42,7 @@ float Percent::get()
     return this->val;
 }
 
-Entity::Entity(int pos_x, int pos_y, float scale, float angle, const char infile[])
+Entity::Entity(float pos_x, float pos_y, float scale, float angle, const char infile[])
 {
     this->pos_x = pos_x;
     this->pos_y = pos_y;
@@ -101,12 +69,6 @@ Motorcycle::Motorcycle()
 {
     pic = new Entity(250, 250, 30.0, 0.0, "./images/motorcycle.gif");
     fflush(stdout);
-/*
-    pos_x = 250;
-    pos_y = 250;
-    angle = 0;
-    img = new Image("./images/motorcycle.gif");
-*/
     pedal = Neutral;
 
     //setup_opengl(this.img);
@@ -118,7 +80,6 @@ Motorcycle::Motorcycle()
 void Motorcycle::render()
 {
     pic->render();
-    //img->show(30.0f, pos_x, pos_y, angle);
 }
 void Motorcycle::set_pedal(Pedal pedal)
 {
@@ -176,10 +137,15 @@ void Motorcycle::move()
        pic->angle -= 1.5f;
        break;
     }
-    pic->angle = fmod(pic->angle, 360.0);
+    while (pic->angle < 0)
+        pic->angle += 360;
+    while (pic->angle > 0)
+        pic->angle -= 360;
     float rad = TO_RAD(pic->angle);
-    pic->pos_x = pic->pos_x + vel * SPEED * std::cos(rad);
-    pic->pos_y = pic->pos_y + vel * SPEED * std::sin(rad);
+    float delta_x = vel * SPEED * std::cos(rad);
+    pic->pos_x += delta_x;
+    float delta_y = vel * SPEED * std::sin(rad);
+    pic->pos_y += delta_y;
     if (pic->pos_x < 0)
         pic->pos_x = gl.xres;
     if (pic->pos_x > gl.xres)
@@ -188,6 +154,11 @@ void Motorcycle::move()
         pic->pos_y = gl.yres;
     if (pic->pos_y > gl.yres)
         pic->pos_y = 0;
+}
+
+void Motorcycle::init_gl()
+{
+    pic->img->init_gl();
 }
 
 int resolution_scale(int width, int height)
@@ -207,4 +178,56 @@ int resolution_scale(Image* img)
 {
     return resolution_scale(img->width, img->height);
 }
+
+// ****************** Contributions to shared ***********************
+// I set up the title_moto_physics animation framework as seen below.
+// The animation itself was a group effort (I hope)
+// Including it here becuase I'm particularly proud 
+// of it's readablity and format  
+/**
+void title_moto_physics(int frame)
+{
+    int* pos_x = &gl.moto_side->pos_x;
+    int* pos_y = &gl.moto_side->pos_y;
+    int* flipped = &gl.moto_side->flipped;
+    float* angle = &gl.moto_side->angle;
+    // Deviation from style. 
+    // I feel it's appropriate given the repeat code,
+    // to help emphasize the important elements of the code block.
+    if       (frame < 100) {
+                                *pos_x  += 10;
+                                *pos_y  += 10;
+                                *angle  += 0;
+                                *flipped = false;
+    }else if (frame < 200) {
+                                *pos_x  += -10;
+                                *pos_y  += 0;
+                                *angle  += 0;
+                                *flipped = true;
+    }else if (frame < 300) {
+                                *pos_x  += 5;
+                                *pos_y  += 0;
+                                *angle  += 0;
+                                *flipped = false;
+    }else if (frame < 400) {
+                                *pos_x  += 0;
+                                *pos_y  += 0;
+                                *angle  += 0.1;
+                                *flipped = *flipped;
+    }else if (frame < 500) {
+                                *pos_x  +=  -3;
+                                *pos_y  +=  4;
+                                *angle  +=  0;
+                                *flipped = false;
+    }
+    // Always jump edges. May not want to do this in the full animation
+    if (*pos_x < 0)
+        *pos_x += gl.xres;
+    *pos_x %= gl.xres;
+    if (*pos_y < 0)
+        *pos_y += gl.xres;
+    *pos_y %= gl.yres;
+}
+*/
+
 

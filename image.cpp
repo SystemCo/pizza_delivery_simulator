@@ -8,6 +8,10 @@
 //#include <string.h>
 //#include <cstdlib>
 
+
+// =============================================================
+// Extracted or taken whole from rainforest framework by David.
+// Rainforest start:
 Image::Image(const char *fname)
 { // From the rainforest framework
     if (fname[0] == '\0')
@@ -29,9 +33,6 @@ Image::Image(const char *fname)
         //printf("ppmname **%s**\n", ppmname);
         char ts[100];
         //system("convert eball.jpg eball.ppm");
-        // changed the bash call because "convert" command depreciated.
-        // Old line was:
-        // sprintf(ts, "convert %s %s", fname, ppmname);
         sprintf(ts, "convert %s %s", fname, ppmname);
         if( system(ts) )
             std::cout << "Magick Convert failed\n";
@@ -66,16 +67,47 @@ Image::Image(const char *fname)
         unlink(ppmname);
 } 
 
+void Image::show(float wid, int pos_x, int pos_y, float angle, int flipped)
+{
+    Image* img = this;
+    float height = wid * img->height/img->width;
+    glColor3f(1.0, 1.0, 1.0);
+    glPushMatrix(); // Pushmatrix indented because subequent commands
+                    // Are implemented on the topmost stack as determined
+                    // By glPush and glPop
+        glTranslatef(pos_x, pos_y, 0.0f);
+        glBindTexture(GL_TEXTURE_2D, img->texture);
+        glEnable(GL_ALPHA_TEST);
+        glAlphaFunc(GL_GREATER, 0.0f);
+        glColor4ub(255,255,255,255);
+        glRotatef(angle, 0.0f, 0.0f, 1.0f);
+        glBegin(GL_QUADS);
+        if (flipped) {
+            glTexCoord2i(1, 1); glVertex2i(-wid,-height);
+            glTexCoord2i(1, 0); glVertex2i(-wid, height);
+            glTexCoord2i(0, 0); glVertex2i( wid, height);
+            glTexCoord2i(0, 1); glVertex2i( wid,-height);
+        } else {
+            //glTexCoord2f(1.0f, 1.0f); glVertex2i(-wid,-height);
+            glTexCoord2i(0, 1); glVertex2i(-wid,-height);
+            glTexCoord2i(0, 0); glVertex2i(-wid, height);
+            glTexCoord2i(1, 0); glVertex2i( wid, height);
+            glTexCoord2i(1, 1); glVertex2i( wid,-height);
+        }
+        glEnd();
+    glPopMatrix();
+}
+
+
 void Image::init_gl()
 {
-    //OpenGL initialization
     glGenTextures(1, &texture);
     int w = width;
     int h = height;
     glBindTexture(GL_TEXTURE_2D, texture);
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);
-/** Alpha mode is the only mode unless it doesn't work.
+/** Alpha mode is the only mode for now
     glTexImage2D(GL_TEXTURE_2D, 0, 3, w, h, 0,
             GL_RGB, GL_UNSIGNED_BYTE, data);
 */
@@ -83,9 +115,7 @@ void Image::init_gl()
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0,
             GL_RGBA, GL_UNSIGNED_BYTE, silhouetteData);
     free(silhouetteData);
-
 }
-
 
 unsigned char* Image::buildAlphaData()
 {

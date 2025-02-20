@@ -26,13 +26,13 @@ class Percent { // float from -1 to 1
 
 class Entity {
     public:
-    int pos_x;
-    int pos_y;
+    float pos_x;
+    float pos_y;
     int flipped;
     float scale;
     float angle;
     Image *img;
-    Entity(int pos_x, int pos_y, float scale, float angle, 
+    Entity(float pos_x, float pos_y, float scale, float angle, 
             const char infile[]);//
                                  // Overload just for brevity.
                                  // Values always need updated in practice.
@@ -53,11 +53,8 @@ class Motorcycle {
         Pedal pedal;
         Turn turn;
         void set_turn();
-    public:
         Entity* pic;
-        /*
-        Image *img;
-        */
+    public:
         Motorcycle();
 
         void set_pedal(Pedal pedal);
@@ -67,6 +64,7 @@ class Motorcycle {
         void unleft();
         void set_right();
         void unright();
+        void init_gl();
 };
 
 #endif //_DCARTER_H_

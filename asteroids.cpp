@@ -412,7 +412,6 @@ int check_keys(XEvent *e)
                 gl.bike.set_pedal(Neutral);
                 break;
         }
-
         return 0;
     }
     if (e->type == KeyPress) {
@@ -459,60 +458,6 @@ int check_keys(XEvent *e)
     }
     return 0;
 }
-
-void deleteAsteroid(Game *g, Asteroid *node)
-{
-    //Remove a node from doubly-linked list
-    //Must look at 4 special cases below.
-    if (node->prev == NULL) {
-        if (node->next == NULL) {
-            //only 1 item in list.
-            g->ahead = NULL;
-        } else {
-            //at beginning of list.
-            node->next->prev = NULL;
-            g->ahead = node->next;
-        }
-    } else {
-        if (node->next == NULL) {
-            //at end of list.
-            node->prev->next = NULL;
-        } else {
-            //in middle of list.
-            node->prev->next = node->next;
-            node->next->prev = node->prev;
-        }
-    }
-    delete node;
-    node = NULL;
-}
-
-void buildAsteroidFragment(Asteroid *ta, Asteroid *a)
-{
-    //build ta from a
-    ta->nverts = 8;
-    ta->radius = a->radius / 2.0;
-    Flt r2 = ta->radius / 2.0;
-    Flt angle = 0.0f;
-    Flt inc = (PI * 2.0) / (Flt)ta->nverts;
-    for (int i=0; i<ta->nverts; i++) {
-        ta->vert[i][0] = sin(angle) * (r2 + rnd() * ta->radius);
-        ta->vert[i][1] = cos(angle) * (r2 + rnd() * ta->radius);
-        angle += inc;
-    }
-    ta->pos[0] = a->pos[0] + rnd()*10.0-5.0;
-    ta->pos[1] = a->pos[1] + rnd()*10.0-5.0;
-    ta->pos[2] = 0.0f;
-    ta->angle = 0.0;
-    ta->rotate = a->rotate + (rnd() * 4.0 - 2.0);
-    ta->color[0] = 0.8;
-    ta->color[1] = 0.8;
-    ta->color[2] = 0.7;
-    ta->vel[0] = a->vel[0] + (rnd()*2.0-1.0);
-    ta->vel[1] = a->vel[1] + (rnd()*2.0-1.0);
-    //std::cout << "frag" << std::endl;
-}
-
 void physics()
 {
 
@@ -533,100 +478,11 @@ void render()
     ggprint8b(&r, 16, 0x00ffff00, "n bullets: %i", g.nbullets);
     ggprint8b(&r, 16, 0x00ffff00, "n asteroids: %i", g.nasteroids);
     ggprint8b(&r, 16, 0x00ff00ff, "Press C for credits");
-    //show_francisco();
-    if (gl.credits)
+    if (gl.credits) {
         show_david(&r);
-    //-------------------------------------------------------------------------
-    //Draw the ship
-    glColor3fv(g.ship.color);
-    glPushMatrix();
-    glTranslatef(g.ship.pos[0], g.ship.pos[1], g.ship.pos[2]);
-    //float angle = atan2(ship.dir[1], ship.dir[0]);
-    glRotatef(g.ship.angle, 0.0f, 0.0f, 1.0f);
-    glBegin(GL_TRIANGLES);
-    //glVertex2f(-10.0f, -10.0f);
-    //glVertex2f(  0.0f, 20.0f);
-    //glVertex2f( 10.0f, -10.0f);
-    glVertex2f(-12.0f, -10.0f);
-    glVertex2f(  0.0f,  20.0f);
-    glVertex2f(  0.0f,  -6.0f);
-    glVertex2f(  0.0f,  -6.0f);
-    glVertex2f(  0.0f,  20.0f);
-    glVertex2f( 12.0f, -10.0f);
-    glEnd();
-    glColor3f(1.0f, 0.0f, 0.0f);
-    glBegin(GL_POINTS);
-    glVertex2f(0.0f, 0.0f);
-    glEnd();
-    glPopMatrix();
-    if (gl.keys[XK_Up] || g.mouseThrustOn) {
-        int i;
-        //draw thrust
-        Flt rad = ((g.ship.angle+90.0) / 360.0f) * PI * 2.0;
-        //convert angle to a vector
-        Flt xdir = cos(rad);
-        Flt ydir = sin(rad);
-        Flt xs,ys,xe,ye,r;
-        glBegin(GL_LINES);
-        for (i=0; i<16; i++) {
-            xs = -xdir * 11.0f + rnd() * 4.0 - 2.0;
-            ys = -ydir * 11.0f + rnd() * 4.0 - 2.0;
-            r = rnd()*40.0+40.0;
-            xe = -xdir * r + rnd() * 18.0 - 9.0;
-            ye = -ydir * r + rnd() * 18.0 - 9.0;
-            glColor3f(rnd()*.3+.7, rnd()*.3+.7, 0);
-            glVertex2f(g.ship.pos[0]+xs,g.ship.pos[1]+ys);
-            glVertex2f(g.ship.pos[0]+xe,g.ship.pos[1]+ye);
-        }
-        glEnd();
+        //show_francisco();
     }
-    //-------------------------------------------------------------------------
-    //Draw the asteroids
-    {
-        Asteroid *a = g.ahead;
-        while (a) { // a is null when it reaches the end of the linked list.
-            //Log("draw asteroid...\n");
-            glColor3fv(a->color);
-            glPushMatrix();
-            glTranslatef(a->pos[0], a->pos[1], a->pos[2]);
-            glRotatef(a->angle, 0.0f, 0.0f, 1.0f);
-            glBegin(GL_LINE_LOOP);
-            //Log("%i verts\n",a->nverts);
-                for (int j=0; j<a->nverts; j++) {
-                    glVertex2f(a->vert[j][0], a->vert[j][1]);
-                }
-            glEnd();
-            //glBegin(GL_LINES);
-            //  glVertex2f(0,   0);
-            //  glVertex2f(a->radius, 0);
-            //glEnd();
-            glPopMatrix();
-            glColor3f(1.0f, 0.0f, 0.0f);
-            glBegin(GL_POINTS);
-            glVertex2f(a->pos[0], a->pos[1]);
-            glEnd();
-            a = a->next;
-        }
-    }
-    //-------------------------------------------------------------------------
-    //Draw the bullets
-    for (int i=0; i<g.nbullets; i++) {
-        Bullet *b = &g.barr[i];
-        //Log("draw bullet...\n");
-        glColor3f(1.0, 1.0, 1.0);
-        glBegin(GL_POINTS);
-        glVertex2f(b->pos[0],      b->pos[1]);
-        glVertex2f(b->pos[0]-1.0f, b->pos[1]);
-        glVertex2f(b->pos[0]+1.0f, b->pos[1]);
-        glVertex2f(b->pos[0],      b->pos[1]-1.0f);
-        glVertex2f(b->pos[0],      b->pos[1]+1.0f);
-        glColor3f(0.8, 0.8, 0.8);
-        glVertex2f(b->pos[0]-1.0f, b->pos[1]-1.0f);
-        glVertex2f(b->pos[0]-1.0f, b->pos[1]+1.0f);
-        glVertex2f(b->pos[0]+1.0f, b->pos[1]-1.0f);
-        glVertex2f(b->pos[0]+1.0f, b->pos[1]+1.0f);
-        glEnd();
-    }
+
     if (gl.show_bike)
         gl.bike.render();
 }

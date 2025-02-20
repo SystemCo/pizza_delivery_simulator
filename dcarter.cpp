@@ -30,16 +30,16 @@ void Image::show(float wid, int pos_x, int pos_y, float angle, int flipped)
     
     glBegin(GL_QUADS);
     if (flipped) {
-        glTexCoord2i(0, 1); glVertex2i(-wid,-height);
-        glTexCoord2i(0, 0); glVertex2i(-wid, height);
-        glTexCoord2i(1, 0); glVertex2i( wid, height);
-        glTexCoord2i(1, 1); glVertex2i( wid,-height);
-    } else {
-        //glTexCoord2f(1.0f, 1.0f); glVertex2i(-wid,-height);
         glTexCoord2i(1, 1); glVertex2i(-wid,-height);
         glTexCoord2i(1, 0); glVertex2i(-wid, height);
         glTexCoord2i(0, 0); glVertex2i( wid, height);
         glTexCoord2i(0, 1); glVertex2i( wid,-height);
+    } else {
+        //glTexCoord2f(1.0f, 1.0f); glVertex2i(-wid,-height);
+        glTexCoord2i(0, 1); glVertex2i(-wid,-height);
+        glTexCoord2i(0, 0); glVertex2i(-wid, height);
+        glTexCoord2i(1, 0); glVertex2i( wid, height);
+        glTexCoord2i(1, 1); glVertex2i( wid,-height);
     }
     glEnd();
     glPopMatrix();
@@ -88,17 +88,13 @@ Entity::Entity(const char infile[])
     pos_x = 0;
     pos_y = 0;
     scale = 50.0f;
-    angle - 0;
+    angle = 0;
     img = new Image(infile);
     img->init_gl();
 }
-void Entity::render(int flipped)
-{
-    img->show(scale, pos_x, pos_y, angle, flipped);
-}
 void Entity::render()
 {
-    img->show(scale, pos_x, pos_y, angle);
+    img->show(scale, pos_x, pos_y, angle, flipped);
 }
 
 Motorcycle::Motorcycle()

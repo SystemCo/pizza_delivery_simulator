@@ -387,7 +387,10 @@ void check_mouse(XEvent *e)
 
 int check_keys(XEvent *e)
 {
-    //static int shift=0;
+    static int shift=false; // shift variable is used to distinguish capitals
+                            // i.e. a vs A uses shift && a.
+                            // Currently not being used in this code base.
+                            
     if (e->type != KeyRelease && e->type != KeyPress) {
         //not a keyboard event
         return 0;
@@ -395,10 +398,11 @@ int check_keys(XEvent *e)
     int key = (XLookupKeysym(&e->xkey, 0) & 0x0000ffff);
     //Log("key: %i\n", key);
     if (e->type == KeyRelease) {
-        //gl.keys[key] = 0;
-        //if (key == XK_Shift_L || key == XK_Shift_R)
-            //shift = 0;
         switch (key) {
+            case XK_Shift_L:
+            case XK_Shift_R:
+                shift = false;
+                break;
             case XK_Left:
                 gl.bike.unleft();
                 break;
@@ -414,18 +418,20 @@ int check_keys(XEvent *e)
         }
         return 0;
     }
-    if (e->type == KeyPress) {
-        //gl.keys[key]=1;
-        if (key == XK_Shift_L || key == XK_Shift_R) {
-            //shift = 1;
-            //return 0;
-        }
-    }
-    //(void)shift;
+    //if (e->type == KeyPress) {
+    // we return i not keypress or keyrelease and return if it is keyrelease
+    // so this if guard is not strictly needed.
+    //
+    (void)shift; // I don't understand what this line does.
+                 //
     // if any button is pushed, exit the title menu. 
     // Currently would break pause and credits
     gl.screen = Playing;
     switch (key) {
+        case XK_Shift_L:
+        case XK_Shift_R:
+            shift = true;
+            break;
         case XK_Escape:
             // TODO: Pause
             // set gl.screen to pause state
@@ -458,9 +464,9 @@ int check_keys(XEvent *e)
     }
     return 0;
 }
+
 void physics()
 {
-
     gl.bike.move();
 }
 
@@ -482,7 +488,6 @@ void render()
         show_david(&r);
         //show_francisco();
     }
-
     if (gl.show_bike)
         gl.bike.render();
 }

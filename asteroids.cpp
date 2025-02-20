@@ -25,7 +25,7 @@
 //defined types
 typedef float Flt;
 typedef float Vec[3];
-typedef Flt	Matrix[4][4];
+typedef Flt   Matrix[4][4];
 
 //macros
 #define rnd() (((Flt)rand())/(Flt)RAND_MAX)
@@ -33,7 +33,7 @@ typedef Flt	Matrix[4][4];
 #define VecZero(v) (v)[0]=0.0,(v)[1]=0.0,(v)[2]=0.0
 #define MakeVector(x, y, z, v) (v)[0]=(x),(v)[1]=(y),(v)[2]=(z)
 #define VecCopy(a,b) (b)[0]=(a)[0];(b)[1]=(a)[1];(b)[2]=(a)[2]
-#define VecDot(a,b)	((a)[0]*(b)[0]+(a)[1]*(b)[1]+(a)[2]*(b)[2])
+#define VecDot(a,b)  ((a)[0]*(b)[0]+(a)[1]*(b)[1]+(a)[2]*(b)[2])
 #define VecSub(a,b,c) (c)[0]=(a)[0]-(b)[0]; \
                              (c)[1]=(a)[1]-(b)[1]; \
 (c)[2]=(a)[2]-(b)[2]
@@ -262,7 +262,7 @@ void init_opengl(void)
     //Do this to allow fonts
     glEnable(GL_TEXTURE_2D);
     initialize_fonts();
-    gl.bike.pic->img->init_gl();
+    gl.bike.init_gl();
     gl.background.init_gl();
     gl.moto_side->img->init_gl();
 }
@@ -337,7 +337,7 @@ void check_mouse(XEvent *e)
         savex = e->xbutton.x;
         savey = e->xbutton.y;
         if (++ct < 10)
-            return;		
+            return;
         //std::cout << "savex: " << savex << std::endl << std::flush;
         //std::cout << "e->xbutton.x: " << e->xbutton.x << std::endl <<
         //std::flush;
@@ -387,7 +387,7 @@ void check_mouse(XEvent *e)
 
 int check_keys(XEvent *e)
 {
-    static int shift=0;
+    //static int shift=0;
     if (e->type != KeyRelease && e->type != KeyPress) {
         //not a keyboard event
         return 0;
@@ -395,9 +395,9 @@ int check_keys(XEvent *e)
     int key = (XLookupKeysym(&e->xkey, 0) & 0x0000ffff);
     //Log("key: %i\n", key);
     if (e->type == KeyRelease) {
-        gl.keys[key] = 0;
-        if (key == XK_Shift_L || key == XK_Shift_R)
-            shift = 0;
+        //gl.keys[key] = 0;
+        //if (key == XK_Shift_L || key == XK_Shift_R)
+            //shift = 0;
         switch (key) {
             case XK_Left:
                 gl.bike.unleft();
@@ -416,20 +416,19 @@ int check_keys(XEvent *e)
         return 0;
     }
     if (e->type == KeyPress) {
-        //std::cout << "press" << std::endl;
-        gl.keys[key]=1;
+        //gl.keys[key]=1;
         if (key == XK_Shift_L || key == XK_Shift_R) {
-            shift = 1;
-            return 0;
+            //shift = 1;
+            //return 0;
         }
     }
-    (void)shift;
+    //(void)shift;
     // if any button is pushed, exit the title menu. 
     // Currently would break pause and credits
     gl.screen = Playing;
     switch (key) {
         case XK_Escape:
-            // Do Pause
+            // TODO: Pause
             // set gl.screen to pause state
             return 1;
         case XK_m:
@@ -437,14 +436,6 @@ int check_keys(XEvent *e)
             x11.show_mouse_cursor(gl.mouse_cursor_on);
             break;
         case XK_c:
-            //credits
-            // =================================================
-            // Optimize the following 4 lines
-            // if (gl.credits)
-            //    gl.credits = 1;
-            //else 
-            //    gl.credits = 0;
-            //break;
             gl.credits = !gl.credits;
             break;
         case XK_b:
@@ -524,210 +515,7 @@ void buildAsteroidFragment(Asteroid *ta, Asteroid *a)
 
 void physics()
 {
-    Flt d0,d1,dist;
-    //Update ship position
-    g.ship.pos[0] += g.ship.vel[0];
-    g.ship.pos[1] += g.ship.vel[1];
-    //Check for collision with window edges
-    if (g.ship.pos[0] < 0.0) {
-        g.ship.pos[0] += (float)gl.xres;
-    }
-    else if (g.ship.pos[0] > (float)gl.xres) {
-        g.ship.pos[0] -= (float)gl.xres;
-    }
-    else if (g.ship.pos[1] < 0.0) {
-        g.ship.pos[1] += (float)gl.yres;
-    }
-    else if (g.ship.pos[1] > (float)gl.yres) {
-        g.ship.pos[1] -= (float)gl.yres;
-    }
-    //
-    //
-    //Update bullet positions
-    struct timespec bt;
-    clock_gettime(CLOCK_REALTIME, &bt);
-    int i = 0;
-    while (i < g.nbullets) {
-        Bullet *b = &g.barr[i];
-        //How long has bullet been alive?
-        double ts = timeDiff(&b->time, &bt);
-        if (ts > 2.5) {
-            //time to delete the bullet.
-            memcpy(&g.barr[i], &g.barr[g.nbullets-1],
-                    sizeof(Bullet));
-            g.nbullets--;
-            //do not increment i.
-            continue;
-        }
-        //move the bullet
-        b->pos[0] += b->vel[0];
-        b->pos[1] += b->vel[1];
-        //Check for collision with window edges
-        if (b->pos[0] < 0.0) {
-            b->pos[0] += (float)gl.xres;
-        }
-        else if (b->pos[0] > (float)gl.xres) {
-            b->pos[0] -= (float)gl.xres;
-        }
-        else if (b->pos[1] < 0.0) {
-            b->pos[1] += (float)gl.yres;
-        }
-        else if (b->pos[1] > (float)gl.yres) {
-            b->pos[1] -= (float)gl.yres;
-        }
-        ++i;
-    }
-    //
-    //Update asteroid positions
-    Asteroid *a = g.ahead;
-    while (a) {
-        a->pos[0] += a->vel[0];
-        a->pos[1] += a->vel[1];
-        //Check for collision with window edges
-        if (a->pos[0] < -100.0) {
-            a->pos[0] += (float)gl.xres+200;
-        }
-        else if (a->pos[0] > (float)gl.xres+100) {
-            a->pos[0] -= (float)gl.xres+200;
-        }
-        else if (a->pos[1] < -100.0) {
-            a->pos[1] += (float)gl.yres+200;
-        }
-        else if (a->pos[1] > (float)gl.yres+100) {
-            a->pos[1] -= (float)gl.yres+200;
-        }
-        a->angle += a->rotate;
-        a = a->next;
-    }
-    //
-    //Asteroid collision with bullets?
-    //If collision detected:
-    //     1. delete the bullet
-    //     2. break the asteroid into pieces
-    //        if asteroid small, delete it
-    a = g.ahead;
-    while (a) {
-        //is there a bullet within its radius?
-        int i=0;
-        while (i < g.nbullets) {
-            Bullet *b = &g.barr[i];
-            d0 = b->pos[0] - a->pos[0];
-            d1 = b->pos[1] - a->pos[1];
-            dist = (d0*d0 + d1*d1);
-            if (dist < (a->radius*a->radius)) {
-                //std::cout << "asteroid hit." << std::endl;
-                //this asteroid is hit.
-                if (a->radius > MINIMUM_ASTEROID_SIZE) {
-                    //break it into pieces.
-                    Asteroid *ta = a;
-                    buildAsteroidFragment(ta, a);
-                    int r = rand()%10+5;
-                    for (int k=0; k<r; k++) {
-                        //get the next asteroid position in the array
-                        Asteroid *ta = new Asteroid;
-                        buildAsteroidFragment(ta, a);
-                        //add to front of asteroid linked list
-                        ta->next = g.ahead;
-                        if (g.ahead != NULL)
-                            g.ahead->prev = ta;
-                        g.ahead = ta;
-                        g.nasteroids++;
-                    }
-                } else {
-                    a->color[0] = 1.0;
-                    a->color[1] = 0.1;
-                    a->color[2] = 0.1;
-                    //asteroid is too small to break up
-                    //delete the asteroid and bullet
-                    Asteroid *savea = a->next;
-                    deleteAsteroid(&g, a);
-                    a = savea;
-                    g.nasteroids--;
-                }
-                //delete the bullet...
-                memcpy(&g.barr[i], &g.barr[g.nbullets-1], sizeof(Bullet));
-                g.nbullets--;
-                if (a == NULL)
-                    break;
-            }
-            i++;
-        }
-        if (a == NULL)
-            break;
-        a = a->next;
-    }
-    //---------------------------------------------------
-    //check keys pressed now
-    if (gl.keys[XK_Left]) {
-        g.ship.angle += 4.0;
-        if (g.ship.angle >= 360.0f)
-            g.ship.angle -= 360.0f;
-    }
-    if (gl.keys[XK_Right]) {
-        g.ship.angle -= 4.0;
-        if (g.ship.angle < 0.0f)
-            g.ship.angle += 360.0f;
-    }
-    if (gl.keys[XK_Up]) {
-        //apply thrust
-        //convert ship angle to radians
-        Flt rad = ((g.ship.angle+90.0) / 360.0f) * PI * 2.0;
-        //convert angle to a vector
-        Flt xdir = cos(rad);
-        Flt ydir = sin(rad);
-        g.ship.vel[0] += xdir*0.02f;
-        g.ship.vel[1] += ydir*0.02f;
-        Flt speed = sqrt(g.ship.vel[0]*g.ship.vel[0]+
-                g.ship.vel[1]*g.ship.vel[1]);
-        if (speed > 10.0f) {
-            speed = 10.0f;
-            normalize2d(g.ship.vel);
-            g.ship.vel[0] *= speed;
-            g.ship.vel[1] *= speed;
-        }
-    }
 
-    if (gl.keys[XK_space]) {
-        //a little time between each bullet
-        struct timespec bt;
-        clock_gettime(CLOCK_REALTIME, &bt);
-        double ts = timeDiff(&g.bulletTimer, &bt);
-        if (ts > 0.1) {
-            timeCopy(&g.bulletTimer, &bt);
-            if (g.nbullets < MAX_BULLETS) {
-                //shoot a bullet...
-                //Bullet *b = new Bullet;
-                Bullet *b = &g.barr[g.nbullets];
-                timeCopy(&b->time, &bt);
-                b->pos[0] = g.ship.pos[0];
-                b->pos[1] = g.ship.pos[1];
-                b->vel[0] = g.ship.vel[0];
-                b->vel[1] = g.ship.vel[1];
-                //convert ship angle to radians
-                Flt rad = ((g.ship.angle+90.0) / 360.0f) * PI * 2.0;
-                //convert angle to a vector
-                Flt xdir = cos(rad);
-                Flt ydir = sin(rad);
-                b->pos[0] += xdir*20.0f;
-                b->pos[1] += ydir*20.0f;
-                b->vel[0] += xdir*6.0f + rnd()*0.1;
-                b->vel[1] += ydir*6.0f + rnd()*0.1;
-                b->color[0] = 1.0f;
-                b->color[1] = 1.0f;
-                b->color[2] = 1.0f;
-                g.nbullets++;
-            }
-        }
-    }
-    if (g.mouseThrustOn) {
-        //should thrust be turned off
-        struct timespec mtt;
-        clock_gettime(CLOCK_REALTIME, &mtt);
-        double tdif = timeDiff(&mtt, &g.mouseThrustTimer);
-        //std::cout << "tdif: " << tdif << std::endl;
-        if (tdif < -0.3)
-            g.mouseThrustOn = false;
-    }
     gl.bike.move();
 }
 
@@ -809,8 +597,8 @@ void render()
                 }
             glEnd();
             //glBegin(GL_LINES);
-            //	glVertex2f(0,   0);
-            //	glVertex2f(a->radius, 0);
+            //  glVertex2f(0,   0);
+            //  glVertex2f(a->radius, 0);
             //glEnd();
             glPopMatrix();
             glColor3f(1.0f, 0.0f, 0.0f);
@@ -842,6 +630,3 @@ void render()
     if (gl.show_bike)
         gl.bike.render();
 }
-
-
-

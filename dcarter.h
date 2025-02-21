@@ -7,6 +7,8 @@ void show_david(Rect* r);
 void init_opengl_bike();
 void title_render();
 void title_physics();
+int  resolution_scale(int width, int height);
+int  resolution_scale(Image* img);
 enum Pedal { Forward, Neutral, Backward };
 enum Turn  { Left, Straight, Right };
 
@@ -16,22 +18,26 @@ class Percent { // float from -1 to 1
     private:
         float val;
     public:
-        Percent(float);
+        Percent(float val);
         Percent();
-        void set(float);
+        void set(float val);
         float get();
 };
 
 class Entity {
     public:
-    int pos_x;
-    int pos_y;
+    float pos_x;
+    float pos_y;
+    int flipped;
     float scale;
     float angle;
     Image *img;
-    Entity(int, int, float, float, const char[]);
-    Entity(const char[]);
-    void render();
+    Entity(float pos_x, float pos_y, float scale, float angle, 
+            const char infile[]);//
+                                 // Overload just for brevity.
+                                 // Values always need updated in practice.
+    Entity(const char infile[]);
+    void render(); 
 };
 
 class Motorcycle {
@@ -47,20 +53,18 @@ class Motorcycle {
         Pedal pedal;
         Turn turn;
         void set_turn();
-    public:
         Entity* pic;
-        /*
-        Image *img;
-        */
+    public:
         Motorcycle();
 
-        void set_pedal(Pedal);
+        void set_pedal(Pedal pedal);
         void move();
         void render();
         void set_left();
         void unleft();
         void set_right();
         void unright();
+        void init_gl();
 };
 
 #endif //_DCARTER_H_

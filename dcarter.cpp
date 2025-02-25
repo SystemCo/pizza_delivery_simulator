@@ -108,16 +108,17 @@ void Motorcycle::set_turn()
 void Motorcycle::move()
 {
     float turn_speed = 2.0f;
+    float acceleration = 0.1
     float vel = velocity.get();
     switch (pedal) {
         case Forward:
-            velocity.set(vel+0.1);
+            velocity.set(vel + acceleration);
             break;
         case Neutral:
             velocity.set(vel*0.99);
             break;
         case Backward:
-            velocity.set(vel-0.1);
+            velocity.set(vel - acceleration);
             break;
     }
     this->set_turn();
@@ -134,7 +135,7 @@ void Motorcycle::move()
     while (angle < 0)
         angle += 360;
     while (angle > 0)
-        angle -= 360;
+        angle -= 360; // no integer overflows
     float rad = TO_RAD(angle);
     float delta_x = vel * SPEED * std::cos(rad);
     pos_x += delta_x;
@@ -147,7 +148,7 @@ void Motorcycle::move()
     if (pos_y < 0)
         pos_y = gl.yres;
     if (pos_y > gl.yres)
-        pos_y = 0;
+        pos_y = 0;       // Motorcycle jumps on edge. May be changed later. 
 }
 
 int resolution_scale(int width, int height)

@@ -5,7 +5,10 @@
 #define TO_RAD(x) ((x+90) / 360.0f) * PI * 2.0 // from asteroids framework
 #define SPEED 4
 
-/** This is the global variable for the whole project. Declared in asteroids.cpp */
+/* 
+**  This is the global variable for the whole project. 
+**  Declared in asteroids.cpp
+*/
 extern Global gl;
 
 void show_david(Rect* r)
@@ -42,7 +45,8 @@ float Percent::get()
     return this->val;
 }
 
-Entity::Entity(float pos_x, float pos_y, float scale, float angle, const char infile[]) : Image(infile)
+Entity::Entity(float pos_x, float pos_y, float scale, 
+               float angle, const char infile[]) : Image(infile)
 {
     this->pos_x = pos_x;
     this->pos_y = pos_y;
@@ -63,7 +67,8 @@ void Entity::render()
     this->show(scale, pos_x, pos_y, angle, flipped);
 }
 
-Motorcycle::Motorcycle() : Entity(250, 250, 30.0, 0.0, "./images/motorcycle.gif")
+Motorcycle::Motorcycle() : 
+            Entity(250, 250, 30.0, 0.0, "./images/motorcycle.gif")
 {
     //fflush(stdout);
     pedal = Neutral;

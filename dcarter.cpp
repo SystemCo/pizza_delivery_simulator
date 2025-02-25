@@ -108,7 +108,7 @@ void Motorcycle::set_turn()
 void Motorcycle::move()
 {
     float turn_speed = 2.0f;
-    float acceleration = 0.1
+    float acceleration = 0.1;
     float vel = velocity.get();
     switch (pedal) {
         case Forward:

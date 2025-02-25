@@ -68,7 +68,7 @@ void Entity::render()
 }
 
 Motorcycle::Motorcycle() : 
-            Entity(250, 250, 30.0, 0.0, "./images/motorcycle.gif")
+            Entity(250, 250, 100, 0.0, "./images/motorcycle.gif")
 {
     //fflush(stdout);
     pedal = Neutral;

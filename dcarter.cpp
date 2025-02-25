@@ -52,32 +52,25 @@ Entity::Entity(float pos_x, float pos_y, float scale,
     this->pos_y = pos_y;
     this->scale = scale;
     this->angle = angle;
-    img = new Image(infile);
-    img->init_gl();
+    init_gl();
 }
-Entity::Entity(const char infile[])
+Entity::Entity(const char infile[]) : Image(infile)
 {
     pos_x = 0;
     pos_y = 0;
     scale = 50.0f;
     angle = 0;
-    img = new Image(infile);
-    img->init_gl();
+    init_gl();
 }
 void Entity::render()
 {
-    img->show(scale, pos_x, pos_y, angle, flipped);
+    this->show(scale, pos_x, pos_y, angle, flipped);
 }
 
-<<<<<<< HEAD
 Motorcycle::Motorcycle() : 
             Entity(250, 250, 100, 0.0, "./images/motorcycle.gif")
-=======
-Motorcycle::Motorcycle()
->>>>>>> parent of 590c425 (Switched to using inheritance instead of nested struct wrappers.)
 {
-    pic = new Entity(250, 250, 30.0, 0.0, "./images/motorcycle.gif");
-    fflush(stdout);
+    //fflush(stdout);
     pedal = Neutral;
 
     //setup_opengl(this.img);
@@ -86,10 +79,10 @@ Motorcycle::Motorcycle()
     // unless specifically initialized within the main initialization function.
 }
 
-void Motorcycle::render()
-{
-    pic->render();
-}
+//void Motorcycle::render()
+//{
+    //render();
+//}
 void Motorcycle::set_pedal(Pedal pedal)
 {
     this->pedal = pedal;
@@ -123,6 +116,7 @@ void Motorcycle::set_turn()
 
 void Motorcycle::move()
 {
+    float turn_speed = 2.0f;
     float vel = velocity.get();
     switch (pedal) {
         case Forward:
@@ -140,35 +134,35 @@ void Motorcycle::move()
     case Straight:
        break;
     case Left:
-       pic->angle += 1.5f;
+       angle += turn_speed;
        break;
     case Right:
-       pic->angle -= 1.5f;
+       angle -= turn_speed;
        break;
     }
-    while (pic->angle < 0)
-        pic->angle += 360;
-    while (pic->angle > 0)
-        pic->angle -= 360;
-    float rad = TO_RAD(pic->angle);
+    while (angle < 0)
+        angle += 360;
+    while (angle > 0)
+        angle -= 360;
+    float rad = TO_RAD(angle);
     float delta_x = vel * SPEED * std::cos(rad);
-    pic->pos_x += delta_x;
+    pos_x += delta_x;
     float delta_y = vel * SPEED * std::sin(rad);
-    pic->pos_y += delta_y;
-    if (pic->pos_x < 0)
-        pic->pos_x = gl.xres;
-    if (pic->pos_x > gl.xres)
-        pic->pos_x = 0;
-    if (pic->pos_y < 0)
-        pic->pos_y = gl.yres;
-    if (pic->pos_y > gl.yres)
-        pic->pos_y = 0;
+    pos_y += delta_y;
+    if (pos_x < 0)
+        pos_x = gl.xres;
+    if (pos_x > gl.xres)
+        pos_x = 0;
+    if (pos_y < 0)
+        pos_y = gl.yres;
+    if (pos_y > gl.yres)
+        pos_y = 0;
 }
 
-void Motorcycle::init_gl()
-{
-    pic->img->init_gl();
-}
+//void Motorcycle::init_gl()
+//{
+    //init_gl();
+//}
 
 int resolution_scale(int width, int height)
 {

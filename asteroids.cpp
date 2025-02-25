@@ -264,7 +264,7 @@ void init_opengl(void)
     initialize_fonts();
     gl.bike.init_gl();
     gl.background.init_gl();
-    gl.moto_side->init_gl();
+    gl.moto_side->img->init_gl();
 }
 
 void normalize2d(Vec v)

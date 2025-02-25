@@ -67,22 +67,13 @@ void Entity::render()
     this->show(scale, pos_x, pos_y, angle, flipped);
 }
 
+#define MOTO_SIZE 75
 Motorcycle::Motorcycle() : 
-            Entity(250, 250, 100, 0.0, "./images/motorcycle.gif")
+            Entity(250, 250, MOTO_SIZE, 0.0, "./images/motorcycle.gif")
 {
-    //fflush(stdout);
     pedal = Neutral;
-
-    //setup_opengl(this.img);
-    // you can't set up opengl anywhere but main.
-    // opengl setup uses weird implicit global variables that go out of scope
-    // unless specifically initialized within the main initialization function.
 }
 
-//void Motorcycle::render()
-//{
-    //render();
-//}
 void Motorcycle::set_pedal(Pedal pedal)
 {
     this->pedal = pedal;
@@ -158,11 +149,6 @@ void Motorcycle::move()
     if (pos_y > gl.yres)
         pos_y = 0;
 }
-
-//void Motorcycle::init_gl()
-//{
-    //init_gl();
-//}
 
 int resolution_scale(int width, int height)
 {

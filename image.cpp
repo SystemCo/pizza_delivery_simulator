@@ -31,9 +31,9 @@ Image::Image(const char *fname)
         //printf("name **%s**\n", name);
         sprintf(ppmname,"%s.ppm", name);
         //printf("ppmname **%s**\n", ppmname);
-        char ts[100];
+        char ts[200];
         //system("convert eball.jpg eball.ppm");
-        sprintf(ts, "convert %s %s", fname, ppmname);
+        sprintf(ts, "convert -background transparent %s %s", fname, ppmname);
         if( system(ts) )
             std::cout << "Magick Convert failed\n";
     }

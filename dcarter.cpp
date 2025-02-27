@@ -17,6 +17,7 @@
  **  Declared in asteroids.cpp
  */
 extern Global gl;
+//nothing
 
 //Non-Class function prototypes
 int resolution_scale(int width, int height);

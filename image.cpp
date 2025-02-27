@@ -8,6 +8,11 @@
 //#include <string.h>
 //#include <cstdlib>
 
+#define SAFE_LINE_READ(line, count, pointer) \
+    if ( fgets(line, count, pointer) == NULL)\
+        std::cout << "error reading line " << line << " of image file\n"
+// Semicolon must be used during implementation of this macro
+// Writen this way follow style
 
 // =============================================================
 // Extracted or taken whole from rainforest framework by David.
@@ -17,43 +22,38 @@ Image::Image(const char *fname)
     if (fname[0] == '\0')
         return;
     printf("fname **%s**\n", fname);
-    int ppmFlag = 0;
+    // ========================================================
+    // Uses CLI MagickConvert to get PPM
     char name[40];
     strcpy(name, fname);
-    int slen = strlen(name);
+    const int slen = strlen(name);
+    int ppmFlag = strncmp(name+(slen-4), ".ppm", 4) == 0;
     char ppmname[80];
-    if (strncmp(name+(slen-4), ".ppm", 4) == 0)
-        ppmFlag = 1;
     if (ppmFlag) {
         strcpy(ppmname, name);
     } else {
         name[slen-4] = '\0';
-        //printf("name **%s**\n", name);
         sprintf(ppmname,"%s.ppm", name);
-        //printf("ppmname **%s**\n", ppmname);
-        char ts[100];
+        char convert_command[100];
         //system("convert eball.jpg eball.ppm");
-        sprintf(ts, "convert %s %s", fname, ppmname);
-        if( system(ts) )
+        sprintf(convert_command, "convert %s %s", fname, ppmname);
+        if( system(convert_command) )
             std::cout << "Magick Convert failed\n";
     }
-    //sprintf(ts, "%s", name);
     FILE *fpi = fopen(ppmname, "r");
     if (fpi) {
         char line[200];
-        if ( fgets(line, 200, fpi) == NULL)
-            std::cout << "error reading image file";
-        if ( fgets(line, 200, fpi) == NULL)
-            std::cout << "error reading image file";
+        //First two lines of ppm must be trashed
+        SAFE_LINE_READ(line, 200, fpi);
+        SAFE_LINE_READ(line, 200, fpi);
         //skip comments and blank lines
         while (line[0] == '#' || strlen(line) < 2)
-            if ( fgets(line, 200, fpi) == NULL)
-                std::cout << "error reading image file";
+            SAFE_LINE_READ(line, 200, fpi);
+        //Width and Height extracted according to ppm encoding
         sscanf(line, "%i %i", &width, &height);
-        if ( fgets(line, 200, fpi) == NULL)
-            std::cout << "error reading image file";
+        SAFE_LINE_READ(line, 200, fpi);
         //get pixel data
-        int n = width * height * 3;
+        const int n = width * height * 3;
         data = new unsigned char[n];
         for (int i=0; i<n; i++)
             data[i] = fgetc(fpi);
@@ -63,6 +63,7 @@ Image::Image(const char *fname)
         printf("ERROR opening image: %s\n",ppmname);
         exit(0);
     }
+    // Delete the temporary ppm file, but only if we used convert to make it
     if (!ppmFlag)
         unlink(ppmname);
 } 
@@ -102,12 +103,14 @@ void Image::show(float wid, int pos_x, int pos_y, float angle, int flipped)
 void Image::init_gl()
 {
     glGenTextures(1, &texture);
-    int w = width;
-    int h = height;
+    const int w = width;
+    const int h = height;
     glBindTexture(GL_TEXTURE_2D, texture);
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);
-/** Alpha mode is the only mode for now
+/** Alpha mode is the only mode for now. 
+ *  Following code used for pure rgb image:
+ *
     glTexImage2D(GL_TEXTURE_2D, 0, 3, w, h, 0,
             GL_RGB, GL_UNSIGNED_BYTE, data);
 */
@@ -124,19 +127,20 @@ unsigned char* Image::buildAlphaData()
     //When you do this, OpenGL is able to use the A component to determine
     //transparency information.
     //It is used in this application to erase parts of a texture-map from view.
+    //Edited by David Carter, hoping to improve:
+    //  Memory safety and Readabilty
     int i;
-    int a,b,c;
+    //int a,b,c;
+    // Placed inside for loop for garunteed orthogonality
+    // May be an anti-optimization. Untested.
     unsigned char *newdata, *ptr;
     unsigned char *data = (unsigned char *)this->data;
     newdata = (unsigned char *)malloc(this->width * this->height * 4);
     ptr = newdata;
     for (i=0; i<this->width * this->height * 3; i+=3) {
-        a = *(data+0);
-        b = *(data+1);
-        c = *(data+2);
-        *(ptr+0) = a;
-        *(ptr+1) = b;
-        *(ptr+2) = c;
+        const int a = ptr[0] = data[0]; // *(data+0);
+        const int b = ptr[1] = data[1]; // *(data+1);
+        const int c = ptr[2] = data[2]; // Array notation from David
         //-----------------------------------------------
         //get largest color component...
         //*(ptr+3) = (unsigned char)((
@@ -151,14 +155,17 @@ unsigned char* Image::buildAlphaData()
         //this code optimizes the commented code above.
         //code contributed by student: Chris Smith
         //
-        *(ptr+3) = (a|b|c);
+        //*(ptr+3) = (a|b|c);
+        ptr[3] = (a|b|c);
+        // Array notation by David
         //-----------------------------------------------
-        ptr += 4;
-        data += 3;
+        // ptr += 4;
+        // data += 3;
+        ptr = &ptr[4];
+        data = &data[3];
     }
     return newdata;
 }
-
 // rainforest end
 
 // =============================================================
@@ -175,7 +182,7 @@ X11_wrapper::X11_wrapper(int w, int h)
         std::cout << "\n\tcannot connect to X server" << std::endl;
         exit(EXIT_FAILURE);
     }
-    Window root = DefaultRootWindow(dpy);
+    const Window root = DefaultRootWindow(dpy);
     XWindowAttributes getWinAttr;
     XGetWindowAttributes(dpy, root, &getWinAttr);
     int fullscreen = 0;
@@ -196,7 +203,7 @@ X11_wrapper::X11_wrapper(int w, int h)
         std::cout << "\n\tno appropriate visual found\n" << std::endl;
         exit(EXIT_FAILURE);
     } 
-    Colormap cmap = XCreateColormap(dpy, root, vi->visual, AllocNone);
+    const Colormap cmap = XCreateColormap(dpy, root, vi->visual, AllocNone);
     swa.colormap = cmap;
     swa.event_mask = ExposureMask | KeyPressMask | KeyReleaseMask |
         PointerMotionMask | MotionNotify | ButtonPress | ButtonRelease |
@@ -235,7 +242,7 @@ void X11_wrapper::check_resize(XEvent *e)
     //server if the window is resized.
     if (e->type != ConfigureNotify)
         return;
-    XConfigureEvent xce = e->xconfigure;
+    const XConfigureEvent xce = e->xconfigure;
     if (xce.width != gl.xres || xce.height != gl.yres) {
         //Window size did change.
         reshape_window(xce.width, xce.height);

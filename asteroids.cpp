@@ -24,7 +24,7 @@
 #include "dcarter.h"
 #include "shared.h"
 #include "log.h"
-
+#include "lvaldivia.h"
 //defined types
 typedef float Flt;
 typedef float Vec[3];
@@ -493,6 +493,7 @@ void render()
     if (gl.credits) {
         show_david(&r);
         //show_francisco();
+        show_lesslie(&r);
     }
     if (gl.show_bike)
         gl.bike.render();

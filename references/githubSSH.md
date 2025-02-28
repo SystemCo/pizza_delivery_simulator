@@ -3,7 +3,7 @@
 ### Step 1: Sign into Odin
 ### Step 2: Run: 
 
-        vim .ssh/config
+    vim .ssh/config
 
 ### Step 3: Inside of .ssh/config input the following:
 
@@ -15,7 +15,7 @@
 ### Step 4: Create Public - Private key pair using ssh-keygen
 Run:
 
-        ssh-keygen -t rsa -b 4096
+    ssh-keygen -t rsa -b 4096
 
 Don't set up a passphrase. 
 So press enter twice to make the passphrase empty.
@@ -25,11 +25,11 @@ So press enter twice to make the passphrase empty.
 ### Step 6: get the public key
 Run:
 
-        ssh-keygen -y -t rsa -b 4096
+    ssh-keygen -y -t rsa -b 4096
 
 ### Step 7: The command will output a public key of the form 
 
-        ssh-rsa AAA1498234032...==  Username@odin
+    ssh-rsa AAA1498234032...==  Username@odin
 
 Copy everything starting from      ssh      and ending before the first space. Don't copy the username. Do copy both equals signs.
 
@@ -47,7 +47,7 @@ If Github tells you that it's not a valid key, you probably copied it wrong from
 
 ### Step 10: Run:
 
-        git remote set-url origin git@github.com:SystemCo/pizza_delivery_simulator.git
+    git remote set-url origin git@github.com:SystemCo/pizza_delivery_simulator.git
 
 ### Step 11:
-    Profit. Your pushes and pulls should work now. 
+Profit. Your pushes and pulls should work now. 

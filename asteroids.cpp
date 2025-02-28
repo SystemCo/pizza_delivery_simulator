@@ -239,6 +239,9 @@ int main()
                 render();
         }
         x11.swapBuffers();
+        const int Second = 1000000; // usleep is in microseconds
+        const int FPS = 30;         // to be nice to the Odin server
+        usleep(Second / FPS);
     }
     cleanup_fonts();
     logClose();

@@ -1,5 +1,5 @@
 // Personal file of David Carter
-// Cool guy
+// Fine
 // Contains important implementation for:
 //      Image,
 //      Entity,

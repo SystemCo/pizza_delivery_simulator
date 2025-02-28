@@ -239,9 +239,15 @@ int main()
                 render();
         }
         x11.swapBuffers();
+#ifdef SLEEP_TEST
+        // usleep documentation garuntees usleep to sleep for 
+        // AT LEAST as long as called. It may sleep longer.
+        // For reference: time system command, user time vs system vs total time.
+        // Experimentally, this doesn't seem to actually help anything...
         const int Second = 1000000; // usleep is in microseconds
-        const int FPS = 30;         // to be nice to the Odin server
+        const int FPS = 30;
         usleep(Second / FPS);
+#endif //SLEEP_TEST
     }
     cleanup_fonts();
     logClose();

@@ -191,6 +191,10 @@ int resolution_scale(Image* img)
     return resolution_scale(img->width, img->height);
 }
 
+// *********** Animation for Title sceen *******************
+// This setup may be used for animations more generally.
+// For now, the particulars of the animation and images are hard coded.
+// ********************************************************
 void title_moto_physics(int frame)
 {
     float* pos_x = &gl.moto_side->pos_x;
@@ -251,8 +255,6 @@ void title_render()
     //int flipped = false;
     gl.moto_side->render();
 }
-
-
 
 // ****************** Contributions to shared ***********************
 

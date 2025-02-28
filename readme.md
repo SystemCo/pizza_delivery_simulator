@@ -11,10 +11,11 @@ Now you can!
 * Graphics package with OpenGL
 * Inputs
     * Keyboard
-        * A - D -> Turning
-        * W - S -> Accelerate / Decelerate + Forward / Reverse
+        * \<Left\_Arrow\> - \<Right\_Arrow\> -> Turning
+        * \<Up\_Arrow\> - \<Down\_Arrow\> -> Accelerate / Decelerate + Forward / Reverse
         * Esc -> Pause Menu
     *   Mouse
+        * Navigate title screen
         * Initiate and close deliveries
         * Daily options selections
 
@@ -27,5 +28,52 @@ Now you can!
 
 ## Build:
 * run make
-* run ./asteroids
+* run ./pizza\_deliv
 
+## TODO:
+
+### Alvalina
+* Add name to credits
+    * Assigned on: Friday 2/28/25
+    * Assigned by: David
+    * Due by:      Monday 3/3/25
+    * Status:      Incomplete
+
+### David
+
+### Fenoon
+* Add name to credits
+    * Assigned on: Friday 2/28/25
+    * Assigned by: David
+    * Due by:      Monday 3/3/25
+    * Status:      Incomplete
+
+### Francisco
+* Add name to credits
+    * Assigned on: Friday 2/28/25
+    * Assigned by: David
+    * Due by:      Monday 3/3/25
+    * Status:      Incomplete
+
+### Leslie
+* Add name to credits
+    * Assigned on: Friday 2/28/25
+    * Assigned by: David
+    * Due by:      Monday 3/3/25
+    * Status:      Complete
+
+## Ideas
+### Title screen 
+* Add text to the title screen
+    * Animate the text.
+* Make the motorcycle larger and realistically drive forward,
+    Popping a weelie
+* Add pizza to the motorcycle
+    * Have the pizza fall off as part of the animation
+* Add a menu to the title screen that can be clicked on
+    * Have the buttons change color when hovered over
+### Gameplay
+* Add a goal to get from point a to point b
+* Add a score system
+* Add obstacles and a punishment for hitting those obstacles
+* Add levels

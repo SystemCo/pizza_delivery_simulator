@@ -27,7 +27,7 @@ Now you can!
 
 ## Build:
 * run make
-* run ./asteroids
+* run ./pizza\_deliv
 
 ## TODO:
 

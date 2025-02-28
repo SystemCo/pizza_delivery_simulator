@@ -235,7 +235,11 @@ void X11_wrapper::set_title()
 {
     //Set the window title bar.
     XMapWindow(dpy, win);
+#ifdef SLEEP_TEST
+    XStoreName(dpy, win, "Sleep test");
+#else
     XStoreName(dpy, win, "Asteroids template");
+#endif
 }
 
 void X11_wrapper::check_resize(XEvent *e)

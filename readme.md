@@ -11,10 +11,11 @@ Now you can!
 * Graphics package with OpenGL
 * Inputs
     * Keyboard
-        * A - D -> Turning
-        * W - S -> Accelerate / Decelerate + Forward / Reverse
+        * \<Left\_Arrow\> - \<Right\_Arrow\> -> Turning
+        * \<Up\_Arrow\> - \<Down\_Arrow\> -> Accelerate / Decelerate + Forward / Reverse
         * Esc -> Pause Menu
     *   Mouse
+        * Navigate title screen
         * Initiate and close deliveries
         * Daily options selections
 

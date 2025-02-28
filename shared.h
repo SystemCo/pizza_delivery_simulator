@@ -7,7 +7,7 @@
 #include "dcarter.h"
 
 enum ScreenState { Title, Pause, Credits, Playing };
-class Global {
+class Global { // Originally from Asteroids framework  
 public:
 	int xres, yres;
 	char keys[65536];
@@ -16,7 +16,8 @@ public:
         int show_bike;
         Motorcycle bike;
         Entity* moto_side;
-        Image background = Image("./images/stars.gif");
+        //Image background = Image("./images/stars.gif");
+        Image background = Image("./images/Background2.png");
         ScreenState screen;
         //TODO: 
         // implement switch statements in main func as well as other funcs

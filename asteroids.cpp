@@ -20,7 +20,10 @@
 #include <X11/keysym.h>
 #include <GL/glx.h>
 
-#include "headers.h"
+//#include "headers.h"
+#include "dcarter.h"
+#include "shared.h"
+#include "log.h"
 
 //defined types
 typedef float Flt;
@@ -236,6 +239,9 @@ int main()
                 render();
         }
         x11.swapBuffers();
+        const int Second = 1000000; // usleep is in microseconds
+        const int FPS = 30;         // to be nice to the Odin server
+        usleep(Second / FPS);
     }
     cleanup_fonts();
     logClose();
@@ -264,7 +270,7 @@ void init_opengl(void)
     initialize_fonts();
     gl.bike.init_gl();
     gl.background.init_gl();
-    gl.moto_side->img->init_gl();
+    gl.moto_side->init_gl();
 }
 
 void normalize2d(Vec v)

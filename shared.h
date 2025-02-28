@@ -7,7 +7,7 @@
 #include "dcarter.h"
 
 enum ScreenState { Title, Pause, Credits, Playing };
-class Global {
+class Global { // Originally from Asteroids framework  
 public:
 	int xres, yres;
 	char keys[65536];

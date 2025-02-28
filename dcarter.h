@@ -1,14 +1,17 @@
 #ifndef _DCARTER_H_
 #define _DCARTER_H_
 #include "fonts.h"
-#include "shared.h"
 #include "image.h"
+// Simple text display wrapper used for the credits page
 void show_david(Rect* r);
-void init_opengl_bike();
+// Rendering and physics for the title screen
 void title_render();
 void title_physics();
+//
+// get the minimum scale for an image that will completely fill a given resolution     
 int  resolution_scale(int width, int height);
 int  resolution_scale(Image* img);
+
 enum Pedal { Forward, Neutral, Backward };
 enum Turn  { Left, Straight, Right };
 

@@ -1,4 +1,6 @@
-#include "headers.h"
+//#include "headers.h"
+#include "image.h"
+#include "shared.h"
 #include <cstring>
 #include <cstdio>
 #include <iostream>

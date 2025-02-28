@@ -20,7 +20,10 @@
 #include <X11/keysym.h>
 #include <GL/glx.h>
 
-#include "headers.h"
+//#include "headers.h"
+#include "dcarter.h"
+#include "shared.h"
+#include "log.h"
 
 //defined types
 typedef float Flt;

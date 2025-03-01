@@ -25,6 +25,8 @@
 #include "shared.h"
 #include "log.h"
 #include "lvaldivia.h"
+#include "aolmedo.h"
+
 //defined types
 typedef float Flt;
 typedef float Vec[3];
@@ -500,6 +502,7 @@ void render()
         show_david(&r);
         //show_francisco();
         show_lesslie(&r);
+        show_avelina(&r);
     }
     if (gl.show_bike)
         gl.bike.render();

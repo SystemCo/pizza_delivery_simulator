@@ -3,7 +3,7 @@
 ### Step 1: Sign into Odin
 ### Step 2: Run: 
 
-    vim .ssh/config
+    vim ~/.ssh/config
 
 ### Step 3: Inside of .ssh/config input the following:
 

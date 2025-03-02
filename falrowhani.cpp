@@ -7,7 +7,8 @@
 //
 #include "dcarter.h"
 
-void title_moto_physics(int frame, Animation animation[5]);
+// I added this prototype to my header file -- David
+//void title_moto_physics(int frame, Animation animation[5]);
 
 
 void title_physics()

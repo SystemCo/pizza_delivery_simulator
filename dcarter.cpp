@@ -199,49 +199,37 @@ int resolution_scale(Image* img)
 // This setup may be used for animations more generally.
 // For now, the particulars of the animation and images are hard coded.
 // ********************************************************
-void title_moto_physics(int frame, Animation animation[5])
+void Entity::jump_edges()
 {
-    float* pos_x = &gl.moto_side->pos_x;
-    float* pos_y = &gl.moto_side->pos_y;
-    int* flipped = &gl.moto_side->flipped;
-    float* angle = &gl.moto_side->angle;
-    if (frame < 100) {
-        *pos_x  += animation[0].delta_x;
-        *pos_y  += animation[0].delta_y;
-        *angle  += animation[0].delta_angle;
-        *flipped = animation[0].flipped;
-    } else if (frame < 200) {
-        *pos_x  += animation[1].delta_x;
-        *pos_y  += animation[1].delta_y;
-        *angle  += animation[1].delta_angle;
-        *flipped = animation[1].flipped;
-   } else if (frame < 300) {
-        *pos_x  += animation[2].delta_x;
-        *pos_y  += animation[2].delta_y;
-        *angle  += animation[2].delta_angle;
-        *flipped = animation[2].flipped;
-    } else if (frame < 400) {
-        *pos_x  += animation[3].delta_x;
-        *pos_y  += animation[3].delta_y;
-        *angle  += animation[3].delta_angle;
-        *flipped = animation[3].flipped;
-    } else if (frame < 500) {
-        *pos_x  += animation[4].delta_x;
-        *pos_y  += animation[4].delta_y;
-        *angle  += animation[4].delta_angle;
-        *flipped = animation[4].flipped;
-    }
-    // Always jump edges. May not want to do this in the full animation
-    while (*pos_x < 0)
-        *pos_x += gl.xres;
-    while (*pos_x > gl.xres)
-        *pos_x -= gl.xres;
-    while (*pos_y < 0)
-        *pos_y += gl.xres;
-    while (*pos_y > gl.yres)
-        *pos_y -= gl.yres;
+    while (pos_x < 0)
+        pos_x += gl.xres;
+    while (pos_x > gl.xres)
+        pos_x -= gl.xres;
+    while (pos_y < 0)
+        pos_y += gl.xres;
+    while (pos_y > gl.yres)
+        pos_y -= gl.yres;
 }
-
+void Entity::animate_500_frames(int frame, Animation animations[],
+                                                    int section_count)
+{
+    const int frame_num = 500 / section_count;
+    for (int i = 0; i < section_count; i++) {
+        if (frame >= i*frame_num && frame < (i+1)*frame_num) {
+            pos_x  += animations[i].delta_x;
+            pos_y  += animations[i].delta_y;
+            angle  += animations[i].delta_angle;
+            flipped = animations[i].flipped;
+        }
+    }
+    
+    // Always jump edges. May not want to do this in the full animation
+    this->jump_edges();
+}
+void title_moto_physics(int frame, Animation animations[5])
+{
+    gl.moto_side->animate_500_frames(frame, animations, 5);
+}
 
 
 void title_render()

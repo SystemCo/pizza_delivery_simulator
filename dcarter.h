@@ -12,6 +12,7 @@ struct Animation {
     float delta_angle;
     int   flipped;
 };
+void title_moto_physics(int frame, Animation animations[5]);
 void title_physics();
 void title_render();
 
@@ -48,6 +49,24 @@ class Entity : public Image { // Wrapper around image that stores important disp
                                  // Overload just for brevity.
                                  // Values always need updated in practice.
     Entity(const char infile[]);
+    // No inputs, just jumps based on gl's resolution state.
+    void jump_edges();
+    //
+    // Runs 500 frames of entity animation. 
+    // Incrementing the frame number is the job of the calling context.
+    // Section count allows for arbitrarily complex animations.
+    //
+    // If section count == 5, 
+    // then the animation runs 5 stages of 100 frames each.
+    // This function is not safe.
+    // It is the job of the calling context to ensure 
+    // that index does not go out of bounds.
+    // Ex: Animation animations[3]; 
+    // my_entity.animate_500_frames(499, animations, 4); 
+    // will produce out of bounds error.
+    //
+    void animate_500_frames(int frame, Animation animations[],
+                                                    int section_count);
     void render(); 
 };
 

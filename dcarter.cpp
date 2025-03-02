@@ -199,37 +199,37 @@ int resolution_scale(Image* img)
 // This setup may be used for animations more generally.
 // For now, the particulars of the animation and images are hard coded.
 // ********************************************************
-void title_moto_physics(int frame)
+void title_moto_physics(int frame, Animation animation[5])
 {
     float* pos_x = &gl.moto_side->pos_x;
     float* pos_y = &gl.moto_side->pos_y;
     int* flipped = &gl.moto_side->flipped;
     float* angle = &gl.moto_side->angle;
     if (frame < 100) {
-        *pos_x  += 10;
-        *pos_y  += 10;
-        *angle  += 0;
-        *flipped = false;
+        *pos_x  += animation[0].delta_x;
+        *pos_y  += animation[0].delta_y;
+        *angle  += animation[0].delta_angle;
+        *flipped = animation[0].flipped;
     } else if (frame < 200) {
-        *pos_x  += -10;
-        *pos_y  += 0;
-        *angle  += 0;
-        *flipped = true;
-    } else if (frame < 300) {
-        *pos_x  += 5;
-        *pos_y  += 0;
-        *angle  += 0;
-        *flipped = false;
+        *pos_x  += animation[1].delta_x;
+        *pos_y  += animation[1].delta_y;
+        *angle  += animation[1].delta_angle;
+        *flipped = animation[1].flipped;
+   } else if (frame < 300) {
+        *pos_x  += animation[2].delta_x;
+        *pos_y  += animation[2].delta_y;
+        *angle  += animation[2].delta_angle;
+        *flipped = animation[2].flipped;
     } else if (frame < 400) {
-        *pos_x  += 0;
-        *pos_y  += 0;
-        *angle  += 0.1;
-        *flipped = *flipped;
+        *pos_x  += animation[3].delta_x;
+        *pos_y  += animation[3].delta_y;
+        *angle  += animation[3].delta_angle;
+        *flipped = animation[3].flipped;
     } else if (frame < 500) {
-        *pos_x  +=  -3;
-        *pos_y  +=  4;
-        *angle  +=  0;
-        *flipped = false;
+        *pos_x  += animation[4].delta_x;
+        *pos_y  += animation[4].delta_y;
+        *angle  += animation[4].delta_angle;
+        *flipped = animation[4].flipped;
     }
     // Always jump edges. May not want to do this in the full animation
     while (*pos_x < 0)
@@ -245,7 +245,12 @@ void title_moto_physics(int frame)
 void title_physics()
 {
     static int frame = 0; 
-    title_moto_physics(frame);
+    Animation  animations[5];
+    animations[0] = {5, 0, 0, 0};
+    animations[1] = {5, 0, 1, 0};
+    for (int i = 0; i<5; i++)
+        animations[i] = {1, 1, 0, 0};
+    title_moto_physics(frame, animations);
 
     frame += 1;
     frame %= 500;

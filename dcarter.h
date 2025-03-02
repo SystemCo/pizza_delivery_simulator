@@ -4,9 +4,17 @@
 #include "image.h"
 // Simple text display wrapper used for the credits page
 void show_david(Rect* r);
+
 // Rendering and physics for the title screen
-void title_render();
+struct Animation {
+    float delta_x;
+    float delta_y;
+    float delta_angle;
+    int   flipped;
+};
 void title_physics();
+void title_render();
+
 //
 // get the minimum scale for an image that will completely fill a given resolution     
 int  resolution_scale(int width, int height);
@@ -27,7 +35,7 @@ class Percent { // float from -1 to 1
         float get();
 };
 
-class Entity : public Image {
+class Entity : public Image { // Wrapper around image that stores important display info
     public:
     float pos_x;
     float pos_y;
@@ -43,6 +51,7 @@ class Entity : public Image {
     void render(); 
 };
 
+// Models the main playable character
 class Motorcycle : public Entity {
     private:
 /*
@@ -68,6 +77,35 @@ class Motorcycle : public Entity {
         void set_right();
         void unright();
         //void init_gl();
+};
+
+// Mouse clickable buttons. These are intended to be a parent class.
+// Each real button will inherent from this, 
+// and implement its own On_Click method.
+class Button {
+private:
+        char text[100];
+        char color[3] { (char)255, 0, (char)255 }; // bytes, not characters
+        void write_text(); // Button text color is always black for now
+public:
+        float pos[2];
+        int  dims[2];
+        // All that needs to be called to render. Writes text internally.
+        void render();
+        Button();
+        Button(int x_pos, int y_pos);
+        // The sea of setup
+        void set_pos(float x, float y)  {  pos[0]   = x;  pos[1]   = y; }
+        void set_dims(int  x, int   y)  { dims[0]   = x; dims[1]   = y; }
+        void set_color(char r, char g, char b) 
+        {
+            color[0] = r; color[1] = g; color [2] = b;
+        }
+        void set_text(const char new_text[]);
+        int is_inside(int x, int y); // AABB
+        // 
+        // Nothing burger. Meant to be mutated by child classes.
+        void click(int x, int y);
 };
 
 #endif //_DCARTER_H_

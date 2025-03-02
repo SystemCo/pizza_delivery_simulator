@@ -12,6 +12,8 @@
 
 #include <iostream>
 #include <cmath>
+#include <cstring>
+
 #define PI 3.141592653589793
 #define TO_RAD(x) ((x+90) / 360.0f) * PI * 2.0 // from asteroids framework
 #define SPEED 4 // Moto Linear Speed
@@ -239,6 +241,7 @@ void title_moto_physics(int frame)
     while (*pos_y > gl.yres)
         *pos_y -= gl.yres;
 }
+
 void title_physics()
 {
     static int frame = 0; 
@@ -256,6 +259,55 @@ void title_render()
     gl.background.show(wid, gl.xres/2, gl.yres/2, 0.0f);
     //int flipped = false;
     gl.moto_side->render();
+}
+
+// ***************** Mouse clickable Buttons *************************
+//
+
+void Button::write_text()
+{
+    Rect r;
+    const int text_height = 5;
+    const int color = 0x000000;
+    r.bot = pos[1] - text_height;
+    r.left = pos[0];
+    ggprint8b(&r, 16, color, text);
+}
+
+// All that needs to be called to render. Writes text as well.
+void Button::render()
+{
+    glPushMatrix();
+    glColor3ub(color[0], color[1], color[2]);
+    glTranslatef(pos[0], pos[1], 0.0f);
+    glBegin(GL_QUADS);
+    const int width = pos[0];
+    const int height = pos[1];
+    glVertex2f(-width, -height);
+    glVertex2f(-width,  height);
+    glVertex2f( width,  height);
+    glVertex2f( width, -height);
+    glEnd();
+    glPopMatrix();
+    write_text();
+}
+
+int Button::is_inside(int x, int y)
+{
+return   y <= (pos[1] + dims[1]) &&
+         y >= (pos[1] - dims[1]) &&
+         x <= (pos[0] + dims[0]) &&
+         x >= (pos[0] - dims[0]);
+}
+
+void Button::set_text(const char new_text[])
+{
+    strcpy(text, new_text);
+}
+void Button::click(int x, int y)
+{
+    if (is_inside(x, y))
+        printf("click!\n");
 }
 
 // ****************** Contributions to shared ***********************

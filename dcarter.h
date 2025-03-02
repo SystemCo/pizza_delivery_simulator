@@ -12,6 +12,7 @@ struct Animation {
     float delta_angle;
     int   flipped;
 };
+// Calls Enity::animate_500_frames on gl.moto_side
 void title_moto_physics(int frame, Animation animations[5]);
 void title_physics();
 void title_render();

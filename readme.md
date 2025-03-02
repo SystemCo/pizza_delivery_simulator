@@ -58,6 +58,12 @@ Now you can!
     * Assigned on: Friday 2/28/25
     * Assigned by: David
     * Due by:      Monday 3/3/25
+    * Status:      Complete
+
+* Extract audio files for intro
+    * Assigned on: Sunday 3/2/25
+    * Assigned by: Francisco
+    * Due by:      Monday 3/10/25
     * Status:      Incomplete
 
 ### Leslie

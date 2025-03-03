@@ -66,8 +66,8 @@ class Entity : public Image { // Wrapper around image that stores important disp
     // my_entity.animate_500_frames(499, animations, 4); 
     // will produce out of bounds error.
     //
-    void animate_500_frames(int frame, Animation animations[],
-                                                    int section_count);
+    void animate(int frame, Animation animations[],
+                                    int section_count, int total_frames);
     void render(); 
 };
 

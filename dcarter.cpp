@@ -210,10 +210,11 @@ void Entity::jump_edges()
     while (pos_y > gl.yres)
         pos_y -= gl.yres;
 }
-void Entity::animate_500_frames(int frame, Animation animations[],
-                                                    int section_count)
+
+void Entity::animate(int frame, Animation animations[],
+                                    int section_count, int total_frames)
 {
-    const int frame_num = 500 / section_count;
+    const int frame_num = total_frames / section_count;
     for (int i = 0; i < section_count; i++) {
         if (frame >= i*frame_num && frame < (i+1)*frame_num) {
             pos_x  += animations[i].delta_x;
@@ -228,7 +229,9 @@ void Entity::animate_500_frames(int frame, Animation animations[],
 }
 void title_moto_physics(int frame, Animation animations[5])
 {
-    gl.moto_side->animate_500_frames(frame, animations, 5);
+    const int total_frames = 500;
+    const int section_count = 5;
+    gl.moto_side->animate(frame, animations, section_count, total_frames);
 }
 
 

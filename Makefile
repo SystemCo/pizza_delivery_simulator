@@ -2,7 +2,9 @@ all: pizza_deliv
 
 pizza_deliv: dcarter.cpp aolmedo.cpp falrowhani.cpp lvaldivia.cpp \
 	fandrade.cpp asteroids.cpp image.cpp \
-	timers.cpp log.cpp
+	timers.cpp log.cpp \
+	dcarter.h aolmedo.h falrowhani.h lvaldivia.h fandrade.h shared.h \
+	image.h log.h
 	g++ asteroids.cpp dcarter.cpp aolmedo.cpp falrowhani.cpp \
 		lvaldivia.cpp fandrade.cpp image.cpp timers.cpp log.cpp \
 		libggfonts.a \
@@ -16,6 +18,15 @@ sleep_test: dcarter.cpp aolmedo.cpp falrowhani.cpp lvaldivia.cpp \
 		libggfonts.a \
 		-D SLEEP_TEST \
 		-Wall -lX11 -lGL -o sleep_test
+
+preprocessing: aolmedo.cpp dcarter.cpp falrowhani.cpp fandrade.cpp \
+	lvaldivia.cpp \
+	asteroids.cpp image.cpp \
+	timers.cpp log.cpp
+	g++ asteroids.cpp dcarter.cpp aolmedo.cpp falrowhani.cpp \
+		lvaldivia.cpp fandrade.cpp image.cpp timers.cpp log.cpp \
+		libggfonts.a \
+		-C -E > preprocessing.cpp
 
 clean:
 	rm -f pizza_deliv sleep_test

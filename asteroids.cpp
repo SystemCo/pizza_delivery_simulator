@@ -6,12 +6,14 @@
 //This program is a game starting point for a 3350 project.
 //
 //
-#include <iostream>
-#include <cstdlib>
+//#include <cstdlib>
+//#include <unistd.h>
+//#include <ctime>
+
+#include <iostream> // Adds a lot of preprocessor time
 #include <cstring>
-#include <unistd.h>
-#include <ctime>
-#include <cmath>
+#include <cmath>    // Adds a lot of preprocessor time
+
 //#include <X11/Xutil.h>
 //#include <GL/gl.h>
 //#include <GL/glu.h>
@@ -63,7 +65,8 @@ extern double timeDiff(struct timespec *start, struct timespec *end);
 extern void timeCopy(struct timespec *dest, struct timespec *source);
 //-----------------------------------------------------------------------------
 
-Global::Global() {
+Global::Global() 
+{
     xres = 640;
     yres = 480;
     //screen = Playing;
@@ -488,7 +491,7 @@ void physics()
 void render()
 {
     Rect r;
-    glClearColor(0.0, 0.0, 0.0, 1.0);
+    //glClearColor(0.0, 0.0, 0.0, 1.0);
     glClear(GL_COLOR_BUFFER_BIT);
     int wid = resolution_scale(&gl.background);
     gl.background.show(wid, gl.xres/2, gl.yres/2, 0.0f);
@@ -507,4 +510,5 @@ void render()
     }
     if (gl.show_bike)
         gl.bike.render();
+    gl.dummy_button.render();
 }

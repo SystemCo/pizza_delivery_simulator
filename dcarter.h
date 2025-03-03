@@ -59,6 +59,7 @@ class Entity : public Image { // Wrapper around image that stores important disp
     // If section count == 5, and totale_frames == 500
     // then the animation runs 5 stages of 100 frames each.
     // This function is not safe.
+    // section_count must be equal to the length of the animation array.
     // It is the job of the calling context to ensure 
     // that index does not go out of bounds.
     //
@@ -66,6 +67,11 @@ class Entity : public Image { // Wrapper around image that stores important disp
     // my_entity.animate_500_frames(499, animations, 4, 500); 
     // will produce out of bounds error.
     //
+    // Ex correct call:
+    // Aniation animations[3];
+    // *initialize animations*
+    // Entity my_entity("image.png");
+    // my_entity.animate(10, animations, 3, 500);
     void animate(int frame, Animation animations[],
                                     int section_count, int total_frames);
     void render(); 
@@ -113,7 +119,7 @@ public:
         // All that needs to be called to render. Writes text internally.
         void render();
         Button();
-        Button(int x_pos, int y_pos);
+        Button(float x_pos, float y_pos);
         // The sea of setup
         void set_pos(float x, float y)  {  pos[0]   = x;  pos[1]   = y; }
         void set_dims(int  x, int   y)  { dims[0]   = x; dims[1]   = y; }

@@ -1,9 +1,9 @@
 #ifndef _SHARED_H_
 #define _SHARED_H_
 
-#include <X11/Xlib.h>
-#include <X11/keysym.h>
-#include <GL/glx.h>
+//#include <X11/Xlib.h>
+//#include <X11/keysym.h>
+//#include <GL/glx.h>
 #include "dcarter.h"
 
 enum ScreenState { Title, Pause, Credits, Playing };
@@ -16,6 +16,7 @@ public:
         int show_bike;
         Motorcycle bike;
         Entity* moto_side;
+        Button dummy_button;
         //Image background = Image("./images/stars.gif");
         Image background = Image("./images/Background2.png");
         ScreenState screen;

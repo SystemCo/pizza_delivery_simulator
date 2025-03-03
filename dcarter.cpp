@@ -3,10 +3,10 @@
 // Contains important implementation for:
 //      Image,
 //      Entity,
-//      Motorcycle
+//      Motorcycle,
+//      Button
 // Classes
 //
-//#include "headers.h"
 #include "shared.h"
 #include "dcarter.h"
 
@@ -248,6 +248,18 @@ void title_render()
 // ***************** Mouse clickable Buttons *************************
 //
 
+Button::Button(float x, float y)
+{
+    this->set_text("Loren Ipsum");
+    this->set_color(255, 255, 0);
+    this->set_pos(x, y);
+    this->set_dims(100, 50);
+}
+
+Button::Button() : Button(200, 200)
+{
+}
+
 void Button::write_text()
 {
     Rect r;
@@ -265,8 +277,8 @@ void Button::render()
     glColor3ub(color[0], color[1], color[2]);
     glTranslatef(pos[0], pos[1], 0.0f);
     glBegin(GL_QUADS);
-    const int width = pos[0];
-    const int height = pos[1];
+    const int width = dims[0];
+    const int height = dims[1];
     glVertex2f(-width, -height);
     glVertex2f(-width,  height);
     glVertex2f( width,  height);

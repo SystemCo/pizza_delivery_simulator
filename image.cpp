@@ -2,10 +2,10 @@
 #include "image.h"
 #include "shared.h"
 #include <cstring>
-#include <cstdio>
+//#include <cstdio>
 #include <iostream>
 #include <unistd.h>
-#include <stdlib.h>
+//#include <stdlib.h>
 
 //#include <string.h>
 //#include <cstdlib>

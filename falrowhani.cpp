@@ -19,6 +19,8 @@ void show_fenoon(Rect*r)
 }
 
 
+// I added this prototype to my header file -- David
+//void title_moto_physics(int frame, Animation animation[5]);
 
 void title_physics()
 {

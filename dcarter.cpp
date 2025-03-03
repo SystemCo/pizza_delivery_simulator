@@ -32,7 +32,7 @@ void show_david(Rect* r);
 
 void show_david(Rect* r)
 {
-    ggprint8b(r, 16, 0x00ff00ff, "David - The Sweaty One");
+    ggprint8b(r, 16, 0xf3ab00, "David - The Sweaty One");
 }
 
 void Image::show(float wid, int pos_x, int pos_y, float angle)

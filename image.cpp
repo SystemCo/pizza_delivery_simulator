@@ -73,13 +73,13 @@ Image::Image(const char *fname)
 void Image::show(float wid, int pos_x, int pos_y, float angle, int flipped)
 {
     Image* img = this;
-    float height = wid * img->height/img->width;
-    glColor3f(1.0, 1.0, 1.0);
+    const float height = wid * img->height/img->width;
+    glBindTexture(GL_TEXTURE_2D, img->texture);
+    //glColor4f(0.0, 0.0, 0.0, 0.0);
     glPushMatrix(); // Pushmatrix indented because subequent commands
                     // Are implemented on the topmost stack as determined
                     // By glPush and glPop
         glTranslatef(pos_x, pos_y, 0.0f);
-        glBindTexture(GL_TEXTURE_2D, img->texture);
         glEnable(GL_ALPHA_TEST);
         glAlphaFunc(GL_GREATER, 0.0f);
         glColor4ub(255,255,255,255);
@@ -99,6 +99,7 @@ void Image::show(float wid, int pos_x, int pos_y, float angle, int flipped)
         }
         glEnd();
     glPopMatrix();
+    glBindTexture(GL_TEXTURE_2D, 0); // Unbinds texture
 }
 
 

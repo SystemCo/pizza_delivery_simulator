@@ -276,7 +276,7 @@ void init_opengl(void)
     glDisable(GL_CULL_FACE);
     //
     //Clear the screen to black
-    glClearColor(0.0, 0.0, 0.0, 1.0);
+    //glClearColor(0.0, 0.0, 0.0, 1.0);
     //Do this to allow fonts
     glEnable(GL_TEXTURE_2D);
     initialize_fonts();
@@ -306,42 +306,14 @@ void check_mouse(XEvent *e)
     static int savey = 0;
     //
     static int ct=0;
-    //std::cout << "m" << std::endl << std::flush;
+    const int true_y = gl.yres - e->xbutton.y;
+
     if (e->type == ButtonRelease) {
         return;
     }
     if (e->type == ButtonPress) {
-        if (e->xbutton.button==1) {
-            //Left button is down
-            //a little time between each bullet
-            struct timespec bt;
-            clock_gettime(CLOCK_REALTIME, &bt);
-            double ts = timeDiff(&g.bulletTimer, &bt);
-            if (ts > 0.1) {
-                timeCopy(&g.bulletTimer, &bt);
-                //shoot a bullet...
-                if (g.nbullets < MAX_BULLETS) {
-                    Bullet *b = &g.barr[g.nbullets];
-                    timeCopy(&b->time, &bt);
-                    b->pos[0] = g.ship.pos[0];
-                    b->pos[1] = g.ship.pos[1];
-                    b->vel[0] = g.ship.vel[0];
-                    b->vel[1] = g.ship.vel[1];
-                    //convert ship angle to radians
-                    Flt rad = ((g.ship.angle+90.0) / 360.0f) * PI * 2.0;
-                    //convert angle to a vector
-                    Flt xdir = cos(rad);
-                    Flt ydir = sin(rad);
-                    b->pos[0] += xdir*20.0f;
-                    b->pos[1] += ydir*20.0f;
-                    b->vel[0] += xdir*6.0f + rnd()*0.1;
-                    b->vel[1] += ydir*6.0f + rnd()*0.1;
-                    b->color[0] = 1.0f;
-                    b->color[1] = 1.0f;
-                    b->color[2] = 1.0f;
-                    ++g.nbullets;
-                }
-            }
+        if (e->xbutton.button==1) { // Left button
+            gl.dummy_button.click(e->xbutton.x, true_y);
         }
         if (e->xbutton.button==3) {
             //Right button is down
@@ -366,36 +338,10 @@ void check_mouse(XEvent *e)
             return;
         //printf("mouse move "); fflush(stdout);
         if (xdiff > 0) {
-            //std::cout << "xdiff: " << xdiff << std::endl << std::flush;
-            g.ship.angle += 0.05f * (float)xdiff;
-            if (g.ship.angle >= 360.0f)
-                g.ship.angle -= 360.0f;
         }
         else if (xdiff < 0) {
-            //std::cout << "xdiff: " << xdiff << std::endl << std::flush;
-            g.ship.angle += 0.05f * (float)xdiff;
-            if (g.ship.angle < 0.0f)
-                g.ship.angle += 360.0f;
         }
         if (ydiff > 0) {
-            //apply thrust
-            //convert ship angle to radians
-            Flt rad = ((g.ship.angle+90.0) / 360.0f) * PI * 2.0;
-            //convert angle to a vector
-            Flt xdir = cos(rad);
-            Flt ydir = sin(rad);
-            g.ship.vel[0] += xdir * (float)ydiff * 0.01f;
-            g.ship.vel[1] += ydir * (float)ydiff * 0.01f;
-            Flt speed = sqrt(g.ship.vel[0]*g.ship.vel[0]+
-                    g.ship.vel[1]*g.ship.vel[1]);
-            if (speed > 10.0f) {
-                speed = 10.0f;
-                normalize2d(g.ship.vel);
-                g.ship.vel[0] *= speed;
-                g.ship.vel[1] *= speed;
-            }
-            g.mouseThrustOn = true;
-            clock_gettime(CLOCK_REALTIME, &g.mouseThrustTimer);
         }
         x11.set_mouse_position(200,200);
         savex = 200;

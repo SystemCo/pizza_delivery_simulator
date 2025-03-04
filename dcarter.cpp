@@ -35,6 +35,7 @@ void show_david(Rect* r)
     ggprint8b(r, 16, 0xf3ab00, "David - The Sweaty One");
 }
 
+// Overload of Image::show, that sets flipped to 0 by default
 void Image::show(float wid, int pos_x, int pos_y, float angle)
 {
     this->show(wid, pos_x, pos_y, angle, 0);
@@ -237,12 +238,12 @@ void title_moto_physics(int frame, Animation animations[5])
 
 void title_render()
 {
-    glClearColor(0.0, 0.0, 0.0, 1.0);
+    //glClearColor(0.0, 0.0, 0.0, 1.0);
     glClear(GL_COLOR_BUFFER_BIT);
     const int wid = resolution_scale(&gl.background);
     gl.background.show(wid, gl.xres/2, gl.yres/2, 0.0f);
-    //int flipped = false;
     gl.moto_side->render();
+    gl.dummy_button.render();
 }
 
 // ***************** Mouse clickable Buttons *************************
@@ -274,16 +275,16 @@ void Button::write_text()
 void Button::render()
 {
     glPushMatrix();
-    glColor3ub(color[0], color[1], color[2]);
-    glTranslatef(pos[0], pos[1], 0.0f);
-    glBegin(GL_QUADS);
-    const int width = dims[0];
-    const int height = dims[1];
-    glVertex2f(-width, -height);
-    glVertex2f(-width,  height);
-    glVertex2f( width,  height);
-    glVertex2f( width, -height);
-    glEnd();
+        glColor3ub(color[0], color[1], color[2]);
+        glTranslatef(pos[0], pos[1], 0.0f);
+        glBegin(GL_QUADS);
+            const int width = dims[0];
+            const int height = dims[1];
+            glVertex2f(-width, -height);
+            glVertex2f(-width,  height);
+            glVertex2f( width,  height);
+            glVertex2f( width, -height);
+        glEnd();
     glPopMatrix();
     write_text();
 }

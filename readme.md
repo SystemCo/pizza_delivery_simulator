@@ -48,6 +48,10 @@ Now you can!
         * Appointment helps
 
 ### Fenoon
+Monday- Wednesday 
+Available: 10:00-11:00, 12:00-1:00, 4:00-5:30
+Friday: 
+Available: 10:00-11:00, 2:00-5:30 
 
 ### Francisco
 

@@ -33,45 +33,45 @@ Now you can!
 ## TODO:
 
 ### Avelina
-* Add name to credits
-    * Assigned on: Friday 2/28/25
+* Make a button that, when clicked, exits the title screen
+    * Assigned on: Monday 03/03/25
     * Assigned by: David
-    * Due by:      Monday 3/3/25
-    * Status:      Complete
+    * Due by:      Monday 03/10/25
+    * Status:      Incomplete
 
 ### David
-* Implement parent pushbutton class
-    * Assigned on: Saturday 3/1/25
+* Make the player motorcycle character visually turn the handlebars when turning
+    * Assigned on: Monday 03/03/25
     * Assigned by: David
-    * Due by:      Monday 3/3/25
-    * Status:      In-Progress
+    * Due by:      Monday 03/10/25
+    * Status:      Incomplete
 
 ### Fenoon
 * Add name to credits
-    * Assigned on: Friday 2/28/25
+    * Assigned on: Friday 02/28/25
     * Assigned by: David
-    * Due by:      Monday 3/3/25
+    * Due by:      Monday 03/03/25
+    * Status:      Incomplete
+
+* Add pause functionality when <esc> keyboaord key is pressed
+    * Assigned on: Monday 03/03/25
+    * Assigned by: David
+    * Due by:      Monday 03/10/25
     * Status:      Incomplete
 
 ### Francisco
-* Add name to credits
-    * Assigned on: Friday 2/28/25
-    * Assigned by: David
-    * Due by:      Monday 3/3/25
-    * Status:      Complete
-
 * Extract audio files for intro
-    * Assigned on: Sunday 3/2/25
+    * Assigned on: Sunday 03/02/25
     * Assigned by: Francisco
-    * Due by:      Monday 3/10/25
+    * Due by:      Monday 03/10/25
     * Status:      Incomplete
 
 ### Leslie
-* Add name to credits
-    * Assigned on: Friday 2/28/25
+* Design Map 1 of the game
+    * Assigned on: Monday 03/03/25
     * Assigned by: David
-    * Due by:      Monday 3/3/25
-    * Status:      Complete
+    * Due by:      Monday 03/10/25
+    * Status:      Incomplete
 
 ## Ideas
 ### Title screen 
@@ -88,3 +88,31 @@ Now you can!
 * Add a score system
 * Add obstacles and a punishment for hitting those obstacles
 * Add levels
+
+## Completed Tasks
+
+### Avelina
+* Completed In: February 2025
+    * Add name to credits
+
+### David
+* Completed In: February 2025
+    * Add name to credits
+    * Set up visual framework & abstractions
+    * Set up main character gameplay physics Phase 1
+
+* Completed In: March 2025
+    * Create parent mouse click Button class
+
+### Fenoon
+* Completed In: February 2025
+    * Animate Motorcycle in Title Screen Phase 1
+
+### Francisco
+* Completed In: February 2025
+    * Add name to credits
+
+### Lesslie
+* Completed In: February 2025
+    * Add name to credits
+

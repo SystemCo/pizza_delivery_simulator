@@ -30,6 +30,29 @@ Now you can!
 * run make
 * run ./pizza\_deliv
 
+## Schedules:
+### Avelina
+
+### David
+* Sunday
+    * Typically free all day after 2:00. Will notify if not.
+* Monday - Wednesday
+    * Available: 10:00 - 11:00, 5:00 - 9:00
+* Thursday
+    * Available: 5:00 - 9:00
+* Friday
+    * Schedule is weird. I'm very available, but at inconsistent times.
+        * Make appointment.
+* Saturday
+    * Available: Typically all day.
+        * Appointment helps
+
+### Fenoon
+
+### Francisco
+
+### Lesslie
+
 ## TODO:
 
 ### Avelina

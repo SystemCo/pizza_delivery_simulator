@@ -1,5 +1,5 @@
+// dcarter.cpp
 // Personal file of David Carter
-// Third
 // Contains important implementation for:
 //      Image,
 //      Entity,

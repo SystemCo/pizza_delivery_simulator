@@ -71,7 +71,14 @@ Available: 10:00-11:00, 2:00-5:30
     * Assigned on: Monday 03/03/25
     * Assigned by: David
     * Due by:      Monday 03/10/25
-    * Status:      Incomplete
+    * Status:      Complete as of 03/04/25
+
+* Modify Motorcycle physics to match new handlebar turning.
+    * Motorcycle should only turn while moving. i.e. the wheel should not slide.
+    * Assigned on: Tuesday 03/04/25
+    * Assigned by: David
+    * Due by:      Teusday 03/11/25
+    * Status       Incomplete
 
 ### Fenoon
 * Add name to credits

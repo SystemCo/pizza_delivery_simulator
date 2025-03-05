@@ -100,7 +100,7 @@ Available: 10:00-11:00, 2:00-5:30
     * Due by:      Monday 03/10/25
     * Status:      Incomplete
 
-### Leslie
+### Lesslie
 * Design Map 1 of the game
     * Assigned on: Monday 03/03/25
     * Assigned by: David

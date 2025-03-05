@@ -2,6 +2,7 @@
 #define _DCARTER_H_
 #include "fonts.h"
 #include "image.h"
+
 // Simple text display wrapper used for the credits page
 void show_david(Rect* r);
 
@@ -46,9 +47,8 @@ class Entity : public Image { // Wrapper around image that stores important disp
     float angle;
     Entity(float pos_x, float pos_y, float scale, float angle, 
             const char infile[]);
-    //
-                                 // Overload just for brevity.
-                                 // Values always need updated in practice.
+    Entity(float pos_x, float pos_y, float scale, float angle, 
+            const char infile[], unsigned char color[3]);
     Entity(const char infile[]);
     // No inputs, just jumps based on gl's resolution state.
     void jump_edges();
@@ -78,6 +78,7 @@ class Entity : public Image { // Wrapper around image that stores important disp
 };
 
 // Models the main playable character
+
 class Motorcycle : public Entity {
     private:
 /*
@@ -90,6 +91,8 @@ class Motorcycle : public Entity {
         Percent velocity;
         Pedal pedal;
         Turn turn;
+        unsigned char head_trans_clr[3] {255,255,255}; // white
+        Image head {"./images/Moto_head.jpg", head_trans_clr};
         void set_turn();
         //Entity* pic;
     public:
@@ -97,12 +100,12 @@ class Motorcycle : public Entity {
 
         void set_pedal(Pedal pedal);
         void move();
-        //void render();
+        void render();
         void set_left();
         void unleft();
         void set_right();
         void unright();
-        //void init_gl();
+        void init_gl();
 };
 
 // Mouse clickable buttons. These are intended to be a parent class.
@@ -111,7 +114,7 @@ class Motorcycle : public Entity {
 class Button {
 private:
         char text[100];
-        char color[3] { (char)255, 0, (char)255 }; // bytes, not characters
+        unsigned char color[3] { 255, 0, 255 }; // bytes, not characters
         void write_text(); // Button text color is always black for now
 public:
         float pos[2];

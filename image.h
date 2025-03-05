@@ -3,6 +3,10 @@
 #include <GL/glx.h>
 
 class Image { // from the rainforest framework
+private:
+    unsigned char* colorToAlpha(unsigned char color[3]);
+    unsigned char color[3];
+    int color_to_alpha = false;
 public:
     int width, height;
     unsigned char *data;
@@ -10,6 +14,7 @@ public:
 
     ~Image() { delete [] data; }
     Image(const char *fname);
+    Image(const char *fname, unsigned char color[3]);
     void init_gl();
     unsigned char* buildAlphaData();
     void show(float wid, int pos_x, int pos_y, float angle, int flipped);

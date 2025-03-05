@@ -23,7 +23,6 @@
  **  Declared in asteroids.cpp
  */
 extern Global gl;
-//nothing
 
 //Non-Class function prototypes
 int resolution_scale(int width, int height);
@@ -35,10 +34,38 @@ void show_david(Rect* r)
     ggprint8b(r, 16, 0xf3ab00, "David - The Sweaty One");
 }
 
+// ***************** Image Method Implementations ***********************
 // Overload of Image::show, that sets flipped to 0 by default
 void Image::show(float wid, int pos_x, int pos_y, float angle)
 {
     this->show(wid, pos_x, pos_y, angle, 0);
+}
+
+Image::Image(const char *fname, unsigned char color[3]) : Image(fname)
+{
+    for (int i = 0; i<3; i++)
+        this->color[i] = color[i];
+    color_to_alpha = true;
+}
+
+unsigned char* Image::colorToAlpha(unsigned char color[3])
+{
+    unsigned char *newdata, *ptr;
+    unsigned char *data = (unsigned char *)this->data;
+    newdata = (unsigned char *)malloc(this->width * this->height * 4);
+    ptr = newdata;
+    for (int i=0; i<this->width * this->height * 3; i+=3) {
+        const int a = ptr[0] = data[0];
+        const int b = ptr[1] = data[1];
+        const int c = ptr[2] = data[2];
+        const int r_delta = color[0] > a ? color[0] - a : a - color[0];
+        const int g_delta = color[1] > b ? color[1] - b : b - color[1];
+        const int b_delta = color[2] > c ? color[2] - c : c - color[2];
+        ptr[3] = (r_delta + g_delta + b_delta)/3;
+        ptr = &ptr[4];
+        data = &data[3];
+    }
+    return newdata;
 }
 
 Percent::Percent()
@@ -74,6 +101,15 @@ Entity::Entity(float pos_x, float pos_y, float scale,
     this->angle = angle;
     //init_gl();
 }
+Entity::Entity(float pos_x, float pos_y, float scale, float angle,
+        const char infile[], unsigned char color[3]) 
+        : Image(infile, color)
+{
+    this->pos_x = pos_x;
+    this->pos_y = pos_y;
+    this->scale = scale;
+    this->angle = angle;
+}
 Entity::Entity(const char infile[]) : Image(infile)
 {
     pos_x = 0;
@@ -87,11 +123,13 @@ void Entity::render()
     this->show(scale, pos_x, pos_y, angle, flipped);
 }
 
-#define MOTO_SIZE 75
+#define MOTO_SIZE 25
 // Calling Entity's constructor sets all shared variables 
 // and calls Image's constructor.
-Motorcycle::Motorcycle() : 
-    Entity(250, 250, MOTO_SIZE, 0.0, "./images/motorcycle.gif")
+unsigned char white[3]{255, 255, 255};
+//unsigned char red[3]{255, 0, 0};
+Motorcycle::Motorcycle() :
+    Entity(250, 250, MOTO_SIZE, 0.0, "./images/Moto_bod.jpg", white)
 {
     // Everything but pedal can be left default or set by Entity constructor
     pedal = Neutral;
@@ -178,6 +216,67 @@ void Motorcycle::move()
         pos_y = 0;
 }
 
+void Motorcycle::render()
+{
+    float head_angle = 0;
+    const float turn_delta = 20;
+    switch(turn) {
+    case Straight:
+        break;
+    case Left:
+        head_angle += turn_delta;
+        break;
+    case Right:
+        head_angle -= turn_delta;
+        break;
+    }
+    Image* img = this;
+    const float height = scale * img->height/img->width;
+    glBindTexture(GL_TEXTURE_2D, img->texture);
+    glColor4ub(255,255,255,255);
+    glPushMatrix();
+        glTranslatef(pos_x, pos_y, 0.0f);
+        glEnable(GL_ALPHA_TEST);
+        const float whiteness_cutoff = 0.4f;
+        glAlphaFunc(GL_GREATER, whiteness_cutoff);
+        glRotatef(angle, 0.0f, 0.0f, 1.0f);
+        //render the body
+        glBegin(GL_QUADS);
+        // no flipped for now
+            glTexCoord2i(0, 1); glVertex2i(-scale,-height);
+            glTexCoord2i(0, 0); glVertex2i(-scale, height);
+            glTexCoord2i(1, 0); glVertex2i( scale, height);
+            glTexCoord2i(1, 1); glVertex2i( scale,-height);
+        glEnd();
+        const float head_height = scale * head.height/head.width;
+        glBindTexture(GL_TEXTURE_2D, head.texture);
+        // render the head
+        glPushMatrix();
+            // translation after rotation effectively changes the pivot point
+            const float pivot_offset = head_height / 1.3;
+            glTranslatef(0.0f, height*0.9-pivot_offset, 0.0f);
+            glRotatef(head_angle, 0.0f, 0.0f, 1.0f);
+            glTranslatef(0.0f, pivot_offset, 0.0f);
+            glBegin(GL_QUADS);
+                glTexCoord2i(0, 1); glVertex2i(-scale,-head_height);
+                glTexCoord2i(0, 0); glVertex2i(-scale, head_height);
+                glTexCoord2i(1, 0); glVertex2i( scale, head_height);
+                glTexCoord2i(1, 1); glVertex2i( scale,-head_height);
+            glEnd();
+            glPopMatrix();
+        glPopMatrix();
+    glPopMatrix();
+    glDisable(GL_ALPHA_TEST);
+    glBindTexture(GL_TEXTURE_2D, 0);
+}
+
+void Motorcycle::init_gl()
+{
+    Image::init_gl();
+    head.init_gl();
+}
+
+// *********** Resolution Utilities ***********************
 int resolution_scale(int width, int height)
 {
     float img_proportion = width / height;
@@ -275,7 +374,7 @@ void Button::write_text()
 void Button::render()
 {
     glPushMatrix();
-        glColor3ub(color[0], color[1], color[2]);
+        glColor4ub(color[0], color[1], color[2], 255);
         glTranslatef(pos[0], pos[1], 0.0f);
         glBegin(GL_QUADS);
             const int width = dims[0];

@@ -75,7 +75,7 @@ void Image::show(float wid, int pos_x, int pos_y, float angle, int flipped)
     Image* img = this;
     const float height = wid * img->height/img->width;
     glBindTexture(GL_TEXTURE_2D, img->texture);
-    //glColor4f(0.0, 0.0, 0.0, 0.0);
+    glColor4f(0.0, 0.0, 0.0, 0.0);
     glPushMatrix(); // Pushmatrix indented because subequent commands
                     // Are implemented on the topmost stack as determined
                     // By glPush and glPop
@@ -111,17 +111,16 @@ void Image::init_gl()
     glBindTexture(GL_TEXTURE_2D, texture);
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);
-/** Alpha mode is the only mode for now. 
- *  Following code used for pure rgb image:
- *
-    glTexImage2D(GL_TEXTURE_2D, 0, 3, w, h, 0,
-            GL_RGB, GL_UNSIGNED_BYTE, data);
-*/
-    unsigned char *silhouetteData = this->buildAlphaData();
+    unsigned char *silhouetteData;
+    if (color_to_alpha)
+        silhouetteData = this->colorToAlpha(color);
+    else
+        silhouetteData = this->buildAlphaData();
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0,
             GL_RGBA, GL_UNSIGNED_BYTE, silhouetteData);
     free(silhouetteData);
 }
+
 
 unsigned char* Image::buildAlphaData()
 {
@@ -132,7 +131,6 @@ unsigned char* Image::buildAlphaData()
     //It is used in this application to erase parts of a texture-map from view.
     //Edited by David Carter, hoping to improve:
     //  Memory safety and Readabilty
-    int i;
     //int a,b,c;
     // Placed inside for loop for garunteed orthogonality
     // May be an anti-optimization. Untested.
@@ -140,7 +138,7 @@ unsigned char* Image::buildAlphaData()
     unsigned char *data = (unsigned char *)this->data;
     newdata = (unsigned char *)malloc(this->width * this->height * 4);
     ptr = newdata;
-    for (i=0; i<this->width * this->height * 3; i+=3) {
+    for (int i=0; i<this->width * this->height * 3; i+=3) {
         const int a = ptr[0] = data[0]; // *(data+0);
         const int b = ptr[1] = data[1]; // *(data+1);
         const int c = ptr[2] = data[2]; // Array notation from David
@@ -238,8 +236,10 @@ void X11_wrapper::set_title()
     XMapWindow(dpy, win);
 #ifdef SLEEP_TEST
     XStoreName(dpy, win, "Sleep test");
+#elif defined GENERIC_TEST
+    XStoreName(dpy, win, "Generic Test");
 #else
-    XStoreName(dpy, win, "Asteroids template");
+    XStoreName(dpy, win, "Pizza Delivery SUPREME!");
 #endif
 }
 

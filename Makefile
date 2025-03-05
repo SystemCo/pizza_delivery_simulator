@@ -19,6 +19,15 @@ sleep_test: dcarter.cpp aolmedo.cpp falrowhani.cpp lvaldivia.cpp \
 		-D SLEEP_TEST \
 		-Wall -lX11 -lGL -o sleep_test
 
+generic_test: dcarter.cpp aolmedo.cpp falrowhani.cpp lvaldivia.cpp \
+	fandrade.cpp asteroids.cpp image.cpp \
+	timers.cpp log.cpp
+	g++ asteroids.cpp dcarter.cpp aolmedo.cpp falrowhani.cpp \
+		lvaldivia.cpp fandrade.cpp image.cpp timers.cpp log.cpp \
+		libggfonts.a \
+		-D GENERIC_TEST \
+		-Wall -lX11 -lGL -o generic_test
+
 preprocessing: aolmedo.cpp dcarter.cpp falrowhani.cpp fandrade.cpp \
 	lvaldivia.cpp \
 	asteroids.cpp image.cpp \
@@ -29,5 +38,5 @@ preprocessing: aolmedo.cpp dcarter.cpp falrowhani.cpp fandrade.cpp \
 		-C -E > preprocessing.cpp
 
 clean:
-	rm -f pizza_deliv sleep_test
+	rm -f pizza_deliv sleep_test generic_test
 

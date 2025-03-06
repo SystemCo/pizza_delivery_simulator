@@ -1,14 +1,9 @@
-//#include "headers.h"
 #include "image.h"
 #include "shared.h"
 #include <cstring>
-//#include <cstdio>
 #include <iostream>
 #include <unistd.h>
-//#include <stdlib.h>
 
-//#include <string.h>
-//#include <cstdlib>
 
 #define SAFE_LINE_READ(line, count, pointer) \
     if ( fgets(line, count, pointer) == NULL)\

@@ -24,14 +24,67 @@
  */
 extern Global gl;
 
-//Non-Class function prototypes
-int resolution_scale(int width, int height);
-int resolution_scale(Image* img);
-void show_david(Rect* r);
-
+// ***************** Non-Class functions *******************************
+// for credits
 void show_david(Rect* r)
 {
     ggprint8b(r, 16, 0xf3ab00, "David - The Sweaty One");
+}
+
+// *********** Resolution Utilities ***********************
+int resolution_scale(int width, int height)
+{
+    const float img_proportion = width / height;
+    const float resolution_proportion = gl.xres / gl.yres;
+    const bool  crop_height = resolution_proportion > img_proportion;
+    const bool  crop_width  = !crop_height;
+    float output = 0;
+    if (crop_height)
+        output = img_proportion * gl.xres/2;
+    if (crop_width)
+        output = img_proportion * gl.yres;
+    return output;
+}
+int resolution_scale(Image* img)
+{
+    return resolution_scale(img->width, img->height);
+}
+
+// *********** Animation for Title sceen *******************
+// void Entity::jump_edges();
+// void Entity::animate();
+void title_moto_physics(int frame, Animation animations[5])
+{
+    const int total_frames = 500;
+    const int section_count = 5;
+    gl.moto_side->animate(frame, animations, section_count, total_frames);
+}
+void title_render()
+{
+    //glClearColor(0.0, 0.0, 0.0, 1.0);
+    glClear(GL_COLOR_BUFFER_BIT);
+    const int wid = resolution_scale(&gl.background);
+    gl.background.show(wid, gl.xres/2, gl.yres/2, 0.0f);
+    gl.moto_side->render();
+    gl.dummy_button.render();
+}
+
+// ********** OpenGL Wrapper Functions ********************
+void draw_rect(float wid, float height)
+{
+    glBegin(GL_QUADS);
+        glTexCoord2i(0, 1); glVertex2i(-wid,-height);
+        glTexCoord2i(0, 0); glVertex2i(-wid, height);
+        glTexCoord2i(1, 0); glVertex2i( wid, height);
+        glTexCoord2i(1, 1); glVertex2i( wid,-height);
+    glEnd();
+}
+
+void pivotedRotate(float pivot_x_point, float pivot_y_point, float angle)
+{
+    glTranslatef(pivot_x_point, pivot_y_point, 0.0f);
+    glRotatef(angle, 0.0f, 0.0f, 1.0f);
+    glTranslatef(-pivot_x_point, -pivot_y_point, 0.0f);
 }
 
 // ***************** Image Method Implementations ***********************
@@ -86,6 +139,7 @@ unsigned char* Image::blackToAlpha()
         const int a = newdata[i*4+0] = data[i*3+0];
         const int b = newdata[i*4+1] = data[i*3+1];
         const int c = newdata[i*4+2] = data[i*3+2];
+        newdata[i*4+3] = (a|b|c);
         //-----------------------------------------------
         //Original approach:
         //newdata[3] = (newdata[0] + newdata[1] + newdata[2])/3
@@ -104,7 +158,6 @@ unsigned char* Image::blackToAlpha()
         // since this only checks for full transparency => full black
         //
         //-----------------------------------------------
-        newdata[i*4+3] = (a|b|c);
     }
     return newdata;
 }
@@ -134,6 +187,8 @@ float Percent::get()
     return this->val;
 }
 
+// ****************** Entity Method Implementations *************
+// **************************************************************
 Entity::Entity(float pos_x, float pos_y, float scale, 
         float angle, const char infile[]) : Image(infile)
 {
@@ -141,7 +196,6 @@ Entity::Entity(float pos_x, float pos_y, float scale,
     this->pos_y = pos_y;
     this->scale = scale;
     this->angle = angle;
-    //init_gl();
 }
 Entity::Entity(float pos_x, float pos_y, float scale, float angle,
         const char infile[], unsigned char color[3]) 
@@ -158,21 +212,49 @@ Entity::Entity(const char infile[]) : Image(infile)
     pos_y = 0;
     scale = 50.0f;
     angle = 0;
-    //init_gl();
 }
 void Entity::render()
 {
     this->show(scale, pos_x, pos_y, angle, flipped);
 }
 
-#define MOTO_SIZE 25
-// Calling Entity's constructor sets all shared variables 
-// and calls Image's constructor.
-Motorcycle::Motorcycle() :
-    Entity(250, 250, MOTO_SIZE, 0.0, "./images/Moto_bod.jpg")
-    // main entity default colorToAlpha white because jpg
+void Entity::jump_edges()
 {
-    // Everything but pedal can be left default or set by Entity constructor
+    while (pos_x < 0)
+        pos_x += gl.xres;
+    while (pos_x > gl.xres)
+        pos_x -= gl.xres;
+    while (pos_y < 0)
+        pos_y += gl.yres;
+    while (pos_y > gl.yres)
+        pos_y -= gl.yres;
+}
+
+void Entity::animate(int frame, Animation animations[],
+                                    int section_count, int total_frames)
+{
+    const int frame_num = total_frames / section_count;
+    for (int i = 0; i < section_count; i++) {
+        if (frame >= i*frame_num && frame < (i+1)*frame_num) {
+            pos_x  += animations[i].delta_x;
+            pos_y  += animations[i].delta_y;
+            angle  += animations[i].delta_angle;
+            flipped = animations[i].flipped;
+        }
+    }
+    
+    // Always jump edges. May not want to do this in the full animation
+    this->jump_edges();
+}
+
+// ****************** Motorcycle Method Implementations ********************
+// *************************************************************************
+#define MOTO_SIZE 25
+
+Motorcycle::Motorcycle() :
+    // main entity default colorToAlpha white because jpg
+    Entity(250, 250, MOTO_SIZE, 0.0, "./images/Moto_bod.jpg")
+{
     turn_sharpness = 2.5;
     pedal = Neutral;
 }
@@ -195,7 +277,9 @@ void Motorcycle::move()
     const float turn_acc = 0.3;
     const float vel = velocity.get();
     const float dir = turn_dir.get();
-    switch (pedal) { // Per linux
+
+    // Pedal acclarates
+    switch (pedal) {
     case Forward:
         velocity.set(vel + acceleration);
         break;
@@ -206,6 +290,8 @@ void Motorcycle::move()
         velocity.set(vel - acceleration);
         break;
     }
+
+    // Arrow keys change the turn direction
     this->set_turn();
     const float straighter_dir = dir > 0 ? dir - turn_acc : dir + turn_acc;
     const bool snap = dir*dir < turn_acc*turn_acc;
@@ -221,66 +307,52 @@ void Motorcycle::move()
         turn_dir.set(dir - turn_acc);
         break;
     }
-    angle += turn_sharpness*turn_dir.get()*vel;
+
+    // Moto drives in a circle regaurdless of speed
+    angle += turn_sharpness * turn_dir.get() * vel / scale * 25;
     while (angle < 0)
         angle += 360;
     while (angle > 0)
-        angle -= 360; // no integer overflows
+        angle -= 360;
+
+    // Update position
     const float rad = TO_RAD(angle);
     const float delta_x = vel * SPEED * std::cos(rad);
-    pos_x += delta_x;
     const float delta_y = vel * SPEED * std::sin(rad);
+    pos_x += delta_x;
     pos_y += delta_y;
-    // Motorcycle jumps on edge. May be changed later. 
-    if (pos_x < 0) // Wish I could make this a switch statement...
-        pos_x = gl.xres;
-    if (pos_x > gl.xres)
-        pos_x = 0;
-    if (pos_y < 0)
-        pos_y = gl.yres;
-    if (pos_y > gl.yres)
-        pos_y = 0;
+    jump_edges();
 }
 
 void Motorcycle::render()
 {
     const float head_angle = 10 * turn_sharpness * turn_dir.get();
-    Image* img = this;
-    const float height = scale * img->height/img->width;
-    glBindTexture(GL_TEXTURE_2D, img->texture);
+    const float height = scale * this->height/width;
+    const float whiteness_cutoff = 0.4f;
+    const float head_height = scale * head.height/head.width;
+    const float pivot_y = -head_height / 1.3;
+
     glColor4ub(255,255,255,255);
+    glEnable(GL_ALPHA_TEST);
+    glAlphaFunc(GL_GREATER, whiteness_cutoff);
+
+    // render body
+    glBindTexture(GL_TEXTURE_2D, texture);
     glPushMatrix();
         glTranslatef(pos_x, pos_y, 0.0f);
-        glEnable(GL_ALPHA_TEST);
-        const float whiteness_cutoff = 0.4f;
-        glAlphaFunc(GL_GREATER, whiteness_cutoff);
         glRotatef(angle, 0.0f, 0.0f, 1.0f);
-        //render the body
-        glBegin(GL_QUADS);
-        // no flipped for now
-            glTexCoord2i(0, 1); glVertex2i(-scale,-height);
-            glTexCoord2i(0, 0); glVertex2i(-scale, height);
-            glTexCoord2i(1, 0); glVertex2i( scale, height);
-            glTexCoord2i(1, 1); glVertex2i( scale,-height);
-        glEnd();
-        const float head_height = scale * head.height/head.width;
+        draw_rect(scale, height);
+
+        // render head
         glBindTexture(GL_TEXTURE_2D, head.texture);
-        // render the head
         glPushMatrix();
-            // translation after rotation effectively changes the pivot point
-            const float pivot_offset = head_height / 1.3;
-            glTranslatef(0.0f, height*0.9-pivot_offset, 0.0f);
-            glRotatef(head_angle, 0.0f, 0.0f, 1.0f);
-            glTranslatef(0.0f, pivot_offset, 0.0f);
-            glBegin(GL_QUADS);
-                glTexCoord2i(0, 1); glVertex2i(-scale,-head_height);
-                glTexCoord2i(0, 0); glVertex2i(-scale, head_height);
-                glTexCoord2i(1, 0); glVertex2i( scale, head_height);
-                glTexCoord2i(1, 1); glVertex2i( scale,-head_height);
-            glEnd();
-            glPopMatrix();
+            glTranslatef(0.0f, height*0.9, 0.0f);
+            pivotedRotate(0.0f, pivot_y, head_angle);
+            draw_rect(scale, head_height);
         glPopMatrix();
     glPopMatrix();
+
+    // cleanup
     glDisable(GL_ALPHA_TEST);
     glBindTexture(GL_TEXTURE_2D, 0);
 }
@@ -291,77 +363,8 @@ void Motorcycle::init_gl()
     head.init_gl();
 }
 
-// *********** Resolution Utilities ***********************
-int resolution_scale(int width, int height)
-{
-    float img_proportion = width / height;
-    float resolution_proportion = gl.xres / gl.yres;
-    int output = 0;
-    if (resolution_proportion > img_proportion) {
-        output = img_proportion * gl.xres/2;
-    } else {
-        output = img_proportion * gl.yres;
-    }
-    return output;
-}
-
-int resolution_scale(Image* img)
-{
-    return resolution_scale(img->width, img->height);
-}
-
-// *********** Animation for Title sceen *******************
-// This setup may be used for animations more generally.
-// For now, the particulars of the animation and images are hard coded.
-// ********************************************************
-void Entity::jump_edges()
-{
-    while (pos_x < 0)
-        pos_x += gl.xres;
-    while (pos_x > gl.xres)
-        pos_x -= gl.xres;
-    while (pos_y < 0)
-        pos_y += gl.xres;
-    while (pos_y > gl.yres)
-        pos_y -= gl.yres;
-}
-
-void Entity::animate(int frame, Animation animations[],
-                                    int section_count, int total_frames)
-{
-    const int frame_num = total_frames / section_count;
-    for (int i = 0; i < section_count; i++) {
-        if (frame >= i*frame_num && frame < (i+1)*frame_num) {
-            pos_x  += animations[i].delta_x;
-            pos_y  += animations[i].delta_y;
-            angle  += animations[i].delta_angle;
-            flipped = animations[i].flipped;
-        }
-    }
-    
-    // Always jump edges. May not want to do this in the full animation
-    this->jump_edges();
-}
-void title_moto_physics(int frame, Animation animations[5])
-{
-    const int total_frames = 500;
-    const int section_count = 5;
-    gl.moto_side->animate(frame, animations, section_count, total_frames);
-}
-
-
-void title_render()
-{
-    //glClearColor(0.0, 0.0, 0.0, 1.0);
-    glClear(GL_COLOR_BUFFER_BIT);
-    const int wid = resolution_scale(&gl.background);
-    gl.background.show(wid, gl.xres/2, gl.yres/2, 0.0f);
-    gl.moto_side->render();
-    gl.dummy_button.render();
-}
-
 // ***************** Mouse clickable Buttons *************************
-//
+// *******************************************************************
 
 Button::Button(float x, float y)
 {
@@ -385,21 +388,14 @@ void Button::write_text()
     ggprint8b(&r, 16, color, text);
 }
 
-// All that needs to be called to render. Writes text as well.
 void Button::render()
 {
+    glColor4ub(color[0], color[1], color[2], 255);
     glPushMatrix();
-        glColor4ub(color[0], color[1], color[2], 255);
         glTranslatef(pos[0], pos[1], 0.0f);
-        glBegin(GL_QUADS);
-            const int width = dims[0];
-            const int height = dims[1];
-            glVertex2f(-width, -height);
-            glVertex2f(-width,  height);
-            glVertex2f( width,  height);
-            glVertex2f( width, -height);
-        glEnd();
+        draw_rect(dims[0], dims[1]);
     glPopMatrix();
+
     write_text();
 }
 
@@ -415,6 +411,7 @@ void Button::set_text(const char new_text[])
 {
     strcpy(text, new_text);
 }
+
 void Button::click(int x, int y)
 {
     if (is_inside(x, y))

@@ -81,30 +81,24 @@ class Entity : public Image { // Wrapper around image that stores important disp
 
 class Motorcycle : public Entity {
     private:
-/*
-        float pos_x;
-        float pos_y;
-        float angle;
-*/
-        bool left;
-        bool right;
         Percent velocity;
-        Pedal pedal;
-        Turn turn;
-        unsigned char head_trans_clr[3] {255,255,255}; // white
-        Image head {"./images/Moto_head.jpg", head_trans_clr};
+        Percent turn_dir;
+        Turn turning;
+        Image head {"./images/Moto_head.jpg"}; // white alphaColor
         void set_turn();
-        //Entity* pic;
     public:
+        bool right;
+        bool left;
+        float turn_sharpness;
+        Pedal pedal;
         Motorcycle();
-
-        void set_pedal(Pedal pedal);
+        //void set_pedal(Pedal pedal);
         void move();
         void render();
-        void set_left();
-        void unleft();
-        void set_right();
-        void unright();
+        //void set_left();
+        //void unleft();
+        //void set_right();
+        //void unright();
         void init_gl();
 };
 

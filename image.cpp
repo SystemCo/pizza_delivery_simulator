@@ -29,7 +29,12 @@ Image::Image(const char *fname)
     char name[40];
     strcpy(name, fname);
     const int slen = strlen(name);
-    int ppmFlag = strncmp(name+(slen-4), ".ppm", 4) == 0;
+    const int ppmFlag = strncmp(name+(slen-4), ".ppm", 4) == 0;
+    is_jpg = strncmp(name+(slen-4), ".jpg", 4) == 0;
+    const unsigned char clr_byte = is_jpg ? 255 : 0;
+    for (int i=0; i<3; i++)
+        alphaColor[i] = clr_byte;
+    //jpg == white, everything else == black
     char ppmname[80];
     if (ppmFlag) {
         strcpy(ppmname, name);
@@ -102,7 +107,6 @@ void Image::show(float wid, int pos_x, int pos_y, float angle, int flipped)
     glBindTexture(GL_TEXTURE_2D, 0); // Unbinds texture
 }
 
-
 void Image::init_gl()
 {
     glGenTextures(1, &texture);
@@ -112,61 +116,16 @@ void Image::init_gl()
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);
     unsigned char *silhouetteData;
-    if (color_to_alpha)
-        silhouetteData = this->colorToAlpha(color);
+    bool is_black = !(alphaColor[0]||alphaColor[1]||alphaColor[2]);
+    if (is_black)
+        silhouetteData = this->blackToAlpha();
     else
-        silhouetteData = this->buildAlphaData();
+        silhouetteData = this->colorToAlpha(alphaColor);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0,
             GL_RGBA, GL_UNSIGNED_BYTE, silhouetteData);
     free(silhouetteData);
 }
 
-
-unsigned char* Image::buildAlphaData()
-{
-    //Add 4th component to an RGB stream...
-    //RGBA
-    //When you do this, OpenGL is able to use the A component to determine
-    //transparency information.
-    //It is used in this application to erase parts of a texture-map from view.
-    //Edited by David Carter, hoping to improve:
-    //  Memory safety and Readabilty
-    //int a,b,c;
-    // Placed inside for loop for garunteed orthogonality
-    // May be an anti-optimization. Untested.
-    unsigned char *newdata, *ptr;
-    unsigned char *data = (unsigned char *)this->data;
-    newdata = (unsigned char *)malloc(this->width * this->height * 4);
-    ptr = newdata;
-    for (int i=0; i<this->width * this->height * 3; i+=3) {
-        const int a = ptr[0] = data[0]; // *(data+0);
-        const int b = ptr[1] = data[1]; // *(data+1);
-        const int c = ptr[2] = data[2]; // Array notation from David
-        //-----------------------------------------------
-        //get largest color component...
-        //*(ptr+3) = (unsigned char)((
-        //		(int)*(ptr+0) +
-        //		(int)*(ptr+1) +
-        //		(int)*(ptr+2)) / 3);
-        //d = a;
-        //if (b >= a && b >= c) d = b;
-        //if (c >= a && c >= b) d = c;
-        //*(ptr+3) = d;
-        //-----------------------------------------------
-        //this code optimizes the commented code above.
-        //code contributed by student: Chris Smith
-        //
-        //*(ptr+3) = (a|b|c);
-        ptr[3] = (a|b|c);
-        // Array notation by David
-        //-----------------------------------------------
-        // ptr += 4;
-        // data += 3;
-        ptr = &ptr[4];
-        data = &data[3];
-    }
-    return newdata;
-}
 // rainforest end
 
 // =============================================================

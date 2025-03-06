@@ -363,27 +363,29 @@ int check_keys(XEvent *e)
     //Log("key: %i\n", key);
     if (e->type == KeyRelease) {
         switch (key) {
+            case XK_a:
+                gl.bike.turn_sharpness = 2.5;
             case XK_Shift_L:
             case XK_Shift_R:
                 shift = false;
                 break;
             case XK_Left:
-                gl.bike.unleft();
+                gl.bike.left = false;
                 break;
             case XK_Right:
-                gl.bike.unright();
+                gl.bike.right = false;
                 break;
             case XK_Up:
-                gl.bike.set_pedal(Neutral);
+                gl.bike.pedal = Neutral;
                 break;
             case XK_Down:
-                gl.bike.set_pedal(Neutral);
+                gl.bike.pedal = Neutral;
                 break;
         }
         return 0;
     }
     //if (e->type == KeyPress) {
-    // we return i not keypress or keyrelease and return if it is keyrelease
+    // we return if not keypress or keyrelease and return if it is keyrelease
     // so this if guard is not strictly needed.
     //
     (void)shift; // I don't understand what this line does.
@@ -392,6 +394,8 @@ int check_keys(XEvent *e)
     // Currently would break pause and credits
     gl.screen = Playing;
     switch (key) {
+        case XK_a:
+            gl.bike.turn_sharpness = 5.0;
         case XK_Shift_L:
         case XK_Shift_R:
             shift = true;
@@ -411,16 +415,16 @@ int check_keys(XEvent *e)
             gl.show_bike = !gl.show_bike;
             break;
         case XK_Left:
-            gl.bike.set_left();
+            gl.bike.left = true;
             break;
         case XK_Right:
-            gl.bike.set_right();
+            gl.bike.right = true;
             break;
         case XK_Down:
-            gl.bike.set_pedal(Backward);
+            gl.bike.pedal = Backward;
             break;
         case XK_Up:
-            gl.bike.set_pedal(Forward);
+            gl.bike.pedal = Forward;
         case XK_equal:
             break;
         case XK_minus:

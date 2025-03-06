@@ -4,9 +4,9 @@
 
 class Image { // from the rainforest framework
 private:
-    unsigned char* colorToAlpha(unsigned char color[3]);
-    unsigned char color[3];
-    int color_to_alpha = false;
+    unsigned char* colorToAlpha(unsigned char alphaColor[3]);
+    unsigned char alphaColor[3]; // default to black
+    bool is_jpg;
 public:
     int width, height;
     unsigned char *data;
@@ -14,9 +14,9 @@ public:
 
     ~Image() { delete [] data; }
     Image(const char *fname);
-    Image(const char *fname, unsigned char color[3]);
+    Image(const char *fname, unsigned char alphaColor[3]);
     void init_gl();
-    unsigned char* buildAlphaData();
+    unsigned char* blackToAlpha();
     void show(float wid, int pos_x, int pos_y, float angle, int flipped);
     // Overload not flipped by default
     void show(float wid, int pos_x, int pos_y, float angle);

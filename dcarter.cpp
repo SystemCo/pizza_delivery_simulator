@@ -41,11 +41,10 @@ void Image::show(float wid, int pos_x, int pos_y, float angle)
     this->show(wid, pos_x, pos_y, angle, 0);
 }
 
-Image::Image(const char *fname, unsigned char color[3]) : Image(fname)
+Image::Image(const char *fname, unsigned char alphaColor[3]) : Image(fname)
 {
     for (int i = 0; i<3; i++)
-        this->color[i] = color[i];
-    color_to_alpha = true;
+        this->alphaColor[i] = alphaColor[i];
 }
 
 unsigned char* Image::colorToAlpha(unsigned char color[3])
@@ -68,6 +67,49 @@ unsigned char* Image::colorToAlpha(unsigned char color[3])
     return newdata;
 }
 
+unsigned char* Image::blackToAlpha()
+{
+    //Add 4th component to an RGB stream...
+    //RGBA
+    //When you do this, OpenGL is able to use the A component to determine
+    //transparency information.
+    //It is used in this application to erase parts of a texture-map from view.
+    //Edited by David Carter, hoping to improve:
+    //
+    //This is an optimized equivalent to colorToAlpha(black)
+    //ppm file format has no alpha channel. Alpha pixels are converted to black
+    //
+    unsigned char *newdata;
+    unsigned char *data = (unsigned char *)this->data;
+    newdata = (unsigned char *)malloc(this->width * this->height * 4);
+    for (int i=0; i<this->width * this->height; i++) {
+        const int a = newdata[i*4+0] = data[i*3+0];
+        const int b = newdata[i*4+1] = data[i*3+1];
+        const int c = newdata[i*4+2] = data[i*3+2];
+        //-----------------------------------------------
+        //Original approach:
+        //newdata[3] = (newdata[0] + newdata[1] + newdata[2])/3
+        //Max approach:
+        //newdata[3] = MAX(a, b, c);
+        //Chris Smith approach:
+        //newdata[3] = (a|b|c);
+        //
+        // All approaches represent "The blacker it is, the lower the alpha" 
+        //
+        // Similarly, all will return 0, only when pixel is perfect black
+        //
+        // Chris Smith's is the most efficient
+        // and is perfectly sufficient when paired with
+        // glAlphaFunc(GL_GREATER, 0.0f);
+        // since this only checks for full transparency => full black
+        //
+        //-----------------------------------------------
+        newdata[i*4+3] = (a|b|c);
+    }
+    return newdata;
+}
+
+// *********************** Percent methods ***********************
 Percent::Percent()
 {
     this->val = 0;
@@ -126,54 +168,33 @@ void Entity::render()
 #define MOTO_SIZE 25
 // Calling Entity's constructor sets all shared variables 
 // and calls Image's constructor.
-unsigned char white[3]{255, 255, 255};
-//unsigned char red[3]{255, 0, 0};
 Motorcycle::Motorcycle() :
-    Entity(250, 250, MOTO_SIZE, 0.0, "./images/Moto_bod.jpg", white)
+    Entity(250, 250, MOTO_SIZE, 0.0, "./images/Moto_bod.jpg")
+    // main entity default colorToAlpha white because jpg
 {
     // Everything but pedal can be left default or set by Entity constructor
+    turn_sharpness = 2.5;
     pedal = Neutral;
-}
-
-// The sea of boilerplate. It's just to make other functions less verbose. 
-void Motorcycle::set_pedal(Pedal pedal)
-{
-    this->pedal = pedal;
-}
-void Motorcycle::set_left()
-{
-    this->left = true;
-}
-void Motorcycle::unleft()
-{
-    this->left = false;
-}
-void Motorcycle::set_right()
-{
-    this->right = true;
-}
-void Motorcycle::unright()
-{
-    this->right = false;
 }
 
 // Go straight when not pressing buttons or when pressing L & R buttons
 void Motorcycle::set_turn()
 {
     if ( this->left && !this->right)
-        this->turn = Left;
+        this->turning = Left;
     else if ( this->right && !this->left)
-        this->turn = Right;
+        this->turning = Right;
     else
-        this->turn = Straight;
+        this->turning = Straight;
 }
 
 void Motorcycle::move()
 {
     // Maybe this should go in the header file?
-    const float turn_speed = 2.0f;
     const float acceleration = 0.1;
+    const float turn_acc = 0.3;
     const float vel = velocity.get();
+    const float dir = turn_dir.get();
     switch (pedal) { // Per linux
     case Forward:
         velocity.set(vel + acceleration);
@@ -186,16 +207,21 @@ void Motorcycle::move()
         break;
     }
     this->set_turn();
-    switch (turn) {
+    const float straighter_dir = dir > 0 ? dir - turn_acc : dir + turn_acc;
+    const bool snap = dir*dir < turn_acc*turn_acc;
+    const float straightened_dir = snap ? 0 : straighter_dir;
+    switch (turning) {
     case Straight:
+        turn_dir.set(straightened_dir);
         break;
     case Left:
-        angle += turn_speed;
+        turn_dir.set(dir + turn_acc);
         break;
     case Right:
-        angle -= turn_speed;
+        turn_dir.set(dir - turn_acc);
         break;
     }
+    angle += turn_sharpness*turn_dir.get()*vel;
     while (angle < 0)
         angle += 360;
     while (angle > 0)
@@ -218,18 +244,7 @@ void Motorcycle::move()
 
 void Motorcycle::render()
 {
-    float head_angle = 0;
-    const float turn_delta = 20;
-    switch(turn) {
-    case Straight:
-        break;
-    case Left:
-        head_angle += turn_delta;
-        break;
-    case Right:
-        head_angle -= turn_delta;
-        break;
-    }
+    const float head_angle = 10 * turn_sharpness * turn_dir.get();
     Image* img = this;
     const float height = scale * img->height/img->width;
     glBindTexture(GL_TEXTURE_2D, img->texture);

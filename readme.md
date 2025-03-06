@@ -36,8 +36,10 @@ Now you can!
 ### David
 * Sunday
     * Typically free all day after 2:00. Will notify if not.
-* Monday - Wednesday
+* Monday - Tuesday
     * Available: 10:00 - 11:00, 5:00 - 9:00
+* Wednesday
+    * Available: 10:00 - 11:00, 5:00 - 6:30
 * Thursday
     * Available: 5:00 - 9:00
 * Friday
@@ -77,8 +79,8 @@ Available: 10:00-11:00, 2:00-5:30
     * Motorcycle should only turn while moving. i.e. the wheel should not slide.
     * Assigned on: Tuesday 03/04/25
     * Assigned by: David
-    * Due by:      Teusday 03/11/25
-    * Status       Incomplete
+    * Due by:      Tuesday 03/11/25
+    * Status       Partially complete
 
 ### Fenoon
 * Add name to credits

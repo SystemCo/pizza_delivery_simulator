@@ -365,6 +365,10 @@ int check_keys(XEvent *e)
         switch (key) {
             case XK_a:
                 gl.bike.turn_sharpness = 2.5;
+                break;
+            case XK_s:
+                gl.bike.scale = 25;
+                break;
             case XK_Shift_L:
             case XK_Shift_R:
                 shift = false;
@@ -396,6 +400,10 @@ int check_keys(XEvent *e)
     switch (key) {
         case XK_a:
             gl.bike.turn_sharpness = 5.0;
+            break;
+        case XK_s:
+            gl.bike.scale = 10;
+            break;
         case XK_Shift_L:
         case XK_Shift_R:
             shift = true;

@@ -13,20 +13,25 @@ struct Animation {
     float delta_angle;
     int   flipped;
 };
-// Calls Enity::animate_500_frames on gl.moto_side
+
+// Entity::animate() wrapper
 void title_moto_physics(int frame, Animation animations[5]);
 void title_physics();
 void title_render();
 
-//
 // get the minimum scale for an image that will completely fill a given resolution     
 int  resolution_scale(int width, int height);
 int  resolution_scale(Image* img);
 
+// Draws rectangle on the current gl stack frame, with current color and texture
+// Position and angle must be set using glTranslate on the current stack frame
+void draw_rect(float width, float height);
+
+// Rotates a gl stack frame about a given pivot point
+void pivotedRotate(float pivot_point_x, float pivot_point_y, float angle);  
+
 enum Pedal { Forward, Neutral, Backward };
 enum Turn  { Left, Straight, Right };
-
-//void show_image(float wid, int pos_x, int pos_y, float angle, Image* img);
 
 class Percent { // float from -1 to 1
     private:
@@ -64,7 +69,7 @@ class Entity : public Image { // Wrapper around image that stores important disp
     // that index does not go out of bounds.
     //
     // Ex: Animation animations[3]; 
-    // my_entity.animate_500_frames(499, animations, 4, 500); 
+    // my_entity.animate(499, animations, 4, 500); 
     // will produce out of bounds error.
     //
     // Ex correct call:
@@ -78,7 +83,6 @@ class Entity : public Image { // Wrapper around image that stores important disp
 };
 
 // Models the main playable character
-
 class Motorcycle : public Entity {
     private:
         Percent velocity;
@@ -92,13 +96,8 @@ class Motorcycle : public Entity {
         float turn_sharpness;
         Pedal pedal;
         Motorcycle();
-        //void set_pedal(Pedal pedal);
         void move();
         void render();
-        //void set_left();
-        //void unleft();
-        //void set_right();
-        //void unright();
         void init_gl();
 };
 

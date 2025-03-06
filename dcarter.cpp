@@ -61,7 +61,6 @@ void title_moto_physics(int frame, Animation animations[5])
 }
 void title_render()
 {
-    //glClearColor(0.0, 0.0, 0.0, 1.0);
     glClear(GL_COLOR_BUFFER_BIT);
     const int wid = resolution_scale(&gl.background);
     gl.background.show(wid, gl.xres/2, gl.yres/2, 0.0f);

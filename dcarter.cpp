@@ -31,6 +31,20 @@ void show_david(Rect* r)
     ggprint8b(r, 16, 0xf3ab00, "David - The Sweaty One");
 }
 
+// **************** Convenient Math funcs *****************************
+float abs_diff(float a, float b)
+{
+    return a > b ? a - b : b - a;
+}
+
+float approach(float follower, float leader, float rate)
+{
+    if (abs_diff(follower, leader) <= rate)
+        return leader;
+    else
+        return follower > leader ? follower - rate : follower + rate;
+}
+
 // *********** Resolution Utilities ***********************
 int resolution_scale(int width, int height)
 {
@@ -101,20 +115,17 @@ Image::Image(const char *fname, unsigned char alphaColor[3]) : Image(fname)
 
 unsigned char* Image::colorToAlpha(unsigned char color[3])
 {
-    unsigned char *newdata, *ptr;
+    unsigned char *newdata;
     unsigned char *data = (unsigned char *)this->data;
-    newdata = (unsigned char *)malloc(this->width * this->height * 4);
-    ptr = newdata;
-    for (int i=0; i<this->width * this->height * 3; i+=3) {
-        const int a = ptr[0] = data[0];
-        const int b = ptr[1] = data[1];
-        const int c = ptr[2] = data[2];
-        const int r_delta = color[0] > a ? color[0] - a : a - color[0];
-        const int g_delta = color[1] > b ? color[1] - b : b - color[1];
-        const int b_delta = color[2] > c ? color[2] - c : c - color[2];
-        ptr[3] = (r_delta + g_delta + b_delta)/3;
-        ptr = &ptr[4];
-        data = &data[3];
+    newdata = (unsigned char *)malloc(width * height * 4);
+    for (int i=0; i < width * height; i++) {
+        const int r = newdata[ i*4 + 0] = data[ i*3 + 0];
+        const int g = newdata[ i*4 + 1] = data[ i*3 + 1];
+        const int b = newdata[ i*4 + 2] = data[ i*3 + 2];
+        const int r_delta = abs_diff(color[0], r);
+        const int g_delta = abs_diff(color[1], g);
+        const int b_delta = abs_diff(color[2], b);
+        newdata[i*4 + 3] = (r_delta + g_delta + b_delta)/3;
     }
     return newdata;
 }
@@ -263,21 +274,6 @@ void Motorcycle::set_turn()
         this->turning = Right;
     else
         this->turning = Straight;
-}
-
-float abs_diff(float a, float b)
-{
-    if (a > b)
-        return a - b;
-    else
-        return b - a;
-}
-float approach(float follower, float leader, float rate)
-{
-    if (abs_diff(follower, leader) <= rate)
-        return leader;
-    else
-        return follower > leader ? follower - rate : follower + rate;
 }
 
 void Motorcycle::move()

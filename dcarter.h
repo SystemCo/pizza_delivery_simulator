@@ -86,7 +86,8 @@ class Entity : public Image { // Wrapper around image that stores important disp
 class Motorcycle : public Entity {
     private:
         Percent velocity;
-        Percent turn_dir;
+        //Percent turn_dir;
+        float direction = 0;
         Turn turning;
         Image head {"./images/Moto_head.jpg"}; // white alphaColor
         void set_turn();

@@ -119,14 +119,27 @@ unsigned char* Image::colorToAlpha(unsigned char color[3])
     return newdata;
 }
 
+//-----------------------------------------------
+//Original approach:
+//newdata[3] = (newdata[0] + newdata[1] + newdata[2])/3
+//Max approach:
+//newdata[3] = MAX(a, b, c);
+//Chris Smith approach:
+//newdata[3] = (a|b|c);
+//
+// All approaches represent "The blacker it is, the lower the alpha" 
+//
+// Similarly, all will return 0, only when pixel is perfect black
+//
+// Chris Smith's is the most efficient
+// and is perfectly sufficient when paired with
+// glAlphaFunc(GL_GREATER, 0.0f);
+// since this only checks for full transparency => full black
+//-----------------------------------------------
 unsigned char* Image::blackToAlpha()
 {
     //Add 4th component to an RGB stream...
     //RGBA
-    //When you do this, OpenGL is able to use the A component to determine
-    //transparency information.
-    //It is used in this application to erase parts of a texture-map from view.
-    //Edited by David Carter, hoping to improve:
     //
     //This is an optimized equivalent to colorToAlpha(black)
     //ppm file format has no alpha channel. Alpha pixels are converted to black
@@ -139,24 +152,6 @@ unsigned char* Image::blackToAlpha()
         const int b = newdata[i*4+1] = data[i*3+1];
         const int c = newdata[i*4+2] = data[i*3+2];
         newdata[i*4+3] = (a|b|c);
-        //-----------------------------------------------
-        //Original approach:
-        //newdata[3] = (newdata[0] + newdata[1] + newdata[2])/3
-        //Max approach:
-        //newdata[3] = MAX(a, b, c);
-        //Chris Smith approach:
-        //newdata[3] = (a|b|c);
-        //
-        // All approaches represent "The blacker it is, the lower the alpha" 
-        //
-        // Similarly, all will return 0, only when pixel is perfect black
-        //
-        // Chris Smith's is the most efficient
-        // and is perfectly sufficient when paired with
-        // glAlphaFunc(GL_GREATER, 0.0f);
-        // since this only checks for full transparency => full black
-        //
-        //-----------------------------------------------
     }
     return newdata;
 }
@@ -212,6 +207,7 @@ Entity::Entity(const char infile[]) : Image(infile)
     scale = 50.0f;
     angle = 0;
 }
+
 void Entity::render()
 {
     this->show(scale, pos_x, pos_y, angle, flipped);
@@ -269,13 +265,27 @@ void Motorcycle::set_turn()
         this->turning = Straight;
 }
 
+float abs_diff(float a, float b)
+{
+    if (a > b)
+        return a - b;
+    else
+        return b - a;
+}
+float approach(float follower, float leader, float rate)
+{
+    if (abs_diff(follower, leader) <= rate)
+        return leader;
+    else
+        return follower > leader ? follower - rate : follower + rate;
+}
+
 void Motorcycle::move()
 {
     // Maybe this should go in the header file?
     const float acceleration = 0.1;
-    const float turn_acc = 0.3;
+    const float turn_rate = 0.6;
     const float vel = velocity.get();
-    const float dir = turn_dir.get();
 
     // Pedal acclarates
     switch (pedal) {
@@ -291,24 +301,23 @@ void Motorcycle::move()
     }
 
     // Arrow keys change the turn direction
+    float goal_dir = 0;
     this->set_turn();
-    const float straighter_dir = dir > 0 ? dir - turn_acc : dir + turn_acc;
-    const bool snap = dir*dir < turn_acc*turn_acc;
-    const float straightened_dir = snap ? 0 : straighter_dir;
     switch (turning) {
     case Straight:
-        turn_dir.set(straightened_dir);
+        goal_dir = 0;
         break;
     case Left:
-        turn_dir.set(dir + turn_acc);
+        goal_dir = turn_sharpness;
         break;
     case Right:
-        turn_dir.set(dir - turn_acc);
+        goal_dir = -1*turn_sharpness;
         break;
     }
+    direction = approach(direction, goal_dir, turn_rate);
 
     // Moto drives in a circle regaurdless of speed
-    angle += turn_sharpness * turn_dir.get() * vel / scale * 25;
+    angle += direction * vel / scale * 25;
     while (angle < 0)
         angle += 360;
     while (angle > 0)
@@ -325,7 +334,7 @@ void Motorcycle::move()
 
 void Motorcycle::render()
 {
-    const float head_angle = 10 * turn_sharpness * turn_dir.get();
+    const float head_angle = 10 * direction;
     const float height = scale * this->height/width;
     const float whiteness_cutoff = 0.4f;
     const float head_height = scale * head.height/head.width;

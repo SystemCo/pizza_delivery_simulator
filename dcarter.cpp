@@ -197,8 +197,7 @@ float Percent::get()
 Entity::Entity(float pos_x, float pos_y, float scale, 
         float angle, const char infile[]) : Image(infile)
 {
-    this->pos_x = pos_x;
-    this->pos_y = pos_y;
+    pos = {pos_x, pos_y};
     this->scale = scale;
     this->angle = angle;
 }
@@ -206,34 +205,32 @@ Entity::Entity(float pos_x, float pos_y, float scale, float angle,
         const char infile[], unsigned char color[3]) 
         : Image(infile, color)
 {
-    this->pos_x = pos_x;
-    this->pos_y = pos_y;
+    pos = {pos_x, pos_y};
     this->scale = scale;
     this->angle = angle;
 }
 Entity::Entity(const char infile[]) : Image(infile)
 {
-    pos_x = 0;
-    pos_y = 0;
+    pos = {0, 0};
     scale = 50.0f;
     angle = 0;
 }
 
 void Entity::render()
 {
-    this->show(scale, pos_x, pos_y, angle, flipped);
+    this->show(scale, pos.x, pos.y, angle, flipped);
 }
 
 void Entity::jump_edges()
 {
-    while (pos_x < 0)
-        pos_x += gl.xres;
-    while (pos_x > gl.xres)
-        pos_x -= gl.xres;
-    while (pos_y < 0)
-        pos_y += gl.yres;
-    while (pos_y > gl.yres)
-        pos_y -= gl.yres;
+    while (pos.x < 0)
+        pos.x += gl.xres;
+    while (pos.x > gl.xres)
+        pos.x -= gl.xres;
+    while (pos.y < 0)
+        pos.y += gl.yres;
+    while (pos.y > gl.yres)
+        pos.y -= gl.yres;
 }
 
 void Entity::animate(int frame, Animation animations[],
@@ -242,8 +239,8 @@ void Entity::animate(int frame, Animation animations[],
     const int frame_num = total_frames / section_count;
     for (int i = 0; i < section_count; i++) {
         if (frame >= i*frame_num && frame < (i+1)*frame_num) {
-            pos_x  += animations[i].delta_x;
-            pos_y  += animations[i].delta_y;
+            pos.x  += animations[i].delta_x;
+            pos.y  += animations[i].delta_y;
             angle  += animations[i].delta_angle;
             flipped = animations[i].flipped;
         }
@@ -323,8 +320,8 @@ void Motorcycle::move()
     const float rad = TO_RAD(angle);
     const float delta_x = vel * SPEED * std::cos(rad);
     const float delta_y = vel * SPEED * std::sin(rad);
-    pos_x += delta_x;
-    pos_y += delta_y;
+    pos.x += delta_x;
+    pos.y += delta_y;
     jump_edges();
 }
 
@@ -343,7 +340,7 @@ void Motorcycle::render()
     // render body
     glBindTexture(GL_TEXTURE_2D, texture);
     glPushMatrix();
-        glTranslatef(pos_x, pos_y, 0.0f);
+        glTranslatef(pos.x, pos.y, 0.0f);
         glRotatef(angle, 0.0f, 0.0f, 1.0f);
         draw_rect(scale, height);
 
@@ -374,6 +371,7 @@ Button::Button(float x, float y)
 {
     this->set_text("Loren Ipsum");
     this->set_color(255, 255, 0);
+    pos = {x , y};
     this->set_pos(x, y);
     this->set_dims(100, 50);
 }
@@ -387,8 +385,8 @@ void Button::write_text()
     Rect r;
     const int text_height = 5;
     const int color = 0x000000;
-    r.bot = pos[1] - text_height;
-    r.left = pos[0];
+    r.bot = pos.y - text_height;
+    r.left = pos.x;
     ggprint8b(&r, 16, color, text);
 }
 
@@ -396,7 +394,7 @@ void Button::render()
 {
     glColor4ub(color[0], color[1], color[2], 255);
     glPushMatrix();
-        glTranslatef(pos[0], pos[1], 0.0f);
+        glTranslatef(pos.x, pos.y, 0.0f);
         draw_rect(dims[0], dims[1]);
     glPopMatrix();
 
@@ -405,10 +403,10 @@ void Button::render()
 
 int Button::is_inside(int x, int y)
 {
-return   y <= (pos[1] + dims[1]) &&
-         y >= (pos[1] - dims[1]) &&
-         x <= (pos[0] + dims[0]) &&
-         x >= (pos[0] - dims[0]);
+return   y <= (pos.y + dims[1]) &&
+         y >= (pos.y - dims[1]) &&
+         x <= (pos.x + dims[0]) &&
+         x >= (pos.x - dims[0]);
 }
 
 void Button::set_text(const char new_text[])

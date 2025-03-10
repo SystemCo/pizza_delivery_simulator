@@ -449,7 +449,7 @@ void physics()
 void render()
 {
     Rect r;
-    //glClearColor(0.0, 0.0, 0.0, 1.0);
+    glClearColor(0.0, 0.0, 0.0, 1.0);
     glClear(GL_COLOR_BUFFER_BIT);
     int wid = resolution_scale(&gl.background);
     gl.background.show(wid, gl.xres/2, gl.yres/2, 0.0f);

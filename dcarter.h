@@ -14,6 +14,11 @@ struct Animation {
     int   flipped;
 };
 
+struct Position {
+    float x;
+    float y;
+};
+
 // Entity::animate() wrapper
 void title_moto_physics(int frame, Animation animations[5]);
 void title_physics();
@@ -45,8 +50,7 @@ class Percent { // float from -1 to 1
 
 class Entity : public Image { // Wrapper around image that stores important display info
     public:
-    float pos_x;
-    float pos_y;
+    Position pos;
     int flipped;
     float scale;
     float angle;
@@ -111,15 +115,15 @@ private:
         unsigned char color[3] { 255, 0, 255 }; // bytes, not characters
         void write_text(); // Button text color is always black for now
 public:
-        float pos[2];
+        Position pos;
         int  dims[2];
         // All that needs to be called to render. Writes text internally.
         void render();
         Button();
         Button(float x_pos, float y_pos);
         // The sea of setup
-        void set_pos(float x, float y)  {  pos[0]   = x;  pos[1]   = y; }
-        void set_dims(int  x, int   y)  { dims[0]   = x; dims[1]   = y; }
+        void set_pos(float x, float y)  {  pos.x  = x;   pos.y = y; }
+        void set_dims(int  x, int   y)  { dims[0] = x; dims[1] = y; }
         void set_color(char r, char g, char b) 
         {
             color[0] = r; color[1] = g; color [2] = b;

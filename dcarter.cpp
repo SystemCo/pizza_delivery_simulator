@@ -228,7 +228,7 @@ void Entity::render()
 
 void Entity::jump_edges()
 {
-    const int left_edge = 
+    //const int left_edge = 
     while (pos.x < 0)
         pos.x += gl.xres;
     while (pos.x > gl.xres)

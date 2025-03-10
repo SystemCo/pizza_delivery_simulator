@@ -17,9 +17,8 @@ public:
         Motorcycle bike;
         Entity* moto_side;
         Button dummy_button;
-        //Image background = Image("./images/stars.gif");
-        //Image background = Image("./images/Background2.png");
-        Image background {"./images/Background2.png"};
+        //Image background {"./images/Background2.png"};
+        Image background {"./images/map1.png"};
         ScreenState screen;
         //TODO: 
         // implement switch statements in main func as well as other funcs

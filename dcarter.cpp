@@ -24,14 +24,16 @@
  */
 extern Global gl;
 
-// ***************** Non-Class functions *******************************
+// ***************** Non-Class functions **********************************
+// ************************************************************************
+//
 // for credits
 void show_david(Rect* r)
 {
     ggprint8b(r, 16, 0xf3ab00, "David - The Sweaty One");
 }
 
-// **************** Convenient Math funcs *****************************
+// **************** Convenient Math funcs *****************
 float abs_diff(float a, float b)
 {
     return a > b ? a - b : b - a;
@@ -48,15 +50,16 @@ float approach(float follower, float leader, float rate)
 // *********** Resolution Utilities ***********************
 int resolution_scale(int width, int height)
 {
-    const float img_proportion = width / height;
-    const float resolution_proportion = gl.xres / gl.yres;
+    const float img_proportion = (float)width / (float)height;
+    const float resolution_proportion = (float)gl.xres / (float)gl.yres;
     const bool  crop_height = resolution_proportion > img_proportion;
     const bool  crop_width  = !crop_height;
     float output = 0;
+    
     if (crop_height)
-        output = img_proportion * gl.xres/2;
+        output = img_proportion * gl.yres / 2;
     if (crop_width)
-        output = img_proportion * gl.yres;
+        output = gl.xres / 2;
     return output;
 }
 int resolution_scale(Image* img)
@@ -64,7 +67,7 @@ int resolution_scale(Image* img)
     return resolution_scale(img->width, img->height);
 }
 
-// *********** Animation for Title sceen *******************
+// *********** Animation for Title sceen ******************
 // void Entity::jump_edges();
 // void Entity::animate();
 void title_moto_physics(int frame, Animation animations[5])
@@ -101,6 +104,7 @@ void pivotedRotate(float pivot_x_point, float pivot_y_point, float angle)
 }
 
 // ***************** Image Method Implementations ***********************
+// **********************************************************************
 // Overload of Image::show, that sets flipped to 0 by default
 void Image::show(float wid, int pos_x, int pos_y, float angle)
 {
@@ -167,7 +171,8 @@ unsigned char* Image::blackToAlpha()
     return newdata;
 }
 
-// *********************** Percent methods ***********************
+// ****************** Percent Method Implementations ************
+// **************************************************************
 Percent::Percent()
 {
     this->val = 0;
@@ -223,6 +228,7 @@ void Entity::render()
 
 void Entity::jump_edges()
 {
+    const int left_edge = 
     while (pos.x < 0)
         pos.x += gl.xres;
     while (pos.x > gl.xres)
@@ -364,9 +370,8 @@ void Motorcycle::init_gl()
     head.init_gl();
 }
 
-// ***************** Mouse clickable Buttons *************************
+// ***************** Button Method Implementations *******************
 // *******************************************************************
-
 Button::Button(float x, float y)
 {
     this->set_text("Loren Ipsum");

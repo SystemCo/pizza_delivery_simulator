@@ -120,7 +120,7 @@ My schedule is usually subject to change depending on my work schedule
 * Extract audio files for intro
     * Assigned on: Sunday 03/02/25
     * Assigned by: Francisco
-    * Due by:      Monday 03/10/25
+    * Due by:      Monday 03/11/25
     * Status:      Incomplete
 
 ### Lesslie

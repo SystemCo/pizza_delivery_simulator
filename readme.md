@@ -80,7 +80,13 @@ Available: 10:00-11:00, 2:00-5:30
     * Assigned on: Tuesday 03/04/25
     * Assigned by: David
     * Due by:      Tuesday 03/11/25
-    * Status       Partially complete
+    * Status       Complete
+
+* Implement path following method using an array of points
+    * Assigned on: Monday 03/10/25
+    * Assigned by: David
+    * Due by:      Monday 03/17/25
+    * Status:      Incomplete
 
 ### Fenoon
 * Add name to credits

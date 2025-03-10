@@ -1,10 +1,10 @@
 # Welcome to the Pizza Delivery Simulator!
 ## Overview:
 Have you ever wanted to work minimum wage delivering pizzas? 
-Now you can! 
+Of course not, but now you can!
 * Avoid pedestrians and other vehicles on the road! 
 * Fight against the clock! Pay your victims’ horrific medical bills! 
-* In Pizza Delivery Supreme!
+* In Pizza Delivery Simulator!
 
 ## Technical Requirements:
 * Programming in C++
@@ -56,6 +56,21 @@ Friday:
 Available: 10:00-11:00, 2:00-5:30 
 
 ### Francisco
+My schedule is usually subject to change depending on my work schedule
+* Monday
+    * 5:00 PM - 9:00 PM
+* Tuesday
+    * 7:00 PM - 10:00 PM (availability varies bi-weekly)
+* Wednesday
+    * 12:30 PM - 3:45 PM, 6:30 PM - 10:00 PM
+* Thursday
+    * 11:30 AM - 5:15 PM, 7:00 PM - 10:00 PM
+* Friday
+    * 10:00 AM (varies to 10:30 AM bi-weekly) - 3:45 PM, 6:30 PM - 11:00 PM
+* Saturday
+    * 3:00 PM - 12:00 AM
+* Sunday
+    * 11:00 AM - 7:00 PM
 
 ### Lesslie
 

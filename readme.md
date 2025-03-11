@@ -86,11 +86,11 @@ My schedule is usually subject to change depending on my work schedule
 ## TODO:
 
 ### Avelina
-* Make a button that, when clicked, exits the title screen
-    * Assigned on: Monday 03/03/25
+* Add name to credits
+    * Assigned on: Friday 2/28/25
     * Assigned by: David
-    * Due by:      Monday 03/10/25
-    * Status:      Incomplete
+    * Due by:      Monday 3/3/25
+    * Status:      Complete
 
 ### David
 * Make the player motorcycle character visually turn the handlebars when turning

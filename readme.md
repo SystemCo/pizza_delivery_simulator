@@ -73,7 +73,16 @@ My schedule is usually subject to change depending on my work schedule
     * 11:00 AM - 7:00 PM
 
 ### Lesslie
-
+* Monday
+    * 12:00 PM - 7:00 PM
+* Wednesday
+    * 12:00 PM - 7:00 PM
+* Thursday
+    * 10:30 AM - 12:30 PM, 4:00 PM - 7:00 PM
+* Friday
+    * 11:00 AM - 7:00 PM
+* Saturday
+    * 11:00 AM - 4:00 PM
 ## TODO:
 
 ### Avelina

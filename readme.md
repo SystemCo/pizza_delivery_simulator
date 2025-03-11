@@ -32,6 +32,19 @@ Of course not, but now you can!
 
 ## Schedules:
 ### Avelina
+My schedule is subject to change based on my work schedule + work meetings. 
+* Monday
+    * Available 1pm-7pm. Will notify if not. 
+* Tuesday
+    * Typically available any time after 10am. Will notify if not.
+* Wednesday
+    * Available all day after 1pm. Will notify if not.
+* Thursday
+    * Available 10am-6pm. Will notify if not.
+* Friday
+    * Typically not available on Fridays
+* Weekends
+    * Typically available all weekend. Will notify if not.
 
 ### David
 * Sunday

@@ -5,6 +5,7 @@
 //#include <X11/keysym.h>
 //#include <GL/glx.h>
 #include "dcarter.h"
+#include "aolmedo.h"
 
 enum ScreenState { Title, Home, Pause, Credits, Playing };
 class Global { // Originally from Asteroids framework  
@@ -16,7 +17,7 @@ public:
         int show_bike;
         Motorcycle bike;
         Entity* moto_side;
-        Button dummy_button;
+        Title_Exit_Button title_button;
         //Image background {"./images/Background2.png"};
         Image background {"./images/map1.png"};
         ScreenState screen;

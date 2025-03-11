@@ -61,7 +61,7 @@ public:
     int delay;
     int rows;
     int cols;
-    void render(Position pos);
+    void render(float scale, Position pos);
     void update_frame();
     Sprite(const char *fname, unsigned char alphaColor[3], int rows, int cols);
 };

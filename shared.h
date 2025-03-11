@@ -9,6 +9,9 @@
 
 enum ScreenState { Title, Home, Pause, Credits, Playing };
 class Global { // Originally from Asteroids framework  
+unsigned char white[3] {255, 255, 255};
+unsigned char blue[3] {0, 0, 255};
+unsigned char black[3] {0, 0, 0};
 public:
 	int xres, yres, scale;
 	char keys[65536];
@@ -21,6 +24,10 @@ public:
         //Image background {"./images/Background2.png"};
         Image background {"./images/map1.png"};
         Image show {"./images/game2.jpg"};
+        //Sprite test {"./images/car1.png", black, 2, 8};
+        Sprite test {"./images/walk.gif", blue, 2, 8};
+        //Sprite test {"./images/Moto_bod.jpg", white, 2, 8};
+        //Sprite test {"./images/Moto_bod.jpg", black, 2, 8};
         ScreenState screen;
         //TODO: 
         // implement switch statements in main func as well as other funcs

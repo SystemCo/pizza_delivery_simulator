@@ -176,6 +176,62 @@ Sprite::Sprite(const char *fname, unsigned char alphaColor[3],
     this->frame = 0;
 }
 
+void Sprite::update_frame()
+{
+    static int delay_counter = 0;
+    if (delay_counter == delay) {
+        const int total_frames = rows * cols;
+        frame += 1;
+        frame %= total_frames;
+        delay_counter = 0;
+    } else {
+        delay_counter += 1;
+    }
+}
+
+void Sprite::render(float scale, Position pos)
+{
+    const int wid = scale;
+    const float cx = (float)gl.xres / 2;
+    const int height = (this->height / rows) / (width / cols) * scale;
+    const int frame_row = frame / cols; // trunkated by design
+    const int frame_col = frame % cols;
+    const float frame_x = (float)frame_col / (float)cols;
+    const float frame_y = (float)frame_row / (float)rows;
+    const float delta_x = 1.0f / (float)cols;
+    const float delta_y = 1.0f / (float)rows;
+
+    glColor4ub(255,255,255,255);
+    glEnable(GL_ALPHA_TEST);
+    glAlphaFunc(GL_GREATER, 0.3f);
+    glBindTexture(GL_TEXTURE_2D, texture);
+
+    glPushMatrix();
+        glBindTexture(GL_TEXTURE_2D, texture);
+        //glTranslatef(pos.x, pos.y, 0.0f);
+        //draw_rect(scale, height);
+        glBegin(GL_QUADS);
+           glTexCoord2f(frame_x, frame_y+delta_y);         glVertex2i(cx-wid, cx-height);
+           glTexCoord2f(frame_x, frame_y);                 glVertex2i(cx-wid, cx+height);
+           glTexCoord2f(frame_x+delta_x, frame_y);         glVertex2i(cx+wid, cx+height);
+           glTexCoord2f(frame_x+delta_x, frame_y+delta_y); glVertex2i(cx+wid, cx-height);
+
+           // glTexCoord2f(0, 0.5);         glVertex2i(cx-wid, cx-height);
+           // glTexCoord2f(0, 0);                 glVertex2i(cx-wid, cx+height);
+           // glTexCoord2f(.125, 0);         glVertex2i(cx+wid, cx+height);
+           // glTexCoord2f(.125, 0.5); glVertex2i(cx+wid, cx-height);
+
+           // glTexCoord2f(0.5, 0.5);         glVertex2i(cx-wid, cx-height);
+           // glTexCoord2f(0.5, 0);                 glVertex2i(cx-wid, cx+height);
+           // glTexCoord2f(.625, 0);         glVertex2i(cx+wid, cx+height);
+           // glTexCoord2f(.625, 0.5); glVertex2i(cx+wid, cx-height);
+
+
+        glEnd();
+    glPopMatrix();
+    glBindTexture(GL_TEXTURE_2D, 0);
+}
+
 
 // ****************** Percent Method Implementations ************
 // **************************************************************

@@ -330,7 +330,7 @@ void check_mouse(XEvent *e)
     }
     if (e->type == ButtonPress) {
         if (e->xbutton.button==1) { // Left button
-            gl.dummy_button.click(e->xbutton.x, true_y);
+            gl.title_button.click(e->xbutton.x, true_y);
         }
         if (e->xbutton.button==3) {
             //Right button is down
@@ -470,20 +470,9 @@ void title_render()
 //added this to show intro image 
     gl.show.show(gl.scale, gl.xres/2 , gl.yres/2 +2, 0.0f);
     gl.moto_side->render();
-    gl.dummy_button.render();
+    gl.title_button.render();
 }
 
-/*
-void introTitle_render()
-{
-    glClear(GL_COLOR_BUFFER_BIT);
-   // gl.background.show(gl.scale, gl.xres/2, gl.yres/2, 0.0f);
-//added this to show intro image
-    gl.show.show(gl.scale, gl.xres/2 , gl.yres/2 +2, 0.0f);
-   // gl.moto_side->render();
-   // gl.dummy_button.render();
-}
-*/
 void render()
 {
     Rect r;
@@ -506,5 +495,5 @@ void render()
     }
     if (gl.show_bike)
         gl.bike.render();
-    gl.dummy_button.render();
+    gl.title_button.render();
 }

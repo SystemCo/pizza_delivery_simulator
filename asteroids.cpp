@@ -78,6 +78,7 @@ Global::Global()
     // mouse value 1 = true = mouse is a regular mouse.
     mouse_cursor_on = 1;
     moto_side = new Entity("images/moto_side.gif");
+    scale = resolution_scale(&background);
 }
 
 Global gl;

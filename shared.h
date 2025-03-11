@@ -20,6 +20,7 @@ public:
         Title_Exit_Button title_button;
         //Image background {"./images/Background2.png"};
         Image background {"./images/map1.png"};
+        Image show {"./images/game2.jpg"};
         ScreenState screen;
         //TODO: 
         // implement switch statements in main func as well as other funcs

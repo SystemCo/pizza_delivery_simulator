@@ -239,7 +239,8 @@ int main()
         switch (gl.screen) {
         case Title:
             while (physicsCountdown >= physicsRate) {
-                title_physics();
+               //coommenting this out 
+        //       title_physics();
                 physicsCountdown -= physicsRate;
             }
             title_render();
@@ -296,6 +297,8 @@ void init_opengl(void)
     initialize_fonts();
     gl.bike.init_gl();
     gl.background.init_gl();
+    //called intro image here 
+    gl.show.init_gl();
     gl.moto_side->init_gl();
 }
 
@@ -469,6 +472,8 @@ void title_render()
 {
     glClear(GL_COLOR_BUFFER_BIT);
     gl.background.show(gl.scale, gl.xres/2, gl.yres/2, 0.0f);
+//added this to show intro image 
+    gl.show.show(gl.scale, gl.xres/2 , gl.yres/2 +2, 0.0f);
     gl.moto_side->render();
     gl.title_button.render();
 }
@@ -479,6 +484,7 @@ void render()
     glClearColor(0.0, 0.0, 0.0, 1.0);
     glClear(GL_COLOR_BUFFER_BIT);
     gl.background.show(gl.scale, gl.xres/2, gl.yres/2, 0.0f);
+    gl.show.show(gl.scale, gl.xres/2, gl.yres/2 +2, 0.0f);
     r.bot = gl.yres - 20;
     r.left = 10;
     r.center = 0;

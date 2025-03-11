@@ -73,8 +73,8 @@ Global::Global()
     //screen = Playing;
     screen = Title;
     memset(keys, 0, 65536);
-    credits = 0;
-    show_bike = 0;
+    credits = true;
+    show_bike = true;
 
     // mouse value 1 = true = mouse is a regular mouse.
     mouse_cursor_on = 1;

@@ -13,7 +13,7 @@
 #include <iostream> // Adds a lot of preprocessor time
 #include <cstring>
 #include <cmath>    // Adds a lot of preprocessor time
-
+#include <chrono>
 //#include <X11/Xutil.h>
 //#include <GL/gl.h>
 //#include <GL/glu.h>
@@ -214,9 +214,11 @@ int main()
     srand(time(NULL));
     clock_gettime(CLOCK_REALTIME, &timePause);
     clock_gettime(CLOCK_REALTIME, &timeStart);
+    //auto lasttime = std::chrono::steady_clock::now();
     x11.set_mouse_position(200, 200);
     x11.show_mouse_cursor(gl.mouse_cursor_on);
     int done=0;
+    //Game_System pstats;
     while (!done) {
         while (x11.getXPending()) {
             XEvent e = x11.getXNextEvent();
@@ -224,6 +226,13 @@ int main()
             check_mouse(&e);
             done = check_keys(&e);
         }
+      /*  auto currenttime = std::chrono::steady_clock::now();
+        std::chrono::duration<float> elaspedtime = currenttime - lasttime;
+        float deltaTime = elaspedtime.count();
+        lasttime = currenttime;
+
+        pstats.Timer(deltaTime);
+        */
         clock_gettime(CLOCK_REALTIME, &timeCurrent);
         timeSpan = timeDiff(&timeStart, &timeCurrent);
         timeCopy(&timeStart, &timeCurrent);
@@ -362,7 +371,7 @@ int check_keys(XEvent *e)
     static int shift=false; // shift variable is used to distinguish capitals
                             // i.e. a vs A uses shift && a.
                             // Currently not being used in this code base.
-                            
+
     if (e->type != KeyRelease && e->type != KeyPress) {
         //not a keyboard event
         return 0;
@@ -402,8 +411,8 @@ int check_keys(XEvent *e)
     //
     (void)shift; // I don't understand what this line does.
                  //
-    // if any button is pushed, exit the title menu. 
-    // Currently would break pause and credits
+                 // if any button is pushed, exit the title menu. 
+                 // Currently would break pause and credits
     gl.screen = Playing;
     switch (key) {
         case XK_a:

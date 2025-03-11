@@ -29,7 +29,6 @@
 #include "lvaldivia.h"
 #include "aolmedo.h"
 #include "fandrade.h"
-#include "falrowhani.h"
 
 //defined types
 typedef float Flt;
@@ -225,15 +224,9 @@ int main()
             check_mouse(&e);
             done = check_keys(&e);
         }
-        //added this to skip game logic when paused 
-         if (gl.screen != Pause) {
         clock_gettime(CLOCK_REALTIME, &timeCurrent);
         timeSpan = timeDiff(&timeStart, &timeCurrent);
         timeCopy(&timeStart, &timeCurrent);
-
-        //clock_gettime(CLOCK_REALTIME, &timeCurrent);
-       // timeSpan = timeDiff(&timeStart, &timeCurrent);
-        //timeCopy(&timeStart, &timeCurrent);
         // if gl.screen state is paused, don't do physics
         physicsCountdown += timeSpan;
         switch (gl.screen) {
@@ -258,8 +251,6 @@ int main()
         }
 
         x11.swapBuffers();
-         }
-
 #ifdef SLEEP_TEST
         // usleep documentation garuntees usleep to sleep for 
         // AT LEAST as long as called. It may sleep longer.
@@ -428,11 +419,6 @@ int check_keys(XEvent *e)
         case XK_Escape:
             // TODO: Pause
             // set gl.screen to pause state
-            if (gl.screen == Playing) {
-        gl.screen = Pause;  // Set the game to paused state
-    } else if (gl.screen == Pause) {
-        gl.screen = Playing; // Resume the game by setting to playing
-    }
             return 1;
         case XK_m:
             gl.mouse_cursor_on = !gl.mouse_cursor_on;
@@ -497,7 +483,6 @@ void render()
         show_francisco(&r);
         show_lesslie(&r);
         show_avelina(&r);
-        show_fenoon(&r);
     }
     if (gl.show_bike)
         gl.bike.render();

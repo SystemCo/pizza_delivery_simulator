@@ -30,22 +30,22 @@ public:
 
 class X11_wrapper { // from Asteroids framework
 private:
-	Display *dpy;
-	Window win;
-	GLXContext glc;
+    Display *dpy;
+    Window win;
+    GLXContext glc;
 public:
-	X11_wrapper() { }
-	X11_wrapper(int w, int h);
-        ~X11_wrapper();
-        void set_title();
-        void check_resize(XEvent *e);
-        void reshape_window(int width, int height);
-        void setup_screen_res(const int w, const int h);
-        void swapBuffers();
-        bool getXPending();
-        XEvent getXNextEvent();
-        void set_mouse_position(int x, int y);
-        void show_mouse_cursor(const int onoff);
+    X11_wrapper() { }
+    X11_wrapper(int w, int h);
+    ~X11_wrapper();
+    void set_title();
+    void check_resize(XEvent *e);
+    void reshape_window(int width, int height);
+    void setup_screen_res(const int w, const int h);
+    void swapBuffers();
+    bool getXPending();
+    XEvent getXNextEvent();
+    void set_mouse_position(int x, int y);
+    void show_mouse_cursor(const int onoff);
 };
 
 #endif //_SHARED_H_

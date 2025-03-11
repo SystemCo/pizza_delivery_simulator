@@ -22,6 +22,7 @@
  **  This is the global variable for the whole project. 
  **  Declared in asteroids.cpp
  */
+
 extern Global gl;
 
 // ***************** Non-Class functions **********************************
@@ -115,12 +116,12 @@ unsigned char* Image::colorToAlpha(unsigned char color[3])
     unsigned char *data = (unsigned char *)this->data;
     newdata = (unsigned char *)malloc(width * height * 4);
     for (int i=0; i < width * height; i++) {
-        const int r = newdata[ i*4 + 0] = data[ i*3 + 0];
-        const int g = newdata[ i*4 + 1] = data[ i*3 + 1];
-        const int b = newdata[ i*4 + 2] = data[ i*3 + 2];
-        const int r_delta = abs_diff(color[0], r);
-        const int g_delta = abs_diff(color[1], g);
-        const int b_delta = abs_diff(color[2], b);
+        const unsigned char r = newdata[ i*4 + 0] = data[ i*3 + 0];
+        const unsigned char g = newdata[ i*4 + 1] = data[ i*3 + 1];
+        const unsigned char b = newdata[ i*4 + 2] = data[ i*3 + 2];
+        const unsigned char r_delta = abs_diff(color[0], r);
+        const unsigned char g_delta = abs_diff(color[1], g);
+        const unsigned char b_delta = abs_diff(color[2], b);
         newdata[i*4 + 3] = (r_delta + g_delta + b_delta)/3;
     }
     return newdata;
@@ -162,6 +163,19 @@ unsigned char* Image::blackToAlpha()
     }
     return newdata;
 }
+
+// ***************** Sprite Method Implementations ***********************
+// *********************************************************************
+Sprite::Sprite(const char *fname, unsigned char alphaColor[3], 
+        int rows, int cols)
+        : Image(fname, alphaColor)
+{
+    this->rows = rows;
+    this->cols = cols;
+    this->delay = 4;
+    this->frame = 0;
+}
+
 
 // ****************** Percent Method Implementations ************
 // **************************************************************

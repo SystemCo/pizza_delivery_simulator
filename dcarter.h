@@ -45,17 +45,29 @@ enum Pedal { Forward, Neutral, Backward };
 enum Turn  { Left, Straight, Right };
 
 class Percent { // float from -1 to 1
-    private:
-        float val;
-    public:
-        Percent(float val);
-        Percent();
-        void set(float val);
-        float get();
+private:
+    float val;
+public:
+    Percent(float val);
+    Percent();
+    void set(float val);
+    float get();
+};
+
+class Sprite : public Image {
+private:
+    int frame;
+public:
+    int delay;
+    int rows;
+    int cols;
+    void render(Position pos);
+    void update_frame();
+    Sprite(const char *fname, unsigned char alphaColor[3], int rows, int cols);
 };
 
 class Entity : public Image { // Wrapper around image that stores important display info
-    public:
+public:
     Position pos;
     int flipped;
     float scale;
@@ -94,22 +106,22 @@ class Entity : public Image { // Wrapper around image that stores important disp
 
 // Models the main playable character
 class Motorcycle : public Entity {
-    private:
-        Percent velocity;
-        //Percent turn_dir;
-        float direction = 0;
-        Turn turning;
-        Image head {"./images/Moto_head.jpg"}; // white alphaColor
-        void set_turn();
-    public:
-        bool right;
-        bool left;
-        float turn_sharpness;
-        Pedal pedal;
-        Motorcycle();
-        void move();
-        void render();
-        void init_gl();
+private:
+    Percent velocity;
+    //Percent turn_dir;
+    float direction = 0;
+    Turn turning;
+    Image head {"./images/Moto_head.jpg"}; // white alphaColor
+    void set_turn();
+public:
+    bool right;
+    bool left;
+    float turn_sharpness;
+    Pedal pedal;
+    Motorcycle();
+    void move();
+    void render();
+    void init_gl();
 };
 
 // Mouse clickable buttons. These are intended to be a parent class.

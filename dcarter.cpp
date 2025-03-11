@@ -228,15 +228,20 @@ void Entity::render()
 
 void Entity::jump_edges()
 {
-    //const int left_edge = 
-    while (pos.x < 0)
-        pos.x += gl.xres;
-    while (pos.x > gl.xres)
-        pos.x -= gl.xres;
-    while (pos.y < 0)
-        pos.y += gl.yres;
-    while (pos.y > gl.yres)
-        pos.y -= gl.yres;
+    const int wid = gl.scale*2;
+    const int height = 2*gl.scale * gl.background.height / gl.background.width;
+    const int left_edge = (gl.xres - wid)/2;
+    const int right_edge = left_edge + wid;
+    const int bottom_edge = (gl.yres - height)/2;
+    const int top_edge = bottom_edge + height;
+    if (pos.x < left_edge)
+        pos.x += wid;
+    if (pos.x > right_edge)
+        pos.x -= wid;
+    if (pos.y < bottom_edge)
+        pos.y += height;
+    if (pos.y > top_edge)
+        pos.y -= height;
 }
 
 void Entity::animate(int frame, Animation animations[],

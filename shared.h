@@ -9,7 +9,7 @@
 enum ScreenState { Title, Pause, Credits, Playing };
 class Global { // Originally from Asteroids framework  
 public:
-	int xres, yres;
+	int xres, yres, scale;
 	char keys[65536];
 	int mouse_cursor_on;
         int credits;

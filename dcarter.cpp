@@ -234,14 +234,19 @@ void Entity::jump_edges()
     const int right_edge = left_edge + wid;
     const int bottom_edge = (gl.yres - height)/2;
     const int top_edge = bottom_edge + height;
-    if (pos.x < left_edge)
-        pos.x += wid;
-    if (pos.x > right_edge)
-        pos.x -= wid;
-    if (pos.y < bottom_edge)
-        pos.y += height;
-    if (pos.y > top_edge)
-        pos.y -= height;
+
+    for (int i = 0; i < 10; i++) {
+        if (pos.x < left_edge)
+            pos.x += wid;
+        else if (pos.x > right_edge)
+            pos.x -= wid;
+        else if (pos.y < bottom_edge)
+            pos.y += height;
+        else if (pos.y > top_edge)
+            pos.y -= height;
+        else
+            break;
+    }
 }
 
 void Entity::animate(int frame, Animation animations[],

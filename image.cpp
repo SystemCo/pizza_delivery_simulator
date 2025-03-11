@@ -206,6 +206,7 @@ void X11_wrapper::check_resize(XEvent *e)
     const XConfigureEvent xce = e->xconfigure;
     if (xce.width != gl.xres || xce.height != gl.yres) {
         //Window size did change.
+        gl.scale = resolution_scale(&gl.background);
         reshape_window(xce.width, xce.height);
     }
 }

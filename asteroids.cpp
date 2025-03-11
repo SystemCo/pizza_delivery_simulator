@@ -451,9 +451,7 @@ void render()
     Rect r;
     glClearColor(0.0, 0.0, 0.0, 1.0);
     glClear(GL_COLOR_BUFFER_BIT);
-    gl.scale = resolution_scale(&gl.background);
     gl.background.show(gl.scale, gl.xres/2, gl.yres/2, 0.0f);
-    gl.scale = resolution_scale(&gl.background);
     r.bot = gl.yres - 20;
     r.left = 10;
     r.center = 0;

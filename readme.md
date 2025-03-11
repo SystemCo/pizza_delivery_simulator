@@ -103,6 +103,12 @@ My schedule is usually subject to change depending on my work schedule
     * Due by:      Monday 03/17/25
     * Status:      Incomplete
 
+* Implement sprite sheets using the frameworks 
+    * Assigned on: Monday 03/10/25
+    * Assigned by: David
+    * Due by:      Monday 03/17/25
+    * Status:      Incomplete
+
 ### Fenoon
 * Add name to credits
     * Assigned on: Friday 02/28/25

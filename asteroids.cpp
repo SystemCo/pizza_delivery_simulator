@@ -63,6 +63,7 @@ extern double physicsCountdown;
 extern double timeSpan;
 extern double timeDiff(struct timespec *start, struct timespec *end);
 extern void timeCopy(struct timespec *dest, struct timespec *source);
+
 //-----------------------------------------------------------------------------
 
 Global::Global() 
@@ -228,23 +229,26 @@ int main()
         timeCopy(&timeStart, &timeCurrent);
         // if gl.screen state is paused, don't do physics
         physicsCountdown += timeSpan;
-        while (physicsCountdown >= physicsRate) {
-            switch (gl.screen) {
-                case Title:
-                    title_physics();
-                    break;
-                default:
-                    physics();
-            }
-            physicsCountdown -= physicsRate;
-        }
         switch (gl.screen) {
-            case Title:
-                title_render();
-                break;
-            default:
-                render();
+        case Title:
+            while (physicsCountdown >= physicsRate) {
+                title_physics();
+                physicsCountdown -= physicsRate;
+            }
+            title_render();
+            break;
+        case Home:
+        case Pause:
+        case Credits:
+        case Playing:
+            while (physicsCountdown >= physicsRate) {
+                physics();
+                physicsCountdown -= physicsRate;
+            }
+            render();
+            break;
         }
+
         x11.swapBuffers();
 #ifdef SLEEP_TEST
         // usleep documentation garuntees usleep to sleep for 
@@ -445,6 +449,14 @@ int check_keys(XEvent *e)
 void physics()
 {
     gl.bike.move();
+}
+
+void title_render()
+{
+    glClear(GL_COLOR_BUFFER_BIT);
+    gl.background.show(gl.scale, gl.xres/2, gl.yres/2, 0.0f);
+    gl.moto_side->render();
+    gl.dummy_button.render();
 }
 
 void render()

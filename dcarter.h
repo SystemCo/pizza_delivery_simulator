@@ -19,6 +19,12 @@ struct Position {
     float y;
 };
 
+struct AABB {
+    Position pos;
+    float wid;
+    float height;
+};
+
 // Entity::animate() wrapper
 void title_moto_physics(int frame, Animation animations[5]);
 void title_physics();
@@ -109,6 +115,7 @@ class Motorcycle : public Entity {
 // Mouse clickable buttons. These are intended to be a parent class.
 // Each real button will inherent from this, 
 // and implement its own On_Click method.
+
 class Button {
 private:
         char text[100];
@@ -129,10 +136,30 @@ public:
             color[0] = r; color[1] = g; color [2] = b;
         }
         void set_text(const char new_text[]);
-        int is_inside(int x, int y); // AABB
+        bool is_inside(int x, int y); // AABB
         // 
         // Nothing burger. Meant to be mutated by child classes.
         void click(int x, int y);
 };
+
+
+// class Title_Exit_Button : public Button {
+// private:
+//     char text[100] = "Exit title";
+// public:
+//     void click(int x, int y);
+//     Title_Exit_Button();
+// };
+
+
+
+// class Pause_Button : public Button {
+//     void click(int x, int y);
+//     Pause_Button(int x, int y, const char text[]);
+// }
+// void Pause_Button::click(int x, int y)
+// {
+//     // Your implementation here
+// }
 
 #endif //_DCARTER_H_

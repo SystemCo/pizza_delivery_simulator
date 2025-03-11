@@ -76,14 +76,6 @@ void title_moto_physics(int frame, Animation animations[5])
     const int section_count = 5;
     gl.moto_side->animate(frame, animations, section_count, total_frames);
 }
-void title_render()
-{
-    glClear(GL_COLOR_BUFFER_BIT);
-    const int wid = resolution_scale(&gl.background);
-    gl.background.show(wid, gl.xres/2, gl.yres/2, 0.0f);
-    gl.moto_side->render();
-    gl.dummy_button.render();
-}
 
 // ********** OpenGL Wrapper Functions ********************
 void draw_rect(float wid, float height)
@@ -416,7 +408,7 @@ void Button::render()
     write_text();
 }
 
-int Button::is_inside(int x, int y)
+bool Button::is_inside(int x, int y)
 {
 return   y <= (pos.y + dims[1]) &&
          y >= (pos.y - dims[1]) &&
@@ -428,6 +420,20 @@ void Button::set_text(const char new_text[])
 {
     strcpy(text, new_text);
 }
+
+// Title_Exit_Button::Title_Exit_Button() : Button(200, 200)
+// {
+//     this->set_text("Exit title");
+//     this->set_color(255, 0, 0);
+//     this->set_pos(300, 300);
+//     this->set_dims(200, 50);
+// }
+
+// void Title_Exit_Button::click(int x, int y)
+// {
+//     if (is_inside(x, y))
+//         printf("CLICK!\n");
+// }
 
 void Button::click(int x, int y)
 {

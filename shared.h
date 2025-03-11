@@ -6,7 +6,7 @@
 //#include <GL/glx.h>
 #include "dcarter.h"
 
-enum ScreenState { Title, Pause, Credits, Playing };
+enum ScreenState { Title, Home, Pause, Credits, Playing };
 class Global { // Originally from Asteroids framework  
 public:
 	int xres, yres, scale;

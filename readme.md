@@ -104,6 +104,8 @@ My schedule is usually subject to change depending on my work schedule
     * Assigned by: David
     * Due by:      Monday 3/3/25
     * Status:      Complete
+* Add title button
+    * Status: Complete
 
 ### David
 * Make the player motorcycle character visually turn the handlebars when turning

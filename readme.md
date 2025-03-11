@@ -134,6 +134,11 @@ My schedule is usually subject to change depending on my work schedule
     * Assigned on: Monday 03/03/25
     * Assigned by: David
     * Due by:      Monday 03/10/25
+    * Status:      Complete
+* Get started on timer system
+    * Assigned on: Monday 03/10/25
+    * Assigned by: Lesslie
+    * Due by:      Monday 03/17/25
     * Status:      Incomplete
 
 ## Ideas

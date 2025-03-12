@@ -24,10 +24,6 @@ public:
         //Image background {"./images/Background2.png"};
         Image background {"./images/map1.png"};
         Image show {"./images/game2.jpg"};
-        //Sprite test {"./images/car1.png", black, 2, 8};
-        Sprite test {"./images/walk.gif", blue, 2, 8};
-        //Sprite test {"./images/Moto_bod.jpg", white, 2, 8};
-        //Sprite test {"./images/Moto_bod.jpg", black, 2, 8};
         ScreenState screen;
         //TODO: 
         // implement switch statements in main func as well as other funcs

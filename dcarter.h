@@ -61,14 +61,12 @@ public:
     int delay;
     int rows;
     int cols;
-    void render(float scale, Position pos, float angle);
     void render(float scale, Position pos);
     void update_frame();
     Sprite(const char *fname, unsigned char alphaColor[3], int rows, int cols);
-    Sprite(const char *fname, int rows, int cols);
 };
 
-class Entity : public Sprite { // Wrapper around image that stores important display info
+class Entity : public Image { // Wrapper around image that stores important display info
 public:
     Position pos;
     int flipped;
@@ -78,8 +76,6 @@ public:
             const char infile[]);
     Entity(float pos_x, float pos_y, float scale, float angle, 
             const char infile[], unsigned char color[3]);
-    Entity(float pos_x, float pos_y, float scale, float angle, 
-            const char infile[], unsigned char color[3], int rows, int cols);
     Entity(const char infile[]);
     // No inputs, just jumps based on gl's resolution state.
     void jump_edges();
@@ -131,6 +127,7 @@ public:
 // Mouse clickable buttons. These are intended to be a parent class.
 // Each real button will inherent from this, 
 // and implement its own On_Click method.
+
 class Button {
 private:
         char text[100];

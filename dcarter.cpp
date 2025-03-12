@@ -213,7 +213,7 @@ void Sprite::render(float scale, Position pos, float angle)
 
     glColor4ub(255,255,255,255);
     glEnable(GL_ALPHA_TEST);
-    glAlphaFunc(GL_GREATER, 0.3f);
+    glAlphaFunc(GL_GREATER, alpha_cutoff.get());
     glBindTexture(GL_TEXTURE_2D, texture);
 
     glPushMatrix();
@@ -342,6 +342,7 @@ Motorcycle::Motorcycle() :
 {
     turn_sharpness = 2.5;
     pedal = Neutral;
+    alpha_cutoff.set(0.4f);
 }
 
 // Go straight when not pressing buttons or when pressing L & R buttons
@@ -411,13 +412,12 @@ void Motorcycle::render()
 {
     const float head_angle = 10 * direction;
     const float height = scale * this->height/width;
-    const float whiteness_cutoff = 0.4f;
     const float head_height = scale * head.height/head.width;
     const float pivot_y = -head_height / 1.3;
 
     glColor4ub(255,255,255,255);
     glEnable(GL_ALPHA_TEST);
-    glAlphaFunc(GL_GREATER, whiteness_cutoff);
+    glAlphaFunc(GL_GREATER, alpha_cutoff.get());
 
     // render body
     glBindTexture(GL_TEXTURE_2D, texture);

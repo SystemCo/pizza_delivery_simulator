@@ -176,13 +176,6 @@ Sprite::Sprite(const char *fname, unsigned char alphaColor[3],
     this->frame = 0;
 }
 
-Sprite::Sprite(const char *fname, int rows, int cols) : Image(fname)
-{
-    this->rows  = rows;
-    this->cols  = cols;
-    this->delay = 4;
-    this->frame = 0;
-}
 void Sprite::update_frame()
 {
     static int delay_counter = 0;
@@ -196,20 +189,17 @@ void Sprite::update_frame()
     }
 }
 
-//void draw_rect_sect(
-
-void Sprite::render(float scale, Position pos, float angle)
+void Sprite::render(float scale, Position pos)
 {
-    const int   wid       = scale;
-    const int   height    = (this->height / rows) / (width / cols) * scale;
-    const int   frame_row = frame / cols; // trunkated by design
-    const int   frame_col = frame % cols;
-    const float delta_x   = 1.0f / (float)cols;
-    const float delta_y   = 1.0f / (float)rows;
-    const float left      = (float)frame_col / (float)cols;
-    const float right     = left + delta_x;
-    const float bottom    = (float)frame_row / (float)rows;
-    const float top       = bottom + delta_y;
+    const int wid = scale;
+    const float cx = (float)gl.xres / 2;
+    const int height = (this->height / rows) / (width / cols) * scale;
+    const int frame_row = frame / cols; // trunkated by design
+    const int frame_col = frame % cols;
+    const float frame_x = (float)frame_col / (float)cols;
+    const float frame_y = (float)frame_row / (float)rows;
+    const float delta_x = 1.0f / (float)cols;
+    const float delta_y = 1.0f / (float)rows;
 
     glColor4ub(255,255,255,255);
     glEnable(GL_ALPHA_TEST);
@@ -218,22 +208,30 @@ void Sprite::render(float scale, Position pos, float angle)
 
     glPushMatrix();
         glBindTexture(GL_TEXTURE_2D, texture);
-        glTranslatef(pos.x, pos.y, 0.0f);
-        glRotatef(angle, 0.0f, 0.0f, 1.0f);
+        //glTranslatef(pos.x, pos.y, 0.0f);
+        //draw_rect(scale, height);
         glBegin(GL_QUADS);
-           glTexCoord2f( left,    top);  glVertex2i(-wid, -height);
-           glTexCoord2f( left, bottom);  glVertex2i(-wid, +height);
-           glTexCoord2f(right, bottom);  glVertex2i(+wid, +height);
-           glTexCoord2f(right,    top);  glVertex2i(+wid, -height);
+           glTexCoord2f(frame_x, frame_y+delta_y);         glVertex2i(cx-wid, cx-height);
+           glTexCoord2f(frame_x, frame_y);                 glVertex2i(cx-wid, cx+height);
+           glTexCoord2f(frame_x+delta_x, frame_y);         glVertex2i(cx+wid, cx+height);
+           glTexCoord2f(frame_x+delta_x, frame_y+delta_y); glVertex2i(cx+wid, cx-height);
+
+           // glTexCoord2f(0, 0.5);         glVertex2i(cx-wid, cx-height);
+           // glTexCoord2f(0, 0);                 glVertex2i(cx-wid, cx+height);
+           // glTexCoord2f(.125, 0);         glVertex2i(cx+wid, cx+height);
+           // glTexCoord2f(.125, 0.5); glVertex2i(cx+wid, cx-height);
+
+           // glTexCoord2f(0.5, 0.5);         glVertex2i(cx-wid, cx-height);
+           // glTexCoord2f(0.5, 0);                 glVertex2i(cx-wid, cx+height);
+           // glTexCoord2f(.625, 0);         glVertex2i(cx+wid, cx+height);
+           // glTexCoord2f(.625, 0.5); glVertex2i(cx+wid, cx-height);
+
+
         glEnd();
     glPopMatrix();
     glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-void Sprite::render(float scale, Position pos)
-{
-    render(scale, pos, 0.0f);
-}
 
 // ****************** Percent Method Implementations ************
 // **************************************************************
@@ -264,32 +262,30 @@ float Percent::get()
 // ****************** Entity Method Implementations *************
 // **************************************************************
 Entity::Entity(float pos_x, float pos_y, float scale, 
-        float angle, const char infile[], unsigned char alphaColor[3],
-        int rows, int cols) :
-    Sprite(infile, alphaColor, rows, cols)
+        float angle, const char infile[]) : Image(infile)
 {
     pos = {pos_x, pos_y};
     this->scale = scale;
     this->angle = angle;
 }
 Entity::Entity(float pos_x, float pos_y, float scale, float angle,
-        const char infile[], unsigned char alphaColor[3]) 
-        : Entity(pos_x, pos_y, scale, angle, infile, alphaColor, 1, 1)
-{}
-
-Entity::Entity(float pos_x, float pos_y, float scale, 
-        float angle, const char infile[]) : Sprite(infile, 1, 1)
+        const char infile[], unsigned char color[3]) 
+        : Image(infile, color)
 {
     pos = {pos_x, pos_y};
     this->scale = scale;
     this->angle = angle;
 }
-Entity::Entity(const char infile[]) : Entity(0.0, 0.0, 50.0f, 0.0f, infile)
-{}
+Entity::Entity(const char infile[]) : Image(infile)
+{
+    pos = {0, 0};
+    scale = 50.0f;
+    angle = 0;
+}
 
 void Entity::render()
 {
-    Sprite::render(scale, pos, angle);
+    this->show(scale, pos.x, pos.y, angle, flipped);
 }
 
 void Entity::jump_edges()

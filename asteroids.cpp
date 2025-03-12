@@ -472,7 +472,7 @@ void title_render()
 //added this to show intro image 
     gl.show.show(gl.scale, gl.xres/2 , gl.yres/2 +2, 0.0f);
     gl.moto_side->render();
-    printf("%f, %f\n", gl.moto_side->pos.x, gl.moto_side->pos.y);
+    //printf("%f, %f\n", gl.moto_side->pos.x, gl.moto_side->pos.y);
     gl.title_button.render();
 }
 

@@ -1,3 +1,11 @@
+// file: image.cpp
+//
+// Contains Method Implementations for:
+//    Image Class        from Rainforest framework
+//    X11_wrapper Class  from asteroids  framework
+//
+// Some Image class implementations are in other source files   
+
 #include "image.h"
 #include "shared.h"
 #include <cstring>
@@ -16,11 +24,11 @@
 // Rainforest start:
 Image::Image(const char *fname)
 { // From the rainforest framework
+    // ========================================================
+    // Analyse fname string to set up convert command
     if (fname[0] == '\0')
         return;
     printf("fname **%s**\n", fname);
-    // ========================================================
-    // Uses CLI MagickConvert to get PPM
     char name[40];
     strcpy(name, fname);
     const int slen = strlen(name);
@@ -31,6 +39,8 @@ Image::Image(const char *fname)
         alphaColor[i] = clr_byte;
     //jpg == white, everything else == black
     char ppmname[80];
+    // ========================================================
+    // Uses CLI MagickConvert to get PPM
     if (ppmFlag) {
         strcpy(ppmname, name);
     } else {

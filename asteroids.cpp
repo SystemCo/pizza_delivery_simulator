@@ -300,7 +300,6 @@ void init_opengl(void)
     //called intro image here 
     gl.show.init_gl();
     gl.moto_side->init_gl();
-    gl.test.init_gl();
 }
 
 void normalize2d(Vec v)
@@ -461,7 +460,6 @@ int check_keys(XEvent *e)
 
 void physics()
 {
-    gl.test.update_frame();
     gl.bike.move();
 }
 
@@ -472,6 +470,7 @@ void title_render()
 //added this to show intro image 
     gl.show.show(gl.scale, gl.xres/2 , gl.yres/2 +2, 0.0f);
     gl.moto_side->render();
+    //printf("%f, %f\n", gl.moto_side->pos.x, gl.moto_side->pos.y);
     gl.title_button.render();
 }
 
@@ -498,6 +497,4 @@ void render()
     if (gl.show_bike)
         gl.bike.render();
     gl.title_button.render();
-    Position pos {100, 100};
-    gl.test.render(100, pos);
 }

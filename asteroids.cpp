@@ -300,6 +300,7 @@ void init_opengl(void)
     //called intro image here 
     gl.show.init_gl();
     gl.moto_side->init_gl();
+    gl.car1.init_gl();
 }
 
 void normalize2d(Vec v)
@@ -458,8 +459,12 @@ int check_keys(XEvent *e)
     return 0;
 }
 
+
 void physics()
 {
+    gl.car1.update_frame();
+    gl.car1.pos.x += 1;
+    gl.car1.jump_edges();
     gl.bike.move();
 }
 
@@ -497,4 +502,5 @@ void render()
     if (gl.show_bike)
         gl.bike.render();
     gl.title_button.render();
+    gl.car1.render();
 }

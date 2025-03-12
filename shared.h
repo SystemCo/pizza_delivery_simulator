@@ -12,6 +12,7 @@ class Global { // Originally from Asteroids framework
 unsigned char white[3] {255, 255, 255};
 unsigned char blue[3] {0, 0, 255};
 unsigned char black[3] {0, 0, 0};
+unsigned char red[3] {255, 0, 0};
 public:
 	int xres, yres, scale;
 	char keys[65536];
@@ -24,6 +25,7 @@ public:
         //Image background {"./images/Background2.png"};
         Image background {"./images/map1.png"};
         Image show {"./images/game2.jpg"};
+        Entity car1 {200, 200, 40.0, 0.0, "images/Car1_sprite.png", red, 1, 8};
         ScreenState screen;
         //TODO: 
         // implement switch statements in main func as well as other funcs

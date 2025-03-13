@@ -149,6 +149,7 @@ My schedule is usually subject to change depending on my work schedule
 
 * Make sure that only the title background displays during the title
     And only the map background displays during the playing state
+    * Talk to Fen if you need help!
     * Assigned on: Wednesday 03/12/25
     * Assigned by: David
     * Due by:      Wednesday 03/19/25

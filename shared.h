@@ -8,11 +8,12 @@
 #include "aolmedo.h"
 
 enum ScreenState { Title, Home, Pause, Credits, Playing };
+
 class Global { // Originally from Asteroids framework  
-unsigned char white[3] {255, 255, 255};
-unsigned char blue[3] {0, 0, 255};
-unsigned char black[3] {0, 0, 0};
-unsigned char red[3] {255, 0, 0};
+    unsigned char white[3] {255, 255, 255};
+    unsigned char blue[3] {0, 0, 255};
+    unsigned char black[3] {0, 0, 0};
+    unsigned char red[3] {255, 0, 0};
 public:
 	int xres, yres, scale;
 	char keys[65536];

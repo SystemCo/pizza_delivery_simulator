@@ -106,8 +106,24 @@ public:
     // my_entity.animate(10, animations, 3, 500);
     void animate(int frame, Animation animations[],
                                     int section_count, int total_frames);
+    void follow_lines(Position* line_points, int point_count, float speed);
     void render(); 
 };
+
+class Line_Follower : public Entity { // Only allowed to follow lines
+    private:
+        Position* lines; // Need to know size at compile time?
+        int point_count;
+        int line_on;
+    public:
+        float speed;
+        void set_points(Position* points);
+        void physics();
+};
+
+
+
+
 
 // Models the main playable character
 class Motorcycle : public Entity {
@@ -140,6 +156,7 @@ private:
 public:
         Position pos;
         int  dims[2];
+        bool darken = false;
         // All that needs to be called to render. Writes text internally.
         void render();
         Button();

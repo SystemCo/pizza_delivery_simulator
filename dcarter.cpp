@@ -35,14 +35,16 @@ void show_david(Rect* r)
 }
 
 // **************** Convenient Math funcs *****************
-float abs_diff(float a, float b)
+template <typename T>
+T abs_diff(T a, T b)
 {
     return a > b ? a - b : b - a;
 }
 
-float approach(float follower, float leader, float rate)
+template <typename T>
+T approach(T follower, T leader, T rate)
 {
-    if (abs_diff(follower, leader) <= rate)
+    if (abs_diff<T>(follower, leader) <= rate)
         return leader;
     else
         return follower > leader ? follower - rate : follower + rate;
@@ -332,6 +334,16 @@ void Entity::animate(int frame, Animation animations[],
     this->jump_edges();
 }
 
+void Entity::follow_lines(Position* line_points, int point_count, float speed)
+{
+    // Needs to know which line it's on.
+    // Maybe Entity -> line_follower 
+    // Maybe a lines class with an array of lines.
+    //   
+
+}
+
+
 // ****************** Motorcycle Method Implementations ********************
 // *************************************************************************
 #define MOTO_SIZE 25
@@ -390,7 +402,7 @@ void Motorcycle::move()
         goal_dir = -1*turn_sharpness;
         break;
     }
-    direction = approach(direction, goal_dir, turn_rate);
+    direction = approach<float>(direction, goal_dir, turn_rate);
 
     // Moto drives in a circle regaurdless of speed
     angle += direction * vel / scale * 25;
@@ -473,7 +485,15 @@ void Button::write_text()
 
 void Button::render()
 {
-    glColor4ub(color[0], color[1], color[2], 255);
+    unsigned char greyer[3] {
+        approach<unsigned char>(color[0], 0, 20),
+        approach<unsigned char>(color[1], 0, 20),
+        approach<unsigned char>(color[2], 0, 20)
+    };
+    if (darken)
+        glColor4ub(greyer[0], greyer[1], greyer[2], 255);
+    else
+        glColor4ub(color[0], color[1], color[2], 255);
     glPushMatrix();
         glTranslatef(pos.x, pos.y, 0.0f);
         draw_rect(dims[0], dims[1]);

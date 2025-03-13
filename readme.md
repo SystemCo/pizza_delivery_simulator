@@ -99,28 +99,21 @@ My schedule is usually subject to change depending on my work schedule
 ## TODO:
 
 ### Avelina
-* Add name to credits
-    * Assigned on: Friday 2/28/25
+* Make sure title button only displays when in the title screen
+    * Assigned on: Wednesday 03/12/25
     * Assigned by: David
-    * Due by:      Monday 3/3/25
-    * Status:      Complete
-* Add title button
-    * Status: Complete
+    * Due by:      Wednesday 03/19/25
+    * Status:      Incomplete
+
+* Add start menu screen
+    * Only needs a single button which will start gameplay
+    * Uses a unique background
+    * Assigned by: David
+    * Assigned on: Wednesday 03/12/25
+    * Due by:      Wednesday 03/12/25
+    * Status:      Incomplete
 
 ### David
-* Make the player motorcycle character visually turn the handlebars when turning
-    * Assigned on: Monday 03/03/25
-    * Assigned by: David
-    * Due by:      Monday 03/10/25
-    * Status:      Complete as of 03/04/25
-
-* Modify Motorcycle physics to match new handlebar turning.
-    * Motorcycle should only turn while moving. i.e. the wheel should not slide.
-    * Assigned on: Tuesday 03/04/25
-    * Assigned by: David
-    * Due by:      Tuesday 03/11/25
-    * Status       Complete
-
 * Implement path following method using an array of points
     * Assigned on: Monday 03/10/25
     * Assigned by: David
@@ -131,20 +124,21 @@ My schedule is usually subject to change depending on my work schedule
     * Assigned on: Monday 03/10/25
     * Assigned by: David
     * Due by:      Monday 03/17/25
-    * Status:      Incomplete
+    * Status:      Complete
 
 ### Fenoon
-* Add name to credits
-    * Assigned on: Friday 02/28/25
-    * Assigned by: David
-    * Due by:      Monday 03/03/25
-    * Status:      Incomplete
-
 * Add pause functionality when <esc> keyboaord key is pressed
     * Assigned on: Monday 03/03/25
     * Assigned by: David
     * Due by:      Monday 03/10/25
     * Status:      Incomplete
+
+* Add clickable button that will return to play while in pause menu
+    * Assigned on: Wednesday 03/12/25
+    * Assigned by: David
+    * Due by:      Wednesday 03/19/25
+    * Status:      Incomplete
+    * Note:        Talk to Lina for help!
 
 ### Francisco
 * Extract audio files for intro
@@ -153,16 +147,24 @@ My schedule is usually subject to change depending on my work schedule
     * Due by:      Monday 03/11/25
     * Status:      Incomplete
 
-### Lesslie
-* Design Map 1 of the game
-    * Assigned on: Monday 03/03/25
+* Make sure that only the title background displays during the title
+    And only the map background displays during the playing state
+    * Assigned on: Wednesday 03/12/25
     * Assigned by: David
-    * Due by:      Monday 03/10/25
-    * Status:      Complete
+    * Due by:      Wednesday 03/19/25
+    * Status:      Incomplete
+
+### Lesslie
 * Get started on timer system
     * Assigned on: Monday 03/10/25
     * Assigned by: Lesslie
     * Due by:      Monday 03/17/25
+    * Status:      Incomplete
+
+* Make a timer sprite that will visually indicate how much time an order has left
+    * Assigned on: Wednesday 03/12/25
+    * Assigned by: David
+    * Due by:      Wednesday 03/19/25
     * Status:      Incomplete
 
 ## Ideas
@@ -187,6 +189,9 @@ My schedule is usually subject to change depending on my work schedule
 * Completed In: February 2025
     * Add name to credits
 
+* Completed In: March 2025
+    * Add title button
+
 ### David
 * Completed In: February 2025
     * Add name to credits
@@ -194,11 +199,16 @@ My schedule is usually subject to change depending on my work schedule
     * Set up main character gameplay physics Phase 1
 
 * Completed In: March 2025
+    * Make the player motorcycle character visually turn the handlebars when turning
     * Create parent mouse click Button class
+    * Modify Motorcycle physics to match new handlebar turning.
 
 ### Fenoon
 * Completed In: February 2025
     * Animate Motorcycle in Title Screen Phase 1
+
+* Completed In: March 2025
+    * Add name to credits
 
 ### Francisco
 * Completed In: February 2025
@@ -207,4 +217,7 @@ My schedule is usually subject to change depending on my work schedule
 ### Lesslie
 * Completed In: February 2025
     * Add name to credits
+
+* Completed In: March 2025
+    * Design Map 1 of the game
 

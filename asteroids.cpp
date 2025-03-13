@@ -29,6 +29,7 @@
 #include "lvaldivia.h"
 #include "aolmedo.h"
 #include "fandrade.h"
+#include "falrowhani.h"
 
 //defined types
 typedef float Flt;
@@ -494,10 +495,11 @@ void render()
     ggprint8b(&r, 16, 0x00ffff00, "n asteroids: %i", g.nasteroids);
     ggprint8b(&r, 16, 0x00ff00ff, "Press C for credits");
     if (gl.credits) {
+        show_avelina(&r);
         show_david(&r);
+        show_fenoon(&r);
         show_francisco(&r);
         show_lesslie(&r);
-        show_avelina(&r);
     }
     if (gl.show_bike)
         gl.bike.render();

@@ -155,6 +155,12 @@ My schedule is usually subject to change depending on my work schedule
     * Due by:      Wednesday 03/19/25
     * Status:      Incomplete
 
+* Make buttons dim when and only when mouse is hovering over them.
+    * Assigned on: Thursday 03/13/25
+    * Assigned by: Francisco
+    * Due by:      Monday 03/20/25
+    * Status:      Incomplete
+
 ### Lesslie
 * Get started on timer system
     * Assigned on: Monday 03/10/25

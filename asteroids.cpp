@@ -22,7 +22,7 @@
 #include <X11/keysym.h>
 #include <GL/glx.h>
 #ifdef USE_OPENAL_SOUND
-#include </usr/include/AL/alut.h>
+#include <AL/alut.h>
 #endif //USE_OPENAL_SOUND
 
 //#include "headers.h"

@@ -7,7 +7,7 @@
 #include <iostream>
 #include "fonts.h"
 #ifdef USE_OPENAL_SOUND
-#include </usr/include/AL/alut.h>
+#include <AL/alut.h>
 #endif //USE_OPENAL_SOUND
 
 void show_francisco(Rect* r)

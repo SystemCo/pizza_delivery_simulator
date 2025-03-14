@@ -21,6 +21,9 @@
 #include <X11/Xlib.h>
 #include <X11/keysym.h>
 #include <GL/glx.h>
+#ifdef USE_OPENAL_SOUND
+#include </usr/include/AL/alut.h>
+#endif //USE_OPENAL_SOUND
 
 //#include "headers.h"
 #include "dcarter.h"
@@ -212,6 +215,27 @@ int main()
 {
     logOpen();
     init_opengl();
+#ifdef USE_OPENAL_SOUND
+    init_openal();
+    
+    // Create buffer to hold sound information
+    ALuint alBuffer = alutCreateBufferFromFile("./wav/737engine.wav");
+    
+    // Create sound source and store buffer in it
+    ALuint alSource;
+    alGenSources(1, &alSource);
+    alSourcei(alSource, AL_BUFFER, alBuffer);
+
+    // Set volume and pitch to normal
+    alSourcef(alSource, AL_GAIN, 1.0f);
+    alSourcef(alSource, AL_PITCH, 1.0f);
+    alSourcei(alSource, AL_LOOPING, AL_TRUE);
+    if (alGetError() != AL_NO_ERROR) {
+        printf("ERROR: setting source\n");
+    }
+
+    alSourcePlay(alSource);
+#endif //USE_OPENAL_SOUND
     srand(time(NULL));
     clock_gettime(CLOCK_REALTIME, &timePause);
     clock_gettime(CLOCK_REALTIME, &timeStart);
@@ -272,6 +296,9 @@ int main()
 #endif //SLEEP_TEST
     }
     cleanup_fonts();
+#ifdef USE_OPENAL_SOUND
+    //cleanup_openal();
+#endif //USE_OPENAL_SOUND
     logClose();
     return 0;
 }

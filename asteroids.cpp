@@ -70,6 +70,20 @@ extern void timeCopy(struct timespec *dest, struct timespec *source);
 
 //-----------------------------------------------------------------------------
 
+void drawPauseMenu();
+
+enum GameState {
+    PLAYING,
+    PAUSED,
+    MENU
+};
+
+// Global variable to track current game state
+//GameState gameState = PLAYING;
+
+//extern GameState gameState;
+GameState gameState = PLAYING;
+
 Global::Global() 
 {
     xres = 640;
@@ -84,6 +98,9 @@ Global::Global()
     mouse_cursor_on = 1;
     moto_side = new Entity("images/moto_side.gif");
     scale = resolution_scale(&background);
+    gameState = PLAYING;
+
+
 }
 
 Global gl;
@@ -409,6 +426,14 @@ int check_keys(XEvent *e)
     //Log("key: %i\n", key);
     if (e->type == KeyRelease) {
         switch (key) {
+            //if escape 
+            case XK_Escape:
+                if (gameState == PLAYING) {
+                    gameState = PAUSED;  // Pause the game
+                } else if (gameState == PAUSED) {
+                    gameState = PLAYING;  // Resume the game
+                }
+                break;
             case XK_a:
                 gl.bike.turn_sharpness = 2.5;
                 break;
@@ -434,6 +459,25 @@ int check_keys(XEvent *e)
         }
         return 0;
     }
+    /*
+    extern GameState gameState;
+    //added this 
+    //
+       if (e->type == KeyPress) {
+        switch (key) {
+            case XK_Escape:
+                // Toggle between PLAYING and PAUSED
+                if (gameState == PLAYING) {
+                    gameState = PAUSED;
+                } else {
+                    gameState = PLAYING;
+                }
+                return 1;
+        }
+    }
+*/
+ //   return 0;
+//}
     //if (e->type == KeyPress) {
     // we return if not keypress or keyrelease and return if it is keyrelease
     // so this if guard is not strictly needed.
@@ -454,11 +498,17 @@ int check_keys(XEvent *e)
         case XK_Shift_R:
             shift = true;
             break;
-        case XK_Escape:
-            // TODO: Pause
+       // case XK_Escape:
+                        // TODO: Pause
             // set gl.screen to pause state
-            return 1;
-        case XK_m:
+          if (gameState == PLAYING) {
+                gameState = PAUSED;
+         } else if (gameState == PAUSED) {
+                gameState = PLAYING;
+          }
+           return 1;
+     //modified code 
+       case XK_m:
             gl.mouse_cursor_on = !gl.mouse_cursor_on;
             x11.show_mouse_cursor(gl.mouse_cursor_on);
             break;
@@ -518,6 +568,11 @@ void render()
     r.left = 10;
     r.center = 0;
     ggprint8b(&r, 16, 0x00ff0000, "3350 - Asteroids");
+       if (gameState == PAUSED) {
+        // Draw pause menu
+        drawPauseMenu();
+    } else {
+
     ggprint8b(&r, 16, 0x00ffff00, "n bullets: %i", g.nbullets);
     ggprint8b(&r, 16, 0x00ffff00, "n asteroids: %i", g.nasteroids);
     ggprint8b(&r, 16, 0x00ff00ff, "Press C for credits");
@@ -532,4 +587,32 @@ void render()
         gl.bike.render();
     gl.title_button.render();
     gl.car1.render();
+    //added this here
+     if (gameState == PAUSED) {
+        drawPauseMenu();
+    }
 }
+}
+
+///adding a draw puase menu 
+void drawPauseMenu() {
+    Rect r;
+    
+    glColor4f(0.0, 0.0, 0.0, 1.0);// transparency
+    glBegin(GL_QUADS);
+        glVertex2f(-1, -1);
+        glVertex2f(1, -1);
+        glVertex2f(1, 1);
+        glVertex2f(-1, 1);
+    glEnd();
+
+    // Display menu options
+    r.bot = gl.yres / 2 + 40;
+    r.left = gl.xres / 2 - 80;
+    r.center = 1;
+    
+    glColor3f(1.0, 1.0, 1.0); 
+    ggprint8b(&r, 16, 0xFFFFFF00, "Game Paused: Press Esc to continue");
+    r.bot -= 30;
+}
+

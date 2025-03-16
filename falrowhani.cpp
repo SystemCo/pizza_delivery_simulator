@@ -10,6 +10,15 @@
 #include <iostream>
 #include "falrowhani.h"
 #include "shared.h" 
+//#include "global.h"
+
+extern Global gl; 
+
+
+void drawPauseMenu();
+
+//GameState gameState = PLAYING;
+
 //function prototypes 
 //void title_moto_physics(int frame, Animation animation[3]);
 void show_fenoon(Rect*r);
@@ -19,6 +28,31 @@ void show_fenoon(Rect*r)
     ggprint8b(r, 16, 0x00FFFF, "Fenoon");
 }
 
+/*
+void drawPauseMenu() {
+    Rect r;
+        
+    // Semi-transparent black overlay
+    glColor4f(0.0, 0.0, 0.0, 0.5); // Black with 50% transparency
+    glBegin(GL_QUADS);
+        glVertex2f(-1, -1);
+        glVertex2f(1, -1);
+        glVertex2f(1, 1); 
+        glVertex2f(-1, 1); 
+    glEnd(); 
+
+    // Display menu options
+    r.bot = gl.yres / 2 + 40;
+    r.left = gl.xres / 2 - 80;
+    r.center = 1;
+    
+    glColor3f(1.0, 1.0, 1.0); // White text
+    ggprint8b(&r, 16, 0xFFFFFF00, "Game Paused: Press Esc to continue");
+    r.bot -= 30;
+}
+
+
+*/
 //extern Global gl; 
 
 // I added this prototype to my header file -- David

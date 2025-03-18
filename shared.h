@@ -26,7 +26,10 @@ public:
         //Image background {"./images/Background2.png"};
         Image background {"./images/map1.png"};
         Image show {"./images/game2.jpg"};
-        Entity car1 {200, 200, 40.0, 0.0, "images/Car1_sprite.png", red, 1, 8};
+        Line_Follower car1 {
+            200, 200, 40.0, 0.0, 
+            "images/Car1_sprite.png", red, 1, 8
+        };
         ScreenState screen;
         //TODO: 
         // implement switch statements in main func as well as other funcs

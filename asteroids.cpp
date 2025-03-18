@@ -99,8 +99,14 @@ Global::Global()
     moto_side = new Entity("images/moto_side.gif");
     scale = resolution_scale(&background);
     gameState = PLAYING;
-
-
+    car1.set_points(new Position[6] {
+            {200, 200}, 
+            {300, 300},
+            {400, 200},
+            {500, 300},
+            {100, 100},
+            {100, 500},
+    }, 6);
 }
 
 Global gl;
@@ -541,8 +547,7 @@ int check_keys(XEvent *e)
 void physics()
 {
     gl.car1.update_frame();
-    gl.car1.pos.x += 1;
-    gl.car1.jump_edges();
+    gl.car1.physics();
     gl.bike.move();
 }
 

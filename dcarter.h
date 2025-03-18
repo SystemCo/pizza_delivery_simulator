@@ -118,7 +118,8 @@ class Line_Follower : public Entity { // Only allowed to follow lines
         bool approach(Position point);
     public:
         float speed = 2.0;
-        Line_Follower();
+        Line_Follower(float pos_x, float pos_y, float scale, float angle, 
+            const char infile[], unsigned char color[3], int rows, int cols);
         void set_points(Position* points, int count);
         void physics();
 };

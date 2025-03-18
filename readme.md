@@ -118,7 +118,7 @@ My schedule is usually subject to change depending on my work schedule
     * Assigned on: Monday 03/10/25
     * Assigned by: David
     * Due by:      Monday 03/17/25
-    * Status:      Testing phase 
+    * Status:      Complete 
 
 * Implement sprite sheets using the frameworks 
     * Assigned on: Monday 03/10/25

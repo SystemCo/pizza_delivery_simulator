@@ -336,6 +336,13 @@ void Entity::animate(int frame, Animation animations[],
 
 // ****************** Line_Follower Method Implementations ******
 // **************************************************************
+Line_Follower::Line_Follower(float pos_x, float pos_y, float scale, 
+        float angle, const char infile[], unsigned char alphaColor[3],
+        int rows, int cols) :
+    Entity(pos_x, pos_y, scale, angle, infile, alphaColor, rows, cols)
+{
+}
+
 void Line_Follower::set_points(Position points[], int count)
 {
     line_on = 0;
@@ -346,30 +353,37 @@ void Line_Follower::set_points(Position points[], int count)
 // returns true if snapped to point
 bool Line_Follower::approach(Position point)
 {
-    const float delta_x = pos.x - point.x;
-    const float delta_y = pos.y - point.y;
+    const float delta_x = point.x - pos.x;
+    const float delta_y = point.y - pos.y;
     const float abs_diff_pos = sqrt( 
             delta_x * delta_x + 
             delta_y * delta_y
     );
-    if (abs_diff_pos <= speed) {
+    if (abs_diff_pos <= speed * 3) {
         pos.x = point.x;
         pos.y = point.y;
         return true;
     }
-    const double angle = atan( (double) delta_y / (double) delta_x);
-    pos.x += speed * cos(angle);
-    pos.y += speed * sin(angle);
+    const double angle = atan( delta_y / delta_x);
+    const bool be_positive = delta_x > 0 || (delta_x == 0 && delta_y > 0);
+    if (be_positive) {
+        pos.x += speed * cos(angle);
+        pos.y += speed * sin(angle);
+    } else {
+        pos.x -= speed * cos(angle);
+        pos.y -= speed * sin(angle);
+    }
     return false;
 }
 
 void Line_Follower::physics()
 {
-    const bool snapped = approach(lines[line_on]);
+    const bool snapped = this->approach(lines[line_on]);
     if(snapped) {
         line_on += 1;
         line_on %= point_count;
     }
+    fflush(stdout);
 }
 
 // ****************** Motorcycle Method Implementations ********************

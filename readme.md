@@ -118,7 +118,7 @@ My schedule is usually subject to change depending on my work schedule
     * Assigned on: Monday 03/10/25
     * Assigned by: David
     * Due by:      Monday 03/17/25
-    * Status:      Incomplete
+    * Status:      Testing phase 
 
 * Implement sprite sheets using the frameworks 
     * Assigned on: Monday 03/10/25
@@ -158,7 +158,7 @@ My schedule is usually subject to change depending on my work schedule
 * Make buttons dim when and only when mouse is hovering over them.
     * Assigned on: Thursday 03/13/25
     * Assigned by: Francisco
-    * Due by:      Monday 03/20/25
+    * Due by:      Thursday 03/20/25
     * Status:      Incomplete
 
 ### Lesslie

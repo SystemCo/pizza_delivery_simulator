@@ -115,15 +115,13 @@ class Line_Follower : public Entity { // Only allowed to follow lines
         Position* lines; // Need to know size at compile time?
         int point_count;
         int line_on;
+        bool approach(Position point);
     public:
-        float speed;
-        void set_points(Position* points);
+        float speed = 2.0;
+        Line_Follower();
+        void set_points(Position* points, int count);
         void physics();
 };
-
-
-
-
 
 // Models the main playable character
 class Motorcycle : public Entity {

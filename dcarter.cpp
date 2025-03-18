@@ -334,15 +334,43 @@ void Entity::animate(int frame, Animation animations[],
     this->jump_edges();
 }
 
-void Entity::follow_lines(Position* line_points, int point_count, float speed)
+// ****************** Line_Follower Method Implementations ******
+// **************************************************************
+void Line_Follower::set_points(Position points[], int count)
 {
-    // Needs to know which line it's on.
-    // Maybe Entity -> line_follower 
-    // Maybe a lines class with an array of lines.
-    //   
-
+    line_on = 0;
+    lines = points;
+    point_count = count;
 }
 
+// returns true if snapped to point
+bool Line_Follower::approach(Position point)
+{
+    const float delta_x = pos.x - point.x;
+    const float delta_y = pos.y - point.y;
+    const float abs_diff_pos = sqrt( 
+            delta_x * delta_x + 
+            delta_y * delta_y
+    );
+    if (abs_diff_pos <= speed) {
+        pos.x = point.x;
+        pos.y = point.y;
+        return true;
+    }
+    const double angle = atan( (double) delta_y / (double) delta_x);
+    pos.x += speed * cos(angle);
+    pos.y += speed * sin(angle);
+    return false;
+}
+
+void Line_Follower::physics()
+{
+    const bool snapped = approach(lines[line_on]);
+    if(snapped) {
+        line_on += 1;
+        line_on %= point_count;
+    }
+}
 
 // ****************** Motorcycle Method Implementations ********************
 // *************************************************************************

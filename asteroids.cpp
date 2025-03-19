@@ -577,7 +577,8 @@ void render()
     r.left = 10;
     r.center = 0;
     ggprint8b(&r, 16, 0x00ff0000, "3350 - Asteroids");
-    if (gameState == PAUSED) {
+    show_fps(&r);
+       if (gameState == PAUSED) {
         // Draw pause menu
         drawPauseMenu();
     } else {

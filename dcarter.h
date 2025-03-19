@@ -6,6 +6,9 @@
 // Simple text display wrapper used for the credits page
 void show_david(Rect* r);
 
+// Functions based on how often func is called
+void show_fps(Rect* r);
+
 // Rendering and physics for the title screen
 struct Animation {
     float delta_x;

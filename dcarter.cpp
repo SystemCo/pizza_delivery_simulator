@@ -34,6 +34,29 @@ void show_david(Rect* r)
     ggprint8b(r, 16, 0xf3ab00, "David - The Sweaty One");
 }
 
+extern double timeDiff(struct timespec *start, struct timespec *end);
+extern void timeCopy(struct timespec *dest, struct timespec *source);
+void show_fps(Rect* r)
+{
+    const int show_delay = 30;
+    static int call_times = 0;
+    static struct timespec timeStart, timeCurrent;
+    static double timeSpan;
+    char buffer[30];
+    call_times += 1;
+    if (call_times < show_delay) {
+        sprintf(buffer, "fps: %3.0f", show_delay / timeSpan);
+        ggprint8b(r, 16, 0xf3ab00, buffer);
+        return;
+    }
+    call_times = 0;
+    clock_gettime(CLOCK_REALTIME, &timeCurrent);
+    timeSpan = timeDiff(&timeStart, &timeCurrent);
+    sprintf(buffer, "fps: %3.0f", show_delay / timeSpan);
+    ggprint8b(r, 16, 0xf3ab00, buffer);
+    timeCopy(&timeStart, &timeCurrent);
+}
+
 // **************** Convenient Math funcs *****************
 template <typename T>
 T abs_diff(T a, T b)

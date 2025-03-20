@@ -106,7 +106,7 @@ Global::Global()
             {500, 300},
             {100, 100},
             {100, 500},
-    }, 6);
+            }, 6);
 }
 
 Global gl;
@@ -230,7 +230,10 @@ void check_mouse(XEvent *e);
 int check_keys(XEvent *e);
 void physics();
 void render();
-
+//unsigned char black[3] {0, 0, 0};
+//TimerBar timerbar(gl.xres/2, gl.yres/2, 100.0f, 0.0f, "./images/TimeBar.png",black, 1, 12); 
+//TimerBar timerbar(gl.xres/2, gl.yres/2, 100.0f, 0.0f, "images/Car1_sprite.png",black, 1, 8); 
+//test
 //==========================================================================
 // M A I N
 //==========================================================================
@@ -240,10 +243,10 @@ int main()
     init_opengl();
 #ifdef USE_OPENAL_SOUND
     init_openal();
-    
+
     // Create buffer to hold sound information
     ALuint alBuffer = alutCreateBufferFromFile("./wav/737engine.wav");
-    
+
     // Create sound source and store buffer in it
     ALuint alSource;
     alGenSources(1, &alSource);
@@ -274,37 +277,34 @@ int main()
             check_mouse(&e);
             done = check_keys(&e);
         }
-      /*  auto currenttime = std::chrono::steady_clock::now();
-        std::chrono::duration<float> elaspedtime = currenttime - lasttime;
-        float deltaTime = elaspedtime.count();
-        lasttime = currenttime;
-
-        pstats.Timer(deltaTime);
-        */
         clock_gettime(CLOCK_REALTIME, &timeCurrent);
         timeSpan = timeDiff(&timeStart, &timeCurrent);
         timeCopy(&timeStart, &timeCurrent);
+       // float dTime = timeSpan; //commenting out for now
         // if gl.screen state is paused, don't do physics
         physicsCountdown += timeSpan;
+        //float dTime = timeSpan; commenting out for now
         switch (gl.screen) {
-        case Title:
-            while (physicsCountdown >= physicsRate) {
-               //coommenting this out 
-        //       title_physics();
-                physicsCountdown -= physicsRate;
-            }
-            title_render();
-            break;
-        case Home:
-        case Pause:
-        case Credits:
-        case Playing:
-            while (physicsCountdown >= physicsRate) {
-                physics();
-                physicsCountdown -= physicsRate;
-            }
-            render();
-            break;
+            case Title:
+                while (physicsCountdown >= physicsRate) {
+                    //coommenting this out 
+                    //       title_physics();
+                    //timerbar.Timer(dTime); //commenting out for now
+                    physicsCountdown -= physicsRate;
+                }
+                title_render();
+                break;
+            case Home:
+            case Pause:
+            case Credits:
+            case Playing:
+                while (physicsCountdown >= physicsRate) {
+                    physics();
+                    //timerbar.Timer(dTime);
+                    physicsCountdown -= physicsRate;
+                }
+                render();
+                break;
         }
 
         x11.swapBuffers();
@@ -466,81 +466,81 @@ int check_keys(XEvent *e)
         return 0;
     }
     /*
-    extern GameState gameState;
+       extern GameState gameState;
     //added this 
     //
-       if (e->type == KeyPress) {
-        switch (key) {
-            case XK_Escape:
-                // Toggle between PLAYING and PAUSED
-                if (gameState == PLAYING) {
-                    gameState = PAUSED;
-                } else {
-                    gameState = PLAYING;
-                }
-                return 1;
-        }
+    if (e->type == KeyPress) {
+    switch (key) {
+    case XK_Escape:
+    // Toggle between PLAYING and PAUSED
+    if (gameState == PLAYING) {
+    gameState = PAUSED;
+    } else {
+    gameState = PLAYING;
     }
-*/
- //   return 0;
-//}
+    return 1;
+    }
+    }
+    */
+    //   return 0;
+    //}
     //if (e->type == KeyPress) {
     // we return if not keypress or keyrelease and return if it is keyrelease
     // so this if guard is not strictly needed.
     //
-    (void)shift; // I don't understand what this line does.
-                 //
-                 // if any button is pushed, exit the title menu. 
-                 // Currently would break pause and credits
-    gl.screen = Playing;
-    switch (key) {
-        case XK_a:
-            gl.bike.turn_sharpness = 5.0;
-            break;
-        case XK_s:
-            gl.bike.scale = 10;
-            break;
-        case XK_Shift_L:
-        case XK_Shift_R:
-            shift = true;
-            break;
-       // case XK_Escape:
-                        // TODO: Pause
-            // set gl.screen to pause state
-          if (gameState == PLAYING) {
-                gameState = PAUSED;
-         } else if (gameState == PAUSED) {
-                gameState = PLAYING;
-          }
-           return 1;
-     //modified code 
-       case XK_m:
-            gl.mouse_cursor_on = !gl.mouse_cursor_on;
-            x11.show_mouse_cursor(gl.mouse_cursor_on);
-            break;
-        case XK_c:
-            gl.credits = !gl.credits;
-            break;
-        case XK_b:
-            gl.show_bike = !gl.show_bike;
-            break;
-        case XK_Left:
-            gl.bike.left = true;
-            break;
-        case XK_Right:
-            gl.bike.right = true;
-            break;
-        case XK_Down:
-            gl.bike.pedal = Backward;
-            break;
-        case XK_Up:
-            gl.bike.pedal = Forward;
-        case XK_equal:
-            break;
-        case XK_minus:
-            break;
-    }
-    return 0;
+(void)shift; // I don't understand what this line does.
+             //
+             // if any button is pushed, exit the title menu. 
+             // Currently would break pause and credits
+gl.screen = Playing;
+switch (key) {
+    case XK_a:
+        gl.bike.turn_sharpness = 5.0;
+        break;
+    case XK_s:
+        gl.bike.scale = 10;
+        break;
+    case XK_Shift_L:
+    case XK_Shift_R:
+        shift = true;
+        break;
+        // case XK_Escape:
+        // TODO: Pause
+        // set gl.screen to pause state
+        if (gameState == PLAYING) {
+            gameState = PAUSED;
+        } else if (gameState == PAUSED) {
+            gameState = PLAYING;
+        }
+        return 1;
+        //modified code 
+    case XK_m:
+        gl.mouse_cursor_on = !gl.mouse_cursor_on;
+        x11.show_mouse_cursor(gl.mouse_cursor_on);
+        break;
+    case XK_c:
+        gl.credits = !gl.credits;
+        break;
+    case XK_b:
+        gl.show_bike = !gl.show_bike;
+        break;
+    case XK_Left:
+        gl.bike.left = true;
+        break;
+    case XK_Right:
+        gl.bike.right = true;
+        break;
+    case XK_Down:
+        gl.bike.pedal = Backward;
+        break;
+    case XK_Up:
+        gl.bike.pedal = Forward;
+    case XK_equal:
+        break;
+    case XK_minus:
+        break;
+}
+return 0;
 }
 
 
@@ -555,7 +555,7 @@ void title_render()
 {
     glClear(GL_COLOR_BUFFER_BIT);
     gl.background.show(gl.scale, gl.xres/2, gl.yres/2, 0.0f);
-//added this to show intro image 
+    //added this to show intro image 
     gl.show.show(gl.scale, gl.xres/2 , gl.yres/2 +2, 0.0f);
     gl.moto_side->render();
     //printf("%f, %f\n", gl.moto_side->pos.x, gl.moto_side->pos.y);
@@ -570,52 +570,56 @@ void render()
     gl.background.show(gl.scale, gl.xres/2, gl.yres/2, 0.0f);
     gl.show.show(gl.scale, gl.xres/2, gl.yres/2 +2, 0.0f);
     r.bot = gl.yres - 20;
+
+    /* Debugging..*/
+    //timerbar.timeRender();
+
     r.left = 10;
     r.center = 0;
     ggprint8b(&r, 16, 0x00ff0000, "3350 - Asteroids");
-       if (gameState == PAUSED) {
+    if (gameState == PAUSED) {
         // Draw pause menu
         drawPauseMenu();
     } else {
 
-    ggprint8b(&r, 16, 0x00ffff00, "n bullets: %i", g.nbullets);
-    ggprint8b(&r, 16, 0x00ffff00, "n asteroids: %i", g.nasteroids);
-    ggprint8b(&r, 16, 0x00ff00ff, "Press C for credits");
-    if (gl.credits) {
-        show_avelina(&r);
-        show_david(&r);
-        show_fenoon(&r);
-        show_francisco(&r);
-        show_lesslie(&r);
+        ggprint8b(&r, 16, 0x00ffff00, "n bullets: %i", g.nbullets);
+        ggprint8b(&r, 16, 0x00ffff00, "n asteroids: %i", g.nasteroids);
+        ggprint8b(&r, 16, 0x00ff00ff, "Press C for credits");
+        if (gl.credits) {
+            show_avelina(&r);
+            show_david(&r);
+            show_fenoon(&r);
+            show_francisco(&r);
+            show_lesslie(&r);
+        }
+        if (gl.show_bike)
+            gl.bike.render();
+        gl.title_button.render();
+        gl.car1.render();
+        //added this here
+        if (gameState == PAUSED) {
+            drawPauseMenu();
+        }
     }
-    if (gl.show_bike)
-        gl.bike.render();
-    gl.title_button.render();
-    gl.car1.render();
-    //added this here
-     if (gameState == PAUSED) {
-        drawPauseMenu();
-    }
-}
 }
 
 ///adding a draw puase menu 
 void drawPauseMenu() {
     Rect r;
-    
+
     glColor4f(0.0, 0.0, 0.0, 1.0);// transparency
     glBegin(GL_QUADS);
-        glVertex2f(-1, -1);
-        glVertex2f(1, -1);
-        glVertex2f(1, 1);
-        glVertex2f(-1, 1);
+    glVertex2f(-1, -1);
+    glVertex2f(1, -1);
+    glVertex2f(1, 1);
+    glVertex2f(-1, 1);
     glEnd();
 
     // Display menu options
     r.bot = gl.yres / 2 + 40;
     r.left = gl.xres / 2 - 80;
     r.center = 1;
-    
+
     glColor3f(1.0, 1.0, 1.0); 
     ggprint8b(&r, 16, 0xFFFFFF00, "Game Paused: Press Esc to continue");
     r.bot -= 30;

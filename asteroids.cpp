@@ -400,7 +400,22 @@ void check_mouse(XEvent *e)
         //std::cout << "savex: " << savex << std::endl << std::flush;
         //std::cout << "e->xbutton.x: " << e->xbutton.x << std::endl <<
         //std::flush;
+        //std::cout << "savey: " << savey << std::endl << std::flush;
+        //std::cout << "e->xbutton.y: " << e->xbutton.y << std::endl <<
+        //std::flush;
         //
+        if (gl.title_button.is_inside(e->xbutton.x, true_y)) {
+            gl.title_button.darken = true;
+            
+            // Debugging
+            //std::cout << "Inside title button" << std::endl << std::flush;
+        }
+        else {
+            gl.title_button.darken = false;
+            
+            // Debugging
+            //std::cout << "Outside title button" << std::endl << std::flush;
+        }
         // If mouse cursor is on, it does not control the ship.
         // It's a regular mouse.
         if (gl.mouse_cursor_on)

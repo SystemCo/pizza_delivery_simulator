@@ -145,7 +145,7 @@ My schedule is usually subject to change depending on my work schedule
     * Assigned on: Sunday 03/02/25
     * Assigned by: Francisco
     * Due by:      Monday 03/11/25
-    * Status:      Incomplete
+    * Status:      Complete
 
 * Make sure that only the title background displays during the title
     And only the map background displays during the playing state
@@ -153,13 +153,13 @@ My schedule is usually subject to change depending on my work schedule
     * Assigned on: Wednesday 03/12/25
     * Assigned by: David
     * Due by:      Wednesday 03/19/25
-    * Status:      Incomplete
+    * Status:      Complete
 
 * Make buttons dim when and only when mouse is hovering over them.
     * Assigned on: Thursday 03/13/25
     * Assigned by: Francisco
     * Due by:      Thursday 03/20/25
-    * Status:      Incomplete
+    * Status:      Complete
 
 ### Lesslie
 * Get started on timer system
@@ -220,6 +220,11 @@ My schedule is usually subject to change depending on my work schedule
 ### Francisco
 * Completed In: February 2025
     * Add name to credits
+
+* Completed In: March 2025
+    * Extracted audio files for animated intro
+    * Made title and map background display in their respective states
+    * Added logic for title button to darken when hovered over
 
 ### Lesslie
 * Completed In: February 2025

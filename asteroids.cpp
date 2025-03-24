@@ -569,7 +569,10 @@ void physics()
 void title_render()
 {
     glClear(GL_COLOR_BUFFER_BIT);
-    gl.background.show(gl.scale, gl.xres/2, gl.yres/2, 0.0f);
+
+    // This line below caused both images to appear at once during the title screen
+    //gl.background.show(gl.scale, gl.xres/2, gl.yres/2, 0.0f);
+    
     //added this to show intro image 
     gl.show.show(gl.scale, gl.xres/2 , gl.yres/2 +2, 0.0f);
     gl.moto_side->render();
@@ -583,7 +586,10 @@ void render()
     glClearColor(0.0, 0.0, 0.0, 1.0);
     glClear(GL_COLOR_BUFFER_BIT);
     gl.background.show(gl.scale, gl.xres/2, gl.yres/2, 0.0f);
-    gl.show.show(gl.scale, gl.xres/2, gl.yres/2 +2, 0.0f);
+    
+    // This line below rendered the intro image during the playing state
+    //gl.show.show(gl.scale, gl.xres/2, gl.yres/2 +2, 0.0f);
+    
     r.bot = gl.yres - 20;
 
     /* Debugging..*/
@@ -610,7 +616,8 @@ void render()
         }
         if (gl.show_bike)
             gl.bike.render();
-        gl.title_button.render();
+        // Commented this so title button would disappear during playing state
+        //gl.title_button.render();
         gl.car1.render();
         //added this here
         if (gameState == PAUSED) {

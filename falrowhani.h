@@ -15,5 +15,7 @@
 
 //extern GL gl; 
 void show_fenoon(Rect*r);
+void drawPauseMenu();
+void title_physics();
 
 #endif

@@ -64,6 +64,7 @@ public:
     int delay;
     int rows;
     int cols;
+    //Percent alpha_cutoff = 0.0f;
     Percent alpha_cutoff;
     void render(float scale, Position pos, float angle);
     void render(float scale, Position pos);

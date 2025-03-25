@@ -226,23 +226,22 @@ void Sprite::update_frame()
 void Sprite::render(float scale, Position pos, float angle)
 {
     const int   wid       = scale;
-    const int   height    = (this->height / rows) / (width / cols) * scale;
+    const int   height    = scale * (this->height / rows) / (width / cols);
     const int   frame_row = frame / cols; // trunkated by design
     const int   frame_col = frame % cols;
     const float delta_x   = 1.0f / (float)cols;
     const float delta_y   = 1.0f / (float)rows;
-    const float left      = (float)frame_col / (float)cols;
+    const float left      = (float)(frame_col - 1) / (float)cols;
     const float right     = left + delta_x;
-    const float bottom    = (float)frame_row / (float)rows;
+    const float bottom    = (float) (frame_row - 1) / (float)rows;
     const float top       = bottom + delta_y;
 
     glColor4ub(255,255,255,255);
-    glEnable(GL_ALPHA_TEST);
-    glAlphaFunc(GL_GREATER, alpha_cutoff.get());
     glBindTexture(GL_TEXTURE_2D, texture);
 
     glPushMatrix();
-        glBindTexture(GL_TEXTURE_2D, texture);
+        glEnable(GL_ALPHA_TEST);
+        glAlphaFunc(GL_GREATER, alpha_cutoff.get());
         glTranslatef(pos.x, pos.y, 0.0f);
         glRotatef(angle, 0.0f, 0.0f, 1.0f);
         glBegin(GL_QUADS);
@@ -309,12 +308,12 @@ Entity::Entity(float pos_x, float pos_y, float scale,
     this->scale = scale;
     this->angle = angle;
 }
-Entity::Entity(const char infile[]) : Entity(0.0, 0.0, 50.0f, 0.0f, infile)
+Entity::Entity(const char infile[]) : Entity(200.0, 200.0, 100.0f, 0.0f, infile)
 {}
 
 void Entity::render()
 {
-    Sprite::render(scale, pos, angle);
+    this->Sprite::render(scale, pos, angle);
 }
 
 void Entity::jump_edges()

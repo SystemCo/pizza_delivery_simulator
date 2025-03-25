@@ -288,7 +288,7 @@ int main()
             case Title:
                 while (physicsCountdown >= physicsRate) {
                     //coommenting this out 
-                    //       title_physics();
+                    title_physics();
                     //timerbar.Timer(dTime); //commenting out for now
                     physicsCountdown -= physicsRate;
                 }
@@ -624,27 +624,5 @@ void render()
             drawPauseMenu();
         }
     }
-}
-
-///adding a draw puase menu 
-void drawPauseMenu() {
-    Rect r;
-
-    glColor4f(0.0, 0.0, 0.0, 1.0);// transparency
-    glBegin(GL_QUADS);
-    glVertex2f(-1, -1);
-    glVertex2f(1, -1);
-    glVertex2f(1, 1);
-    glVertex2f(-1, 1);
-    glEnd();
-
-    // Display menu options
-    r.bot = gl.yres / 2 + 40;
-    r.left = gl.xres / 2 - 80;
-    r.center = 1;
-
-    glColor3f(1.0, 1.0, 1.0); 
-    ggprint8b(&r, 16, 0xFFFFFF00, "Game Paused: Press Esc to continue");
-    r.bot -= 30;
 }
 

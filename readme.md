@@ -174,6 +174,63 @@ My schedule is usually subject to change depending on my work schedule
     * Due by:      Wednesday 03/19/25
     * Status:      Incomplete
 
+## Project Phases
+### Basic UI / UX
+* Animated intro
+* Home Menu
+    -> Timeout, Click, any button push
+    * Looks like pizza order menu
+* Tutorial
+* Controls
+* Options (i.e. sound)
+* Game Play
+    -> Push the play game button from Home Menu
+* Pause Menu
+    -> Push esc while playing
+* Exit Game
+    -> Quit button, from home, from pause, alt+<F4>
+
+### Animated Intro
+* If intro is not complex enough, then not valid
+    * Spinning world is not enough
+    * Just Animated text is not enough
+* Add scrolling backdrop, weelie, pizza boxes, etc. 
+
+### Map features
+* How to handle collisions with each element of the map
+* Need to make an AABB collision function
+* Need to have logic for what to do with each type of element
+* Types
+    * street lamp, building, water, sidewalk, etc
+
+### Extra animation features
+* Pizza guy dismounting to pick up the pizza
+* Hit pedestrians explode!
+* Add vehicle damage
+    * Traffic
+    * Player Motorcycle
+
+### Add more traffic
+* Add traffic pathing logic
+* random?
+    * Both
+    * Different vehicle types have different levels of predictability
+* Add pedestrians
+
+### Extra game elements
+* Money mechanics
+* Things that cost money
+    * Not delivering pizza on time
+    * Accidents/crashes
+    * Hitting pedestrians
+    * Rent and water bills
+        * random
+* If you don't complete all deliveris, you're fired, game over
+* Too many late deliveries and you're fired
+    * shown by a "performance" meter?
+    * Deliveries that are more late hurt your performance more;
+    * Performance slowly fills back up.
+
 ## Ideas
 ### Title screen 
 * Add text to the title screen

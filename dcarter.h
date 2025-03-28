@@ -59,8 +59,8 @@ public:
 
 class Sprite : public Image {
 private:
-    int frame;
 public:
+    int frame;
     int delay;
     int rows;
     int cols;

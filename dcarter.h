@@ -14,6 +14,7 @@ struct Animation {
     float delta_x;
     float delta_y;
     float delta_angle;
+    float delta_scale;
     int   flipped;
 };
 

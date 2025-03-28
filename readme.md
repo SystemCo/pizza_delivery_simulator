@@ -126,6 +126,12 @@ My schedule is usually subject to change depending on my work schedule
     * Due by:      Monday 03/17/25
     * Status:      Complete
 
+* Force application into fullscreen
+    * Assigned on: Friday 03/10/25
+    * Assigned by: David
+    * Due by:      Monday 03/17/25
+    * Status:      Complete 
+
 ### Fenoon
 * Add pause functionality when <esc> keyboaord key is pressed
     * Assigned on: Monday 03/03/25
@@ -177,8 +183,8 @@ My schedule is usually subject to change depending on my work schedule
 ## Project Phases
 ### Basic UI / UX
 * Animated intro
-* Home Menu
     -> Timeout, Click, any button push
+* Home Menu
     * Looks like pizza order menu
 * Tutorial
 * Controls

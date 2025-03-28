@@ -87,10 +87,12 @@ Game_Button pauseButton;
 //extern GameState gameState;
 GameState gameState = PLAYING;
 //*/
+//Box box(100, 50);
 Global::Global() 
 {
     xres = 640;
     yres = 480;
+    Box box(100, 50);
     //screen = Playing;
     screen = Title;
     memset(keys, 0, 65536);
@@ -611,7 +613,8 @@ void render()
     r.center = 0;
     ggprint8b(&r, 16, 0x00ff0000, "3350 - Asteroids");
     show_fps(&r);
-       if (gameState == PAUSED) {
+ //   box.render();   
+    if (gameState == PAUSED) {
         // Draw pause menu
         drawPauseMenu();
     } else {
@@ -631,48 +634,12 @@ void render()
         // Commented this so title button would disappear during playing state
         //gl.title_button.render();
         gl.car1.render();
+        gl.box.render();
         //added this here
-     //   if (gameState == PAUSED) {
+     //  if (gameState == PAUSED) {
        //     drawPauseMenu();
-        //}
+      // }
     }
+
 }
-///*
-///adding a draw puase menu 
-/*void drawPauseMenu() {
-    Rect r;
 
-    glColor4f(0.0, 0.0, 0.0, 1.0);// transparency
-    glBegin(GL_QUADS);
-    glVertex2f(-1, -1);
-    glVertex2f(1, -1);
-    glVertex2f(1, 1);
-    glVertex2f(-1, 1);
-    glEnd();
-
-    // Display menu options
-    r.bot = gl.yres / 2 + 40;
-    r.left = gl.xres / 2 - 80;
-    r.center = 1;
-
-    glColor3f(1.0, 1.0, 1.0); 
-  //  void Game_Button();
-    ggprint8b(&r, 16, 0xFFFFFF00, "Game Paused: Press Esc to continue");
-    r.bot -= 30;
-    gl.pause_button.render();
-    // static Game_Button pauseButton;
-  //  pauseButton.set_text("Resume");
-    //pauseButton.set_pos(gl.xres / 2 - 100, gl.yres / 2 - 50); // Centered
-   // pauseButton.set_dims(200, 50);
-    //pauseButton.set_color(0, 200, 200); // Cyan color
-
-   // pauseButton.draw();
-}
-*/
-/*
-void handleMouseClick(int x, int y) {
-    if (gameState == PAUSED) {
-        pauseButton.click(x, y);
-    }
-}
-*/

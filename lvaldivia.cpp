@@ -15,7 +15,8 @@ void show_lesslie(Rect* r);
 
 };
 */
-
+//  TO DO03/23/2025
+//FIX the update_frame fuction.
 void show_lesslie(Rect* r)
 {
     ggprint8b(r, 16, 0xFFFF0000, "Lesslie");
@@ -23,7 +24,7 @@ void show_lesslie(Rect* r)
 }
 
 TimerBar::TimerBar(float pos_x, float pos_y, float scale, float angle, const char* infile, unsigned char alphaColor[3], int rows, int cols) : Entity(pos_x, pos_y, scale, angle, infile, alphaColor, rows, cols) 
-//TimerBar::TimerBar(float pos_x, float pos_y, float scale, float angle, const char* fname, int rows, int cols) : Entity(pos_x, pos_y, scale, angle, fname)
+                                                                                                                                              //TimerBar::TimerBar(float pos_x, float pos_y, float scale, float angle, const char* fname, int rows, int cols) : Entity(pos_x, pos_y, scale, angle, fname)
 {
     this->rows = rows;
     this->cols = cols;
@@ -48,7 +49,8 @@ void TimerBar::Timer(float t)
             timesup = true;
         }
 
-        update(deliverytime, 15.0f);
+        //update();
+        //update(deliverytime, 15.0f);
     }
 }
 void TimerBar::resetTimer()
@@ -57,14 +59,15 @@ void TimerBar::resetTimer()
     timesup = false;
 }
 
-void TimerBar::update(float deliveryTime, float maxTime)
-{ //updates frame based on the time
+void TimerBar::update()
+{ //updates frame based on the timef
+    float frameR;  
     int maxFrames = rows * cols;
-    float frameRatio = (((maxTime - deliveryTime) / maxTime) * maxFrames);
+    float frameRatio = (((maxTime - deliverytime) / maxTime) * maxFrames);
     // float frameRatio = ((1- deliveryTime) / maxTime) * (maxFrames-1) + 1;
     //cout << "Delivery TIme: " << deliveryTime << endl;
 
-    int frameR = static_cast<int>(frameRatio);
+    frameR = static_cast<int>(frameRatio);
 
     if (frameR < 1) {
         frameR = 0;
@@ -74,8 +77,8 @@ void TimerBar::update(float deliveryTime, float maxTime)
         frameR = frameR;
     }
 
+   // frame = frameR;
     this->frame = frameR;
-
     /* ///debugging
        cout << " deliveryTime=" << deliveryTime 
        << ", maxTime=" << maxTime 
@@ -87,5 +90,38 @@ void TimerBar::update(float deliveryTime, float maxTime)
 
 void TimerBar::timeRender()
 { //remder the time sprite 
+    cout << "Rendering sprite frame " << this->frame << " of " << rows*cols << endl;
+    //this->frame = frameR;  
     this->render();
+    
+    /*
+    int width = scale / 2;
+    int height = scale;
+    glPushMatrix();
+    glColor3f(1.0, 1.0, 1.0);
+    glBindTexture(GL_TEXTURE_2D, texture);
+    //
+    glEnable(GL_ALPHA_TEST);
+    glAlphaFunc(GL_GREATER, alpha_cutoff.get());
+    glColor4ub(255,255,255,255);
+
+    int ix = frame / cols;
+    int iy = frame % cols;
+
+    float fx = (float)iy / (float)cols;
+    float fy = (float)ix / (float)rows;
+    float deltaX = 1.0f / (float)cols;
+    float deltaY = 1.0f / (float)rows;
+
+    glBegin(GL_QUADS);
+
+    glTexCoord2f(fx, fy+deltaY); glVertex2i(-width, -height);
+    glTexCoord2f(fx, fy);             glVertex2i(-width, height);
+    glTexCoord2f(fx + deltaX, fy);    glVertex2i(width, height);
+    glTexCoord2f(fx + deltaX,fy+deltaY); glVertex2i(width, -height);
+    glEnd();
+    glPopMatrix();
+    glBindTexture(GL_TEXTURE_2D, 0);
+       
+      */
 }

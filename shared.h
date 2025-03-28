@@ -6,9 +6,10 @@
 //#include <GL/glx.h>
 #include "dcarter.h"
 #include "aolmedo.h"
-//#include "lvaldivia.h"
+#include "lvaldivia.h"
 enum ScreenState { Title, Home, Pause, Credits, Playing };
-class TimerBar : public Entity
+/*
+ * class TimerBar : public Entity
 {
     public:
         int frame = 0;
@@ -25,17 +26,17 @@ class TimerBar : public Entity
         bool deliverMade = false;
         void Timer(float t);
         void resetTimer();
-        /*void renderTimer() {
+        void renderTimer() {
           timerbar.timeRender();
           }i
-          */
+          
         //void renderTimer(Position pos, float scale) {
         //void timerbar.timeRender(pos, scale);
 
 
 
 };
-
+*/
 class Global { // Originally from Asteroids framework  
     unsigned char white[3] {255, 255, 255};
     unsigned char blue[3] {0, 0, 255};
@@ -54,7 +55,7 @@ class Global { // Originally from Asteroids framework
     Image background {"./images/map1.png"};
     Image show {"./images/game2.jpg"};
     //TimerBar timerbar {"./images/TimeBar.png", 1, 12};
-    TimerBar timerbar = {xres/2,yres/2, 100.0f, 0.0f, "./images/TimeBar.png",black, 1, 12}; 
+    TimerBar timerbar = {320,240, 100.0f, 0.0f, "./images/TimeBar.png",black, 1, 12}; 
     Line_Follower car1 {
         200, 200, 40.0, 0.0, 
             "images/Car1_sprite.png", red, 1, 8

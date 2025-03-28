@@ -269,6 +269,7 @@ int main()
     x11.set_mouse_position(200, 200);
     x11.show_mouse_cursor(gl.mouse_cursor_on);
     int done=0;
+    //float dTime = 0.0;
     //Game_System pstats;
     while (!done) {
         while (x11.getXPending()) {
@@ -280,16 +281,14 @@ int main()
         clock_gettime(CLOCK_REALTIME, &timeCurrent);
         timeSpan = timeDiff(&timeStart, &timeCurrent);
         timeCopy(&timeStart, &timeCurrent);
-       // float dTime = timeSpan; //commenting out for now
+       // dTime = timeSpan; //commenting out for now
         // if gl.screen state is paused, don't do physics
         physicsCountdown += timeSpan;
-        //float dTime = timeSpan; commenting out for now
         switch (gl.screen) {
             case Title:
                 while (physicsCountdown >= physicsRate) {
                     //coommenting this out 
                     //       title_physics();
-                    //timerbar.Timer(dTime); //commenting out for now
                     physicsCountdown -= physicsRate;
                 }
                 title_render();
@@ -299,8 +298,8 @@ int main()
             case Credits:
             case Playing:
                 while (physicsCountdown >= physicsRate) {
+                    gl.timerbar.Timer(physicsRate);
                     physics();
-                    //timerbar.Timer(dTime);
                     physicsCountdown -= physicsRate;
                 }
                 render();
@@ -352,6 +351,8 @@ void init_opengl(void)
     gl.show.init_gl();
     gl.moto_side->init_gl();
     gl.car1.init_gl();
+    //add timerbar 
+    gl.timerbar.init_gl();
 }
 
 void normalize2d(Vec v)
@@ -545,10 +546,12 @@ return 0;
 
 
 void physics()
-{
+{//update timerbar frame function
     gl.car1.update_frame();
     gl.car1.physics();
     gl.bike.move();
+//gl.timerbar.update_frame();
+    gl.timerbar.update(); // not working
 }
 
 void title_render()
@@ -572,7 +575,7 @@ void render()
     r.bot = gl.yres - 20;
 
     /* Debugging..*/
-    //timerbar.timeRender();
+    //gl.timerbar.timeRender();
 
     r.left = 10;
     r.center = 0;
@@ -601,6 +604,7 @@ void render()
             drawPauseMenu();
         }
     }
+    //gl.timerbar.timeRender();
 }
 
 ///adding a draw puase menu 

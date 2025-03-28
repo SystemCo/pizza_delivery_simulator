@@ -71,19 +71,22 @@ extern void timeCopy(struct timespec *dest, struct timespec *source);
 //-----------------------------------------------------------------------------
 
 void drawPauseMenu();
-
-enum GameState {
+//void textMoveRight();
+Game_Button pauseButton;
+/*enum GameState {
     PLAYING,
     PAUSED,
     MENU
 };
+*/
+//extern GameState gameState; 
 
 // Global variable to track current game state
 //GameState gameState = PLAYING;
 
 //extern GameState gameState;
 GameState gameState = PLAYING;
-
+//*/
 Global::Global() 
 {
     xres = 640;
@@ -288,7 +291,7 @@ int main()
             case Title:
                 while (physicsCountdown >= physicsRate) {
                     //coommenting this out 
-                    //       title_physics();
+                     title_physics();
                     //timerbar.Timer(dTime); //commenting out for now
                     physicsCountdown -= physicsRate;
                 }
@@ -387,6 +390,9 @@ void check_mouse(XEvent *e)
         if (e->xbutton.button==3) {
             //Right button is down
         }
+        if (gameState == PAUSED) {
+                gl.pause_button.click(e->xbutton.x, true_y);
+            }
     }
     //keys[XK_Up] = 0;
     if (savex != e->xbutton.x || savey != e->xbutton.y) {
@@ -578,6 +584,8 @@ void title_render()
     gl.moto_side->render();
     //printf("%f, %f\n", gl.moto_side->pos.x, gl.moto_side->pos.y);
     gl.title_button.render();
+
+
 }
 
 void render()
@@ -625,7 +633,7 @@ void render()
         }
     }
 }
-
+///*
 ///adding a draw puase menu 
 void drawPauseMenu() {
     Rect r;
@@ -644,7 +652,22 @@ void drawPauseMenu() {
     r.center = 1;
 
     glColor3f(1.0, 1.0, 1.0); 
+  //  void Game_Button();
     ggprint8b(&r, 16, 0xFFFFFF00, "Game Paused: Press Esc to continue");
     r.bot -= 30;
+    gl.pause_button.render();
+    // static Game_Button pauseButton;
+  //  pauseButton.set_text("Resume");
+    //pauseButton.set_pos(gl.xres / 2 - 100, gl.yres / 2 - 50); // Centered
+   // pauseButton.set_dims(200, 50);
+    //pauseButton.set_color(0, 200, 200); // Cyan color
+
+   // pauseButton.draw();
 }
 
+void handleMouseClick(int x, int y) {
+    if (gameState == PAUSED) {
+        pauseButton.click(x, y);
+    }
+}
+//*/

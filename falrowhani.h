@@ -5,15 +5,26 @@
 
 
 #include "fonts.h"
-
-
-//class GL {
-//public:
-  //  SomeType* moto_side;
-
-//};
-
+#include <GL/glx.h>
 //extern GL gl; 
+
+//extern GameState gameState; 
+enum GameState {
+    PLAYING,
+    PAUSED,
+    MENU
+};
+
+extern GameState gameState;
+
 void show_fenoon(Rect*r);
 
+class Game_Button : public Button {
+    private:
+        char text[100] = "Exit title";
+    public:
+        void click(int x, int y);
+        Game_Button();
+        void draw();
+};
 #endif

@@ -6,6 +6,7 @@
 //#include <GL/glx.h>
 #include "dcarter.h"
 #include "aolmedo.h"
+#include "falrowhani.h"
 
 enum ScreenState { Title, Home, Pause, Credits, Playing };
 
@@ -23,9 +24,11 @@ public:
         Motorcycle bike;
         Entity* moto_side;
         Title_Exit_Button title_button;
+        Game_Button pause_button; 
         //Image background {"./images/Background2.png"};
         Image background {"./images/map1.png"};
-        Image show {"./images/game2.jpg"};
+       // Image show {"./images/game2.jpg"};
+        Image show {"./images/Web_Photo_Editor.jpg"};
         Line_Follower car1 {
             200, 200, 40.0, 0.0, 
             "images/Car1_sprite.png", red, 1, 8

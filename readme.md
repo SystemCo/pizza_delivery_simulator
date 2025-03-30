@@ -99,11 +99,19 @@ My schedule is usually subject to change depending on my work schedule
 ## TODO:
 
 ### Avelina
+* New responsibility: Responsible for managing all background rendering.
+* Related TODO steps:
+    * Implement a global array of backgrounds in your personal files.
+    * Implement macros for indexing into the array.
+    * Make an init_all() function for an array of images.
+        * You can place the file names for all background images in your personal cpp file.
+        * If someone wants to add a new background, they need to ask you to update your files to accommodate.
+
 * Make sure title button only displays when in the title screen
     * Assigned on: Wednesday 03/12/25
     * Assigned by: David
     * Due by:      Wednesday 03/19/25
-    * Status:      Incomplete
+    * Status:      Complete
 
 * Add start menu screen
     * Only needs a single button which will start gameplay
@@ -127,17 +135,28 @@ My schedule is usually subject to change depending on my work schedule
     * Status:      Complete
 
 * Force application into fullscreen
-    * Assigned on: Friday 03/10/25
+    * Assigned on: Friday 03/28/25
     * Assigned by: David
-    * Due by:      Monday 03/17/25
-    * Status:      Complete 
+    * Due by:      Friday 03/28/25
+    * Status:      Incomplete 
 
 ### Fenoon
+
+* Add two collision detection methods to the Entity class. 
+    * One that takes an entity as a parameter;
+    * One that takes an AABB as a parameter. 
+    * (this may be a position and two floats for width and height)    
+
+    * Assigned on: Friday 03/28/25
+    * Assigned by: Fenoon
+    * Due by:      Friday 04/5/25
+    * Status:      Incomplete
+
 * Add pause functionality when <esc> keyboaord key is pressed
     * Assigned on: Monday 03/03/25
     * Assigned by: David
     * Due by:      Monday 03/10/25
-    * Status:      Incomplete
+    * Status:      Complete
 
 * Add clickable button that will return to play while in pause menu
     * Assigned on: Wednesday 03/12/25
@@ -179,6 +198,14 @@ My schedule is usually subject to change depending on my work schedule
     * Assigned by: David
     * Due by:      Wednesday 03/19/25
     * Status:      Incomplete
+
+* Make a list of timers which can all be rendered with a single function call.
+    * Could implement an array or a linked list. 
+    * Assigned on: Friday 03/28/25
+    * Assigned by: David
+    * Due by:      Friday 04/05/25
+    * Status:      Incomplete
+
 
 ## Project Phases
 ### Basic UI / UX

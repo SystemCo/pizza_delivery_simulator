@@ -136,56 +136,59 @@ void Image::init_gl()
 // =============================================================
 // Asteroids framework start
 extern Global gl;
-X11_wrapper::X11_wrapper(int w, int h)
-{
-    GLint att[] = { GLX_RGBA, GLX_DEPTH_SIZE, 24, GLX_DOUBLEBUFFER, None };
-    //GLint att[] = { GLX_RGBA, GLX_DEPTH_SIZE, 24, None };
-    XSetWindowAttributes swa;
-    setup_screen_res(gl.xres, gl.yres);
-    dpy = XOpenDisplay(NULL);
-    if (dpy == NULL) {
-        std::cout << "\n\tcannot connect to X server" << std::endl;
-        exit(EXIT_FAILURE);
-    }
-    const Window root = DefaultRootWindow(dpy);
-    XWindowAttributes getWinAttr;
-    XGetWindowAttributes(dpy, root, &getWinAttr);
-    int fullscreen = 0;
-    gl.xres = w;
-    gl.yres = h;
-    if (!w && !h) {
-        //Go to fullscreen.
-        gl.xres = getWinAttr.width;
-        gl.yres = getWinAttr.height;
-        //When window is fullscreen, there is no client window
-        //so keystrokes are linked to the root window.
-        XGrabKeyboard(dpy, root, False,
-                GrabModeAsync, GrabModeAsync, CurrentTime);
-        fullscreen=1;
-    }
-    XVisualInfo *vi = glXChooseVisual(dpy, 0, att);
-    if (vi == NULL) {
-        std::cout << "\n\tno appropriate visual found\n" << std::endl;
-        exit(EXIT_FAILURE);
-    } 
-    const Colormap cmap = XCreateColormap(dpy, root, vi->visual, AllocNone);
-    swa.colormap = cmap;
-    swa.event_mask = ExposureMask | KeyPressMask | KeyReleaseMask |
-        PointerMotionMask | MotionNotify | ButtonPress | ButtonRelease |
-        StructureNotifyMask | SubstructureNotifyMask;
-    unsigned int winops = CWBorderPixel|CWColormap|CWEventMask;
-    if (fullscreen) {
-        winops |= CWOverrideRedirect;
-        swa.override_redirect = True;
-    }
-    win = XCreateWindow(dpy, root, 0, 0, gl.xres, gl.yres, 0,
-            vi->depth, InputOutput, vi->visual, winops, &swa);
-    //win = XCreateWindow(dpy, root, 0, 0, gl.xres, gl.yres, 0,
-    //vi->depth, InputOutput, vi->visual, CWColormap | CWEventMask, &swa);
-    set_title();
-    glc = glXCreateContext(dpy, vi, NULL, GL_TRUE);
-    glXMakeCurrent(dpy, win, glc);
-    show_mouse_cursor(0);
+
+X11_wrapper::X11_wrapper(int w, int h) {
+	GLint att[] = { GLX_RGBA, GLX_DEPTH_SIZE, 24, GLX_DOUBLEBUFFER, None };
+	//GLint att[] = { GLX_RGBA, GLX_DEPTH_SIZE, 24, None };
+	XSetWindowAttributes swa;
+	setup_screen_res(gl.xres, gl.yres);
+	dpy = XOpenDisplay(NULL);
+	if (dpy == NULL) {
+		std::cout << "\n\tcannot connect to X server" << std::endl;
+		exit(EXIT_FAILURE);
+	}
+	Window root = DefaultRootWindow(dpy);
+	//for fullscreen...
+	XWindowAttributes getWinAttr;
+	XGetWindowAttributes(dpy, root, &getWinAttr);
+	int fullscreen = 0;
+	gl.xres = w;
+	gl.yres = h;
+	if (!w && !h) {
+		gl.xres = getWinAttr.width;
+		gl.yres = getWinAttr.height;
+		//printf("getWinAttr: %i %i\n", w, h); fflush(stdout);
+		//When window is fullscreen, there is no client window
+		//so keystrokes are linked to the root window.
+		XGrabKeyboard(dpy, root, False,
+			GrabModeAsync, GrabModeAsync, CurrentTime);
+		fullscreen = 1;
+	}
+	XVisualInfo *vi = glXChooseVisual(dpy, 0, att);
+	if (vi == NULL) {
+		std::cout << "\n\tno appropriate visual found\n" << std::endl;
+		exit(EXIT_FAILURE);
+	} 
+	Colormap cmap = XCreateColormap(dpy, root, vi->visual, AllocNone);
+	swa.colormap = cmap;
+	swa.event_mask = ExposureMask | KeyPressMask | KeyReleaseMask |
+		PointerMotionMask | MotionNotify | ButtonPress | ButtonRelease |
+		StructureNotifyMask | SubstructureNotifyMask;
+	//for fullscreen...
+	unsigned int winops = CWBorderPixel|CWColormap|CWEventMask;
+	if (fullscreen) {
+		winops |= CWOverrideRedirect;
+		swa.override_redirect = True;
+	}
+	printf("getWinAttr: %i %i\n", w, h); fflush(stdout);
+	win = XCreateWindow(dpy, root, 0, 0, gl.xres, gl.yres, 0,
+		vi->depth, InputOutput, vi->visual, winops, &swa);
+	//
+	glc = glXCreateContext(dpy, vi, NULL, GL_TRUE);
+	glXMakeCurrent(dpy, win, glc);
+	show_mouse_cursor(gl.mouse_cursor_on);
+	set_title();
+        gl.scale = resolution_scale(&gl.background);
 }
 
 X11_wrapper::~X11_wrapper()

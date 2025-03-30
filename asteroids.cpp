@@ -110,8 +110,8 @@ Global::Global()
 }
 
 Global gl;
-X11_wrapper x11(gl.xres, gl.yres);
-// ---> for fullscreen x11(0, 0);
+//X11_wrapper x11(gl.xres, gl.yres);
+X11_wrapper x11(0, 0);
 
 //function prototypes
 void init_opengl(void);
@@ -336,13 +336,7 @@ int check_keys(XEvent *e)
     //Log("key: %i\n", key);
     if (e->type == KeyRelease) {
         switch (key) {
-            //if escape 
             case XK_Escape:
-                if (gameState == PLAYING) {
-                    gameState = PAUSED;  // Pause the game
-                } else if (gameState == PAUSED) {
-                    gameState = PLAYING;  // Resume the game
-                }
                 break;
             case XK_a:
                 gl.bike.turn_sharpness = 2.5;
@@ -369,82 +363,61 @@ int check_keys(XEvent *e)
         }
         return 0;
     }
-    /*
-       extern GameState gameState;
-    //added this 
-    //
+    (void)shift; // I don't understand what this line does.
+                 //
+                 // if any button is pushed, exit the title menu. 
+                 // Currently would break pause and credits
     if (e->type == KeyPress) {
-    switch (key) {
-    case XK_Escape:
-    // Toggle between PLAYING and PAUSED
-    if (gameState == PLAYING) {
-    gameState = PAUSED;
-    } else {
-    gameState = PLAYING;
-    }
-    return 1;
-    }
-    }
-    */
-    //   return 0;
-    //}
-    //if (e->type == KeyPress) {
-    // we return if not keypress or keyrelease and return if it is keyrelease
-    // so this if guard is not strictly needed.
-    //
-(void)shift; // I don't understand what this line does.
-             //
-             // if any button is pushed, exit the title menu. 
-             // Currently would break pause and credits
-gl.screen = Playing;
-switch (key) {
-    case XK_a:
-        gl.bike.turn_sharpness = 5.0;
-        break;
-    case XK_s:
-        gl.bike.scale = 10;
-        break;
-    case XK_Shift_L:
-    case XK_Shift_R:
-        shift = true;
-        break;
-        // case XK_Escape:
-        // TODO: Pause
-        // set gl.screen to pause state
-        if (gameState == PLAYING) {
-            gameState = PAUSED;
-        } else if (gameState == PAUSED) {
-            gameState = PLAYING;
+        gl.screen = Playing;
+        switch (key) {
+        case XK_F4:
+            return 1;
+        case XK_a:
+            gl.bike.turn_sharpness = 5.0;
+            break;
+        case XK_s:
+            gl.bike.scale = 10;
+            break;
+        case XK_Shift_L:
+        case XK_Shift_R:
+            shift = true;
+            break;
+                break;
+        case XK_Escape:
+            if (gameState == PLAYING) {
+                gameState = PAUSED;
+            } else if (gameState == PAUSED) {
+                gameState = PLAYING;
+            }
+            //return 1;
+        case XK_m:
+            gl.mouse_cursor_on = !gl.mouse_cursor_on;
+            x11.show_mouse_cursor(gl.mouse_cursor_on);
+            break;
+        case XK_c:
+            gl.credits = !gl.credits;
+            break;
+        case XK_b:
+            gl.show_bike = !gl.show_bike;
+            break;
+        case XK_Left:
+            gl.bike.left = true;
+            break;
+        case XK_Right:
+            gl.bike.right = true;
+            break;
+        case XK_Down:
+            gl.bike.pedal = Backward;
+            break;
+        case XK_Up:
+            gl.bike.pedal = Forward;
+        case XK_equal:
+            break;
+        case XK_minus:
+            break;
         }
-        return 1;
-        //modified code 
-    case XK_m:
-        gl.mouse_cursor_on = !gl.mouse_cursor_on;
-        x11.show_mouse_cursor(gl.mouse_cursor_on);
-        break;
-    case XK_c:
-        gl.credits = !gl.credits;
-        break;
-    case XK_b:
-        gl.show_bike = !gl.show_bike;
-        break;
-    case XK_Left:
-        gl.bike.left = true;
-        break;
-    case XK_Right:
-        gl.bike.right = true;
-        break;
-    case XK_Down:
-        gl.bike.pedal = Backward;
-        break;
-    case XK_Up:
-        gl.bike.pedal = Forward;
-    case XK_equal:
-        break;
-    case XK_minus:
-        break;
-}
-return 0;
+    }
+    return 0;
 }
 
 

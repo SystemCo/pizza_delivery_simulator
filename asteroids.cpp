@@ -409,14 +409,13 @@ int check_keys(XEvent *e)
         case XK_Shift_R:
             shift = true;
             break;
-                break;
         case XK_Escape:
             if (gameState == PLAYING) {
                 gameState = PAUSED;
             } else if (gameState == PAUSED) {
                 gameState = PLAYING;
             }
-            //return 1;
+            break;
         case XK_m:
             gl.mouse_cursor_on = !gl.mouse_cursor_on;
             x11.show_mouse_cursor(gl.mouse_cursor_on);

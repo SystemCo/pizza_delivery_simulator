@@ -92,7 +92,7 @@ Global::Global()
 {
     xres = 640;
     yres = 480;
-    Box box(100, 50);
+//    Box box(100, 50);
     //screen = Playing;
     screen = Title;
     memset(keys, 0, 65536);
@@ -634,12 +634,15 @@ void render()
         // Commented this so title button would disappear during playing state
         //gl.title_button.render();
         gl.car1.render();
-        gl.box.render();
+        //gl.box.render();
         //added this here
      //  if (gameState == PAUSED) {
        //     drawPauseMenu();
       // }
+   // }
+     //   if (gameState == PAUSED) {
+       //     drawPauseMenu();
+        //}
     }
-
 }
 

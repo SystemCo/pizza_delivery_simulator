@@ -18,7 +18,7 @@ class Global { // Originally from Asteroids framework
 public:
 	int xres, yres, scale;
 	char keys[65536];
-     Box box;
+     //Box box;
 	int mouse_cursor_on;
         int credits;
         int show_bike;

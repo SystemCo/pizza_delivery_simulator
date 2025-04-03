@@ -35,7 +35,7 @@ public:
     void click(int x, int y);
      void draw();
 };
-class Box {
+/*class Box {
 public:
     int width, height;
     float pos[2], color[3];
@@ -61,7 +61,7 @@ public:
             glVertex2f(pos[0], pos[1] + height);
         glEnd();
     }
-};
+};*/
 /*
 class Box {
 public:
@@ -94,4 +94,6 @@ public:
         color[2] = 0.3f;
     }
 };*/
+
+
 #endif

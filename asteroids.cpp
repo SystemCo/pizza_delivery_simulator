@@ -393,6 +393,10 @@ void check_mouse(XEvent *e)
         if (gameState == PAUSED) {
                 gl.pause_button.click(e->xbutton.x, true_y);
             }
+
+        if (gameState == PAUSED) {
+                gl.restart.click(e->xbutton.x, true_y);
+            }
     }
     //keys[XK_Up] = 0;
     if (savex != e->xbutton.x || savey != e->xbutton.y) {
@@ -628,14 +632,14 @@ void render()
         //gl.title_button.render();
         gl.car1.render();
         //added this here
-        if (gameState == PAUSED) {
-            drawPauseMenu();
-        }
+     //   if (gameState == PAUSED) {
+       //     drawPauseMenu();
+        //}
     }
 }
 ///*
 ///adding a draw puase menu 
-void drawPauseMenu() {
+/*void drawPauseMenu() {
     Rect r;
 
     glColor4f(0.0, 0.0, 0.0, 1.0);// transparency
@@ -664,10 +668,11 @@ void drawPauseMenu() {
 
    // pauseButton.draw();
 }
-
+*/
+/*
 void handleMouseClick(int x, int y) {
     if (gameState == PAUSED) {
         pauseButton.click(x, y);
     }
 }
-//*/
+*/

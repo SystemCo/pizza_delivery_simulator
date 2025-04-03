@@ -24,7 +24,8 @@ public:
         Motorcycle bike;
         Entity* moto_side;
         Title_Exit_Button title_button;
-        Game_Button pause_button; 
+        Game_Button pause_button;
+        Restart_Button restart;  
         //Image background {"./images/Background2.png"};
         Image background {"./images/map1.png"};
        // Image show {"./images/game2.jpg"};

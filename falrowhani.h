@@ -27,4 +27,14 @@ class Game_Button : public Button {
         Game_Button();
         void draw();
 };
+
+class Restart_Button : public Button {
+public:
+    Restart_Button();
+    void on_click();
+    void click(int x, int y);
+     void draw();
+};
+
+
 #endif

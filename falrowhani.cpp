@@ -106,13 +106,15 @@ extern Global gl;
 
 void title_moto_physics(int frame, Animation animation[5]);
 
+//extern Global gl; 
+
 void title_physics()
 {
     static int frame = 0;
  Animation  animations[3];
     animations[0] = {2, 0, 0, 0};
     animations[1] = {2, 5, 25, 0};
-    animations[2] = {2, 0, 0, 0};
+    animations[2] = {0, 5, 0, 0};
 
    // title_moto_physics(frame, animations);
     
@@ -127,8 +129,6 @@ void title_physics()
 }
 // Declare ONLY ONE box
 //Box box(100, 50);
-
-
 /*
 void title_physics()
 {

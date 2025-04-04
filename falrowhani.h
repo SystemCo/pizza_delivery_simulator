@@ -18,6 +18,8 @@ enum GameState {
 extern GameState gameState;
 
 void show_fenoon(Rect*r);
+void drawPauseMenu();
+void title_physics();
 
 class Game_Button : public Button {
     private:

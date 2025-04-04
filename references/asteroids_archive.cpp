@@ -1,4 +1,116 @@
 
+class Game {
+    public:
+        Ship ship;
+        Asteroid *ahead;
+        Bullet *barr;
+        int nasteroids;
+        int nbullets;
+        struct timespec bulletTimer;
+        struct timespec mouseThrustTimer;
+        bool mouseThrustOn;
+    public:
+        void Build_Asteroid()
+        {
+
+            Asteroid *a = new Asteroid;
+            a->nverts = 8;
+            a->radius = rnd()*80.0 + 40.0;
+            Flt r2 = a->radius / 2.0;
+            Flt angle = 0.0f;
+            Flt inc = (PI * 2.0) / (Flt)a->nverts;
+            for (int i=0; i<a->nverts; i++) {
+                a->vert[i][0] = sin(angle) * (r2 + rnd() * a->radius);
+                a->vert[i][1] = cos(angle) * (r2 + rnd() * a->radius);
+                angle += inc;
+            }
+            a->pos[0] = (Flt)(rand() % gl.xres);
+            a->pos[1] = (Flt)(rand() % gl.yres);
+            a->pos[2] = 0.0f;
+            a->angle = 0.0;
+            a->rotate = rnd() * 4.0 - 2.0;
+            a->color[0] = 0.8;
+            a->color[1] = 0.8;
+            a->color[2] = 0.7;
+            a->vel[0] = (Flt)(rnd()*2.0-1.0);
+            a->vel[1] = (Flt)(rnd()*2.0-1.0);
+            //std::cout << "asteroid" << std::endl;
+            //add to front of linked list
+            a->next = ahead;
+            if (ahead != NULL)
+                ahead->prev = a;
+            ahead = a;
+            ++nasteroids;
+        }
+        Game() {
+            ahead = NULL;
+            barr = new Bullet[MAX_BULLETS];
+            nasteroids = 0;
+            nbullets = 0;
+            mouseThrustOn = false;
+            //build 10 asteroids...
+            for (int j=0; j<10; j++) {
+                Build_Asteroid();
+            }
+            clock_gettime(CLOCK_REALTIME, &bulletTimer);
+        }
+        ~Game() {
+            delete [] barr;
+        }
+} g;
+
+
+class Ship {
+    public:
+        Vec pos;
+        Vec dir;
+        Vec vel;
+        Vec acc;
+        float angle;
+        float color[3];
+    public:
+        Ship() {
+            pos[0] = (Flt)(gl.xres/2);
+            pos[1] = (Flt)(gl.yres/2);
+            pos[2] = 0.0f;
+            VecZero(dir);
+            VecZero(vel);
+            VecZero(acc);
+            angle = 0.0;
+            color[0] = color[1] = color[2] = 1.0;
+        }
+};
+
+class Bullet {
+    public:
+        Vec pos;
+        Vec vel;
+        float color[3];
+        struct timespec time;
+    public:
+        Bullet() { }
+};
+
+class Asteroid {
+    public:
+        Vec pos;
+        Vec vel;
+        int nverts;
+        Flt radius;
+        Vec vert[8];
+        float angle;
+        float rotate;
+        float color[3];
+        struct Asteroid *prev;
+        struct Asteroid *next;
+    public:
+        Asteroid() {
+            prev = NULL;
+            next = NULL;
+        }
+};
+
+
 void deleteAsteroid(Game *g, Asteroid *node)
 {
     //Remove a node from doubly-linked list

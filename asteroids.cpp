@@ -115,119 +115,8 @@ Global::Global()
 }
 
 Global gl;
-
-class Ship {
-    public:
-        Vec pos;
-        Vec dir;
-        Vec vel;
-        Vec acc;
-        float angle;
-        float color[3];
-    public:
-        Ship() {
-            pos[0] = (Flt)(gl.xres/2);
-            pos[1] = (Flt)(gl.yres/2);
-            pos[2] = 0.0f;
-            VecZero(dir);
-            VecZero(vel);
-            VecZero(acc);
-            angle = 0.0;
-            color[0] = color[1] = color[2] = 1.0;
-        }
-};
-
-class Bullet {
-    public:
-        Vec pos;
-        Vec vel;
-        float color[3];
-        struct timespec time;
-    public:
-        Bullet() { }
-};
-
-class Asteroid {
-    public:
-        Vec pos;
-        Vec vel;
-        int nverts;
-        Flt radius;
-        Vec vert[8];
-        float angle;
-        float rotate;
-        float color[3];
-        struct Asteroid *prev;
-        struct Asteroid *next;
-    public:
-        Asteroid() {
-            prev = NULL;
-            next = NULL;
-        }
-};
-
-class Game {
-    public:
-        Ship ship;
-        Asteroid *ahead;
-        Bullet *barr;
-        int nasteroids;
-        int nbullets;
-        struct timespec bulletTimer;
-        struct timespec mouseThrustTimer;
-        bool mouseThrustOn;
-    public:
-        void Build_Asteroid()
-        {
-
-            Asteroid *a = new Asteroid;
-            a->nverts = 8;
-            a->radius = rnd()*80.0 + 40.0;
-            Flt r2 = a->radius / 2.0;
-            Flt angle = 0.0f;
-            Flt inc = (PI * 2.0) / (Flt)a->nverts;
-            for (int i=0; i<a->nverts; i++) {
-                a->vert[i][0] = sin(angle) * (r2 + rnd() * a->radius);
-                a->vert[i][1] = cos(angle) * (r2 + rnd() * a->radius);
-                angle += inc;
-            }
-            a->pos[0] = (Flt)(rand() % gl.xres);
-            a->pos[1] = (Flt)(rand() % gl.yres);
-            a->pos[2] = 0.0f;
-            a->angle = 0.0;
-            a->rotate = rnd() * 4.0 - 2.0;
-            a->color[0] = 0.8;
-            a->color[1] = 0.8;
-            a->color[2] = 0.7;
-            a->vel[0] = (Flt)(rnd()*2.0-1.0);
-            a->vel[1] = (Flt)(rnd()*2.0-1.0);
-            //std::cout << "asteroid" << std::endl;
-            //add to front of linked list
-            a->next = ahead;
-            if (ahead != NULL)
-                ahead->prev = a;
-            ahead = a;
-            ++nasteroids;
-        }
-        Game() {
-            ahead = NULL;
-            barr = new Bullet[MAX_BULLETS];
-            nasteroids = 0;
-            nbullets = 0;
-            mouseThrustOn = false;
-            //build 10 asteroids...
-            for (int j=0; j<10; j++) {
-                Build_Asteroid();
-            }
-            clock_gettime(CLOCK_REALTIME, &bulletTimer);
-        }
-        ~Game() {
-            delete [] barr;
-        }
-} g;
-
-X11_wrapper x11(gl.xres, gl.yres);
-// ---> for fullscreen x11(0, 0);
+//X11_wrapper x11(gl.xres, gl.yres);
+X11_wrapper x11(0, 0);
 
 //function prototypes
 void init_opengl(void);
@@ -294,6 +183,7 @@ int main()
                 while (physicsCountdown >= physicsRate) {
                     //coommenting this out 
                      title_physics();
+                    title_physics();
                     //timerbar.Timer(dTime); //commenting out for now
                     physicsCountdown -= physicsRate;
                 }
@@ -459,13 +349,7 @@ int check_keys(XEvent *e)
     //Log("key: %i\n", key);
     if (e->type == KeyRelease) {
         switch (key) {
-            //if escape 
             case XK_Escape:
-                if (gameState == PLAYING) {
-                    gameState = PAUSED;  // Pause the game
-                } else if (gameState == PAUSED) {
-                    gameState = PLAYING;  // Resume the game
-                }
                 break;
             case XK_a:
                 gl.bike.turn_sharpness = 2.5;
@@ -492,82 +376,61 @@ int check_keys(XEvent *e)
         }
         return 0;
     }
-    /*
-       extern GameState gameState;
-    //added this 
-    //
+    (void)shift; // I don't understand what this line does.
+                 //
+                 // if any button is pushed, exit the title menu. 
+                 // Currently would break pause and credits
     if (e->type == KeyPress) {
-    switch (key) {
-    case XK_Escape:
-    // Toggle between PLAYING and PAUSED
-    if (gameState == PLAYING) {
-    gameState = PAUSED;
-    } else {
-    gameState = PLAYING;
-    }
-    return 1;
-    }
-    }
-    */
-    //   return 0;
-    //}
-    //if (e->type == KeyPress) {
-    // we return if not keypress or keyrelease and return if it is keyrelease
-    // so this if guard is not strictly needed.
-    //
-(void)shift; // I don't understand what this line does.
-             //
-             // if any button is pushed, exit the title menu. 
-             // Currently would break pause and credits
-gl.screen = Playing;
-switch (key) {
-    case XK_a:
-        gl.bike.turn_sharpness = 5.0;
-        break;
-    case XK_s:
-        gl.bike.scale = 10;
-        break;
-    case XK_Shift_L:
-    case XK_Shift_R:
-        shift = true;
-        break;
-        // case XK_Escape:
-        // TODO: Pause
-        // set gl.screen to pause state
-        if (gameState == PLAYING) {
-            gameState = PAUSED;
-        } else if (gameState == PAUSED) {
-            gameState = PLAYING;
+        gl.screen = Playing;
+        switch (key) {
+        case XK_F4:
+            return 1;
+        case XK_a:
+            gl.bike.turn_sharpness = 5.0;
+            break;
+        case XK_s:
+            gl.bike.scale = 10;
+            break;
+        case XK_Shift_L:
+        case XK_Shift_R:
+            shift = true;
+            break;
+                break;
+        case XK_Escape:
+            if (gameState == PLAYING) {
+                gameState = PAUSED;
+            } else if (gameState == PAUSED) {
+                gameState = PLAYING;
+            }
+            //return 1;
+        case XK_m:
+            gl.mouse_cursor_on = !gl.mouse_cursor_on;
+            x11.show_mouse_cursor(gl.mouse_cursor_on);
+            break;
+        case XK_c:
+            gl.credits = !gl.credits;
+            break;
+        case XK_b:
+            gl.show_bike = !gl.show_bike;
+            break;
+        case XK_Left:
+            gl.bike.left = true;
+            break;
+        case XK_Right:
+            gl.bike.right = true;
+            break;
+        case XK_Down:
+            gl.bike.pedal = Backward;
+            break;
+        case XK_Up:
+            gl.bike.pedal = Forward;
+        case XK_equal:
+            break;
+        case XK_minus:
+            break;
         }
-        return 1;
-        //modified code 
-    case XK_m:
-        gl.mouse_cursor_on = !gl.mouse_cursor_on;
-        x11.show_mouse_cursor(gl.mouse_cursor_on);
-        break;
-    case XK_c:
-        gl.credits = !gl.credits;
-        break;
-    case XK_b:
-        gl.show_bike = !gl.show_bike;
-        break;
-    case XK_Left:
-        gl.bike.left = true;
-        break;
-    case XK_Right:
-        gl.bike.right = true;
-        break;
-    case XK_Down:
-        gl.bike.pedal = Backward;
-        break;
-    case XK_Up:
-        gl.bike.pedal = Forward;
-    case XK_equal:
-        break;
-    case XK_minus:
-        break;
-}
-return 0;
+    }
+    return 0;
 }
 
 
@@ -618,9 +481,6 @@ void render()
         // Draw pause menu
         drawPauseMenu();
     } else {
-
-        ggprint8b(&r, 16, 0x00ffff00, "n bullets: %i", g.nbullets);
-        ggprint8b(&r, 16, 0x00ffff00, "n asteroids: %i", g.nasteroids);
         ggprint8b(&r, 16, 0x00ff00ff, "Press C for credits");
         if (gl.credits) {
             show_avelina(&r);

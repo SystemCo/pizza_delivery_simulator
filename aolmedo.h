@@ -7,6 +7,8 @@
 
 void show_avelina(Rect *r);
 
+
+
 class Title_Exit_Button : public Button {
     private:
         char text[100] = "Exit title";

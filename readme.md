@@ -99,11 +99,19 @@ My schedule is usually subject to change depending on my work schedule
 ## TODO:
 
 ### Avelina
+* New responsibility: Responsible for managing all background rendering.
+* Related TODO steps:
+    * Implement a global array of backgrounds in your personal files.
+    * Implement macros for indexing into the array.
+    * Make an init_all() function for an array of images.
+        * You can place the file names for all background images in your personal cpp file.
+        * If someone wants to add a new background, they need to ask you to update your files to accommodate.
+
 * Make sure title button only displays when in the title screen
     * Assigned on: Wednesday 03/12/25
     * Assigned by: David
     * Due by:      Wednesday 03/19/25
-    * Status:      Incomplete
+    * Status:      Complete
 
 * Add start menu screen
     * Only needs a single button which will start gameplay
@@ -126,12 +134,29 @@ My schedule is usually subject to change depending on my work schedule
     * Due by:      Monday 03/17/25
     * Status:      Complete
 
+* Force application into fullscreen
+    * Assigned on: Friday 03/28/25
+    * Assigned by: David
+    * Due by:      Friday 03/28/25
+    * Status:      Incomplete 
+
 ### Fenoon
+
+* Add two collision detection methods to the Entity class. 
+    * One that takes an entity as a parameter;
+    * One that takes an AABB as a parameter. 
+    * (this may be a position and two floats for width and height)    
+
+    * Assigned on: Friday 03/28/25
+    * Assigned by: Fenoon
+    * Due by:      Friday 04/5/25
+    * Status:      Incomplete
+
 * Add pause functionality when <esc> keyboaord key is pressed
     * Assigned on: Monday 03/03/25
     * Assigned by: David
     * Due by:      Monday 03/10/25
-    * Status:      Incomplete
+    * Status:      Complete
 
 * Add clickable button that will return to play while in pause menu
     * Assigned on: Wednesday 03/12/25
@@ -173,6 +198,71 @@ My schedule is usually subject to change depending on my work schedule
     * Assigned by: David
     * Due by:      Wednesday 03/19/25
     * Status:      Incomplete
+
+* Make a list of timers which can all be rendered with a single function call.
+    * Could implement an array or a linked list. 
+    * Assigned on: Friday 03/28/25
+    * Assigned by: David
+    * Due by:      Friday 04/05/25
+    * Status:      Incomplete
+
+
+## Project Phases
+### Basic UI / UX
+* Animated intro
+    -> Timeout, Click, any button push
+* Home Menu
+    * Looks like pizza order menu
+* Tutorial
+* Controls
+* Options (i.e. sound)
+* Game Play
+    -> Push the play game button from Home Menu
+* Pause Menu
+    -> Push esc while playing
+* Exit Game
+    -> Quit button, from home, from pause, alt+<F4>
+
+### Animated Intro
+* If intro is not complex enough, then not valid
+    * Spinning world is not enough
+    * Just Animated text is not enough
+* Add scrolling backdrop, weelie, pizza boxes, etc. 
+
+### Map features
+* How to handle collisions with each element of the map
+* Need to make an AABB collision function
+* Need to have logic for what to do with each type of element
+* Types
+    * street lamp, building, water, sidewalk, etc
+
+### Extra animation features
+* Pizza guy dismounting to pick up the pizza
+* Hit pedestrians explode!
+* Add vehicle damage
+    * Traffic
+    * Player Motorcycle
+
+### Add more traffic
+* Add traffic pathing logic
+* random?
+    * Both
+    * Different vehicle types have different levels of predictability
+* Add pedestrians
+
+### Extra game elements
+* Money mechanics
+* Things that cost money
+    * Not delivering pizza on time
+    * Accidents/crashes
+    * Hitting pedestrians
+    * Rent and water bills
+        * random
+* If you don't complete all deliveris, you're fired, game over
+* Too many late deliveries and you're fired
+    * shown by a "performance" meter?
+    * Deliveries that are more late hurt your performance more;
+    * Performance slowly fills back up.
 
 ## Ideas
 ### Title screen 

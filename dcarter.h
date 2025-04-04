@@ -14,6 +14,7 @@ struct Animation {
     float delta_x;
     float delta_y;
     float delta_angle;
+    float delta_scale;
     int   flipped;
 };
 
@@ -59,11 +60,12 @@ public:
 
 class Sprite : public Image {
 private:
-    int frame;
 public:
+    int frame;
     int delay;
     int rows;
     int cols;
+    //Percent alpha_cutoff = 0.0f;
     Percent alpha_cutoff;
     void render(float scale, Position pos, float angle);
     void render(float scale, Position pos);

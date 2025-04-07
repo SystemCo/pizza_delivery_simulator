@@ -115,8 +115,14 @@ Global::Global()
 }
 
 Global gl;
+<<<<<<< HEAD
 //X11_wrapper x11(gl.xres, gl.yres);
 X11_wrapper x11(0, 0);
+=======
+TimerList timerList;
+X11_wrapper x11(gl.xres, gl.yres);
+// ---> for fullscreen x11(0, 0);
+>>>>>>> 4e5b84d (working on list)
 
 //function prototypes
 void init_opengl(void);
@@ -136,8 +142,6 @@ int main()
     logOpen();
     init_opengl();
 #ifdef USE_OPENAL_SOUND
-    init_openal();
-
     // Create buffer to hold sound information
     ALuint alBuffer = alutCreateBufferFromFile("./wav/737engine.wav");
 
@@ -156,6 +160,11 @@ int main()
 
     alSourcePlay(alSource);
 #endif //USE_OPENAL_SOUND
+    /*std::cout << "about to create timerbar" << std::endl;
+    TimerBar* deliveryTimer = new TimerBar(320,240, 100.0f, 0.0f, "./images/TimeBar.png",gl.black2, 1, 12);
+    std::cout << "timer bar created" << std::endl;
+    timerList.addTimer(deliveryTimer);
+    */
     srand(time(NULL));
     clock_gettime(CLOCK_REALTIME, &timePause);
     clock_gettime(CLOCK_REALTIME, &timeStart);
@@ -194,8 +203,9 @@ int main()
             case Credits:
             case Playing:
                 while (physicsCountdown >= physicsRate) {
+                      //gl.timerbar.Timer(physicsRate);
+                        timerList.timerAll(physicsRate);
                     physics();
-                    //timerbar.Timer(dTime);
                     physicsCountdown -= physicsRate;
                 }
                 render();
@@ -247,6 +257,10 @@ void init_opengl(void)
     gl.show.init_gl();
     gl.moto_side->init_gl();
     gl.car1.init_gl();
+    //add timerbar
+    //gl.timerbar.init_gl();
+    //gl.timerList.initALL();
+   //timerList.initAll();
 }
 
 void normalize2d(Vec v)
@@ -439,6 +453,7 @@ void physics()
     gl.car1.update_frame();
     gl.car1.physics();
     gl.bike.move();
+    //timerList.updateAll();
 }
 
 void title_render()
@@ -504,5 +519,6 @@ void render()
        //     drawPauseMenu();
         //}
     }
+//           timerList.renderAll();
 }
 

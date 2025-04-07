@@ -204,7 +204,7 @@ int main()
             case Playing:
                 while (physicsCountdown >= physicsRate) {
                       //gl.timerbar.Timer(physicsRate);
-                        timerList.timerAll(physicsRate);
+//                        timerList.timerAll(physicsRate);
                     physics();
                     physicsCountdown -= physicsRate;
                 }

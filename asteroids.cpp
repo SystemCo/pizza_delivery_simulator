@@ -115,14 +115,8 @@ Global::Global()
 }
 
 Global gl;
-<<<<<<< HEAD
-//X11_wrapper x11(gl.xres, gl.yres);
 X11_wrapper x11(0, 0);
-=======
 TimerList timerList;
-X11_wrapper x11(gl.xres, gl.yres);
-// ---> for fullscreen x11(0, 0);
->>>>>>> 4e5b84d (working on list)
 
 //function prototypes
 void init_opengl(void);

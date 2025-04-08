@@ -139,9 +139,7 @@ My schedule is usually subject to change depending on my work schedule
     * Assigned by: David
     * Due by:      Friday 03/28/25
     * Status:      Complete 
-
 * Implement traffic logical calls for many vehicles to drive realistically along the road.
-
 
 ### Fenoon
 

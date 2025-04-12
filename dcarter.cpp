@@ -29,6 +29,7 @@ extern Global gl;
 // ************************************************************************
 //
 // for credits
+
 void show_david(Rect* r)
 {
     ggprint8b(r, 16, 0xf3ab00, "David - The Sweaty One");

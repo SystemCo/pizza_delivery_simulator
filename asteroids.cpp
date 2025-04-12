@@ -116,8 +116,8 @@ Global::Global()
 }
 
 Global gl;
-//X11_wrapper x11(gl.xres, gl.yres);
 X11_wrapper x11(0, 0);
+TimerList timerList;
 
 //function prototypes
 void init_opengl(void);
@@ -138,8 +138,6 @@ int main()
     init_opengl();
    // physicsforCollision();
 #ifdef USE_OPENAL_SOUND
-    init_openal();
-
     // Create buffer to hold sound information
     ALuint alBuffer = alutCreateBufferFromFile("./wav/737engine.wav");
 
@@ -158,6 +156,11 @@ int main()
 
     alSourcePlay(alSource);
 #endif //USE_OPENAL_SOUND
+    /*std::cout << "about to create timerbar" << std::endl;
+    TimerBar* deliveryTimer = new TimerBar(320,240, 100.0f, 0.0f, "./images/TimeBar.png",gl.black2, 1, 12);
+    std::cout << "timer bar created" << std::endl;
+    timerList.addTimer(deliveryTimer);
+    */
     srand(time(NULL));
     clock_gettime(CLOCK_REALTIME, &timePause);
     clock_gettime(CLOCK_REALTIME, &timeStart);
@@ -196,8 +199,9 @@ int main()
             case Credits:
             case Playing:
                 while (physicsCountdown >= physicsRate) {
+                      //gl.timerbar.Timer(physicsRate);
+//                        timerList.timerAll(physicsRate);
                     physics();
-                    //timerbar.Timer(dTime);
                     physicsCountdown -= physicsRate;
                 }
                 render();
@@ -253,6 +257,10 @@ void init_opengl(void)
         
    // gl.box.pos[0] = 100.0f;
 //gl.box.pos[1] = 100.0f;
+    //add timerbar
+    //gl.timerbar.init_gl();
+    //gl.timerList.initALL();
+   //timerList.initAll();
 }
 
 void normalize2d(Vec v)
@@ -401,14 +409,13 @@ int check_keys(XEvent *e)
         case XK_Shift_R:
             shift = true;
             break;
-                break;
         case XK_Escape:
             if (gameState == PLAYING) {
                 gameState = PAUSED;
             } else if (gameState == PAUSED) {
                 gameState = PLAYING;
             }
-            //return 1;
+            break;
         case XK_m:
             gl.mouse_cursor_on = !gl.mouse_cursor_on;
             x11.show_mouse_cursor(gl.mouse_cursor_on);
@@ -445,8 +452,9 @@ void physics()
     gl.car1.update_frame();
     gl.car1.physics();
     physicsforCollision();
-    gl.bike.move();
-    
+    gl.bike.move();    
+    //timerList.updateAll();
+
 }
 
 void title_render()
@@ -535,5 +543,6 @@ void render()
        //     drawPauseMenu();
         //}
     }
+//           timerList.renderAll();
 }
 

@@ -2,7 +2,9 @@
 #define _DCARTER_H_
 #include "fonts.h"
 #include "image.h"
-
+//include "shared.h"
+//#include "falrowhani.h"
+class Box;
 // Simple text display wrapper used for the credits page
 void show_david(Rect* r);
 
@@ -128,26 +130,32 @@ class Line_Follower : public Entity { // Only allowed to follow lines
         void set_points(Position* points, int count);
         void physics();
 };
-
+struct RectStruct;
 // Models the main playable character
 class Motorcycle : public Entity {
-private:
-    Percent velocity;
-    //Percent turn_dir;
-    float direction = 0;
-    Turn turning;
-    Image head {"./images/Moto_head.jpg"}; // white alphaColor
-    void set_turn();
-public:
-    bool right;
-    bool left;
-    float turn_sharpness;
-    Pedal pedal;
-    Motorcycle();
-    void move();
-    void render();
-    void init_gl();
-};
+    private:
+        Percent velocity;
+        //Percent turn_dir;
+        float direction = 0;
+        Turn turning;
+        Image head {"./images/Moto_head.jpg"}; // white alphaColor
+        
+        void set_turn();
+    public:
+        bool right;
+        bool left;
+        float turn_sharpness;
+        Pedal pedal;
+        Motorcycle();
+        //Vec2 prevPos;
+        Position prevPos;
+        float vel[2];
+        float force[2];
+        void move();
+        void render();
+        void init_gl();
+        bool collides_with_box(const Box& box);
+    };
 
 // Mouse clickable buttons. These are intended to be a parent class.
 // Each real button will inherent from this, 
@@ -165,6 +173,9 @@ public:
         void render();
         Button();
         Button(float x_pos, float y_pos);
+        
+         float motoWidth;
+         float motoHeight;
         // The sea of setup
         void set_pos(float x, float y)  {  pos.x  = x;   pos.y = y; }
         void set_dims(int  x, int   y)  { dims[0] = x; dims[1] = y; }

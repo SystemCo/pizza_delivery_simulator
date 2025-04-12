@@ -419,6 +419,7 @@ Motorcycle::Motorcycle() :
     turn_sharpness = 2.5;
     pedal = Neutral;
     alpha_cutoff.set(0.4f);
+
 }
 
 // Go straight when not pressing buttons or when pressing L & R buttons

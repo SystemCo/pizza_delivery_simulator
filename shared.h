@@ -18,7 +18,16 @@ class Global { // Originally from Asteroids framework
 public:
 	int xres, yres, scale;
 	char keys[65536];
-     //Box box;
+    Box box;
+    Box box2; 
+    Box box3; 
+    Box box4; 
+    Box box5; 
+    Box box6; 
+    Box box7; 
+    Box box8;
+    Box box9;
+    Box box10;  
 	int mouse_cursor_on;
         int credits;
         int show_bike;
@@ -29,8 +38,8 @@ public:
         Restart_Button restart;  
         //Image background {"./images/Background2.png"};
         Image background {"./images/map1.png"};
-       // Image show {"./images/game2.jpg"};
-        Image show {"./images/Web_Photo_Editor.jpg"};
+        Image show {"./images/game2.jpg"};
+     //   Image show {"./images/Web_Photo_Editor.jpg"};
         Line_Follower car1 {
             200, 200, 40.0, 0.0, 
             "images/Car1_sprite.png", red, 1, 8

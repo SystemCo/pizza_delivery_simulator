@@ -71,6 +71,7 @@ extern void timeCopy(struct timespec *dest, struct timespec *source);
 //-----------------------------------------------------------------------------
 
 void drawPauseMenu();
+void physicsforCollision();
 //void textMoveRight();
 Game_Button pauseButton;
 /*enum GameState {
@@ -135,6 +136,7 @@ int main()
 {
     logOpen();
     init_opengl();
+   // physicsforCollision();
 #ifdef USE_OPENAL_SOUND
     init_openal();
 
@@ -183,7 +185,7 @@ int main()
                 while (physicsCountdown >= physicsRate) {
                     //coommenting this out 
                      title_physics();
-                    title_physics();
+                  //  title_physics();
                     //timerbar.Timer(dTime); //commenting out for now
                     physicsCountdown -= physicsRate;
                 }
@@ -247,6 +249,10 @@ void init_opengl(void)
     gl.show.init_gl();
     gl.moto_side->init_gl();
     gl.car1.init_gl();
+    initGame();
+        
+   // gl.box.pos[0] = 100.0f;
+//gl.box.pos[1] = 100.0f;
 }
 
 void normalize2d(Vec v)
@@ -438,7 +444,9 @@ void physics()
 {
     gl.car1.update_frame();
     gl.car1.physics();
+    physicsforCollision();
     gl.bike.move();
+    
 }
 
 void title_render()
@@ -452,8 +460,13 @@ void title_render()
     gl.show.show(gl.scale, gl.xres/2 , gl.yres/2 +2, 0.0f);
     gl.moto_side->render();
     //printf("%f, %f\n", gl.moto_side->pos.x, gl.moto_side->pos.y);
+    Rect r;  // Rect object for text positioning
+    r.bot = gl.yres - 20;  // Set the bottom of the text near the bottom of the screen
+    r.left = 10; 
+    title(r);
     gl.title_button.render();
-
+    //title(r);
+    //physicsforCollision();
 
 }
 
@@ -463,6 +476,7 @@ void render()
     glClearColor(0.0, 0.0, 0.0, 1.0);
     glClear(GL_COLOR_BUFFER_BIT);
     gl.background.show(gl.scale, gl.xres/2, gl.yres/2, 0.0f);
+    //physicsforCollision();
     
     // This line below rendered the intro image during the playing state
     //gl.show.show(gl.scale, gl.xres/2, gl.yres/2 +2, 0.0f);
@@ -471,11 +485,26 @@ void render()
 
     /* Debugging..*/
     //timerbar.timeRender();
-
+     gl.box.render();
+     gl.box2.render();
+     gl.box3.render();
+     gl.box4.render();
+     gl.box5.render();
+     gl.box6.render();
+     gl.box7.render();
+     gl.box8.render();
+     gl.box9.render();
+     gl.box10.render();
     r.left = 10;
     r.center = 0;
     ggprint8b(&r, 16, 0x00ff0000, "3350 - Asteroids");
+   
     show_fps(&r);
+//     if (gl.box.checkCollision(gl.bike)) {
+        // Stop the motorcycle or reverse its direction
+  //      gl.bike.velocity = 0; // Or apply any other collision response
+  //  }
+
  //   box.render();   
     if (gameState == PAUSED) {
         // Draw pause menu
@@ -488,13 +517,15 @@ void render()
             show_fenoon(&r);
             show_francisco(&r);
             show_lesslie(&r);
+        
         }
         if (gl.show_bike)
             gl.bike.render();
+      //  physicsforCollision();
         // Commented this so title button would disappear during playing state
         //gl.title_button.render();
         gl.car1.render();
-        //gl.box.render();
+      //  gl.box.render();
         //added this here
      //  if (gameState == PAUSED) {
        //     drawPauseMenu();

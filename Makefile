@@ -50,5 +50,15 @@ sound_test: dcarter.cpp aolmedo.cpp falrowhani.cpp lvaldivia.cpp \
 		/usr/lib/x86_64-linux-gnu/libopenal.so \
 		/usr/lib/x86_64-linux-gnu/libalut.so
 
+assembly: dcarter.cpp aolmedo.cpp falrowhani.cpp lvaldivia.cpp \
+	fandrade.cpp asteroids.cpp image.cpp \
+	timers.cpp log.cpp \
+	dcarter.h aolmedo.h falrowhani.h lvaldivia.h fandrade.h shared.h \
+	image.h log.h
+	g++ asteroids.cpp dcarter.cpp aolmedo.cpp falrowhani.cpp \
+		lvaldivia.cpp fandrade.cpp image.cpp timers.cpp log.cpp \
+		libggfonts.a \
+		-Wall -lX11 -lGL -o pizza_deliv
+
 clean:
 	rm -f pizza_deliv sleep_test generic_test sound_test

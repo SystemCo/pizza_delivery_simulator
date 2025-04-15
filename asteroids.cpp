@@ -91,8 +91,10 @@ GameState gameState = PLAYING;
 //Box box(100, 50);
 Global::Global() 
 {
-    xres = 640;
-    yres = 480;
+    xres = 1400;
+    yres = 900;
+    //xres = 640;
+    //yres = 480;
 //    Box box(100, 50);
     //screen = Playing;
     screen = Title;
@@ -253,6 +255,10 @@ void init_opengl(void)
     gl.show.init_gl();
     gl.moto_side->init_gl();
     gl.car1.init_gl();
+    //gl.attempts.init_gl();
+    for (int i = 0; i < 3; i++) {
+        gl.attempts[i].init_gl();
+    }
     initGame();
         
    // gl.box.pos[0] = 100.0f;
@@ -506,7 +512,8 @@ void render()
     r.left = 10;
     r.center = 0;
     ggprint8b(&r, 16, 0x00ff0000, "3350 - Asteroids");
-   
+  
+
     show_fps(&r);
 //     if (gl.box.checkCollision(gl.bike)) {
         // Stop the motorcycle or reverse its direction
@@ -533,6 +540,7 @@ void render()
         // Commented this so title button would disappear during playing state
         //gl.title_button.render();
         gl.car1.render();
+        attemptsRender(&r);
       //  gl.box.render();
         //added this here
      //  if (gameState == PAUSED) {

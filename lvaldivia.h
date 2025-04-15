@@ -5,7 +5,17 @@
 //#include "image.h"
 //#include "dcarter.h"
 #include "shared.h"
+
+//extern Global gl;
+
+extern int roundAttempts;
+extern bool timesUp;
+extern float  timesUpTimer;
 void show_lesslie(Rect* r);
+
+void attemptsRender(Rect* r);
+
+
 
 class TimerBar : public Entity
 {
@@ -22,7 +32,7 @@ class TimerBar : public Entity
         //float money;
         float deliverytime = 15.0f;
         float maxTime = 15.0f; 
-        bool timesup = false;
+        //bool timesup = false;
         bool deliverMade = false;
         //int frameR = 0;
         void Timer(float t);

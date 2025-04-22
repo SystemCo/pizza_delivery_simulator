@@ -127,6 +127,8 @@ My schedule is usually subject to change depending on my work schedule
     * Due by:      Wednesday 03/12/25
     * Status:      Incomplete
 
+
+
 ### David
 * Implement traffic logical calls for many vehicles to drive realistically along the road.
 
@@ -164,7 +166,7 @@ My schedule is usually subject to change depending on my work schedule
     * Status:      Incomplete
 
 
-## Project Sections
+# Project Tasks
 ### Basic UI / UX
 * Animated intro
     -> Timeout, Click, any button push
@@ -173,6 +175,7 @@ My schedule is usually subject to change depending on my work schedule
 * Tutorial
 * Controls
 * Options (i.e. sound)
+    * Volume adjustment only
 * Game Play
     -> Push the play game button from Home Menu
 * Pause Menu
@@ -181,24 +184,41 @@ My schedule is usually subject to change depending on my work schedule
     -> Quit button, from home, from pause, alt+<F4>
 
 ### Animated Intro
+* TODO: Make the animation clean, specific and meaningful
+    * Wheelie, driving forward, pizzaboxes if we have time
+
 * If intro is not complex enough, then not valid
     * Spinning world is not enough
     * Just Animated text is not enough
 * Add scrolling backdrop, weelie, pizza boxes, etc. 
 
-### Map features
-* How to handle collisions with each element of the map
-* Need to make an AABB collision function
-* Need to have logic for what to do with each type of element
-* Types
-    * street lamp, building, water, sidewalk, etc
+## Gameplay
+### Termination
+* Endless
+* Timed 
+    * (Goal high score)
+    * Goal: Win -> Score > some value
 
-### Extra animation features
-* Pizza guy dismounting to pick up the pizza
-* Hit pedestrians explode!
-* Add vehicle damage
-    * Traffic
-    * Player Motorcycle
+* Victory Upon Reaching target score
+    * Retirement
+
+### Delivery
+* Add a goal to get from point a to point b
+* You must deliver in x amount of timee or lose a life
+* Recieve money for every delivery
+    * $10.00 -> $20.10
+    -> $30.30
+    $40.60
+    $51.10
+* Goal of the game is to get as much money before dying
+* Popup notification upon successful delivery
+
+### Collision
+* Add Motorcycle logic when collision occurs
+    * Should not keep moving
+    * Explosions visual
+    * Noise
+* Lose a life
 
 ### Add more traffic
 * Add traffic pathing logic
@@ -206,36 +226,6 @@ My schedule is usually subject to change depending on my work schedule
     * Both
     * Different vehicle types have different levels of predictability
 * Add pedestrians
-
-### Extra game elements
-* Money mechanics
-* Things that cost money
-    * Not delivering pizza on time
-    * Accidents/crashes
-    * Hitting pedestrians
-    * Rent and water bills
-        * random
-* If you don't complete all deliveris, you're fired, game over
-* Too many late deliveries and you're fired
-    * shown by a "performance" meter?
-    * Deliveries that are more late hurt your performance more;
-    * Performance slowly fills back up.
-
-## Ideas
-### Title screen 
-* Add text to the title screen
-    * Animate the text.
-* Make the motorcycle larger and realistically drive forward,
-    Popping a weelie
-* Add pizza to the motorcycle
-    * Have the pizza fall off as part of the animation
-* Add a menu to the title screen that can be clicked on
-    * Have the buttons change color when hovered over
-### Gameplay
-* Add a goal to get from point a to point b
-* Add a score system
-* Add obstacles and a punishment for hitting those obstacles
-* Add levels
 
 ## Completed Tasks
 

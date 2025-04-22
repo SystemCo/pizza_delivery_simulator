@@ -157,11 +157,13 @@ My schedule is usually subject to change depending on my work schedule
   
 ### Francisco
 * Implement audio functions
-    * 
+    * Function for adjusting volume
+    * Function for playing sound effect
+    * Function for pausing soundtrack
 
 * Import audio files
 
-
+* Implement money system
 
 
 ### Lesslie

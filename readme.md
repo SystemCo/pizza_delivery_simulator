@@ -172,6 +172,7 @@ My schedule is usually subject to change depending on my work schedule
     * Assigned by: David
     * Due by:      Friday 04/05/25
     * Status:      Incomplete
+ * Orginally used linked list for list of timers, use array instead
 
 
 # Project Tasks

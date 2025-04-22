@@ -156,6 +156,12 @@ My schedule is usually subject to change depending on my work schedule
 
   
 ### Francisco
+* Implement audio functions
+    * 
+
+* Import audio files
+
+
 
 
 ### Lesslie

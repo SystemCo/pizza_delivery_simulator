@@ -118,7 +118,8 @@ Global::Global()
 }
 
 Global gl;
-X11_wrapper x11(0, 0);
+X11_wrapper x11(1920, 1080);
+// 0, 0 for fullscreen
 TimerList timerList;
 
 //function prototypes

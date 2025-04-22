@@ -147,6 +147,8 @@ My schedule is usually subject to change depending on my work schedule
 * implement motorcycle collision method to track whether motorcyle was going backwards or forward
 * Add text to screen when collision detected with entities
 * Add text to screen when pizza is delivered
+* Fix animated text in animation page
+* Fix pause menu positions   
 
   
 ### Francisco

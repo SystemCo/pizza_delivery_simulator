@@ -135,6 +135,8 @@ int main()
     init_opengl();
    // physicsforCollision();
 #ifdef USE_OPENAL_SOUND
+    init_openal();
+
     // Create buffer to hold sound information
     system("ffmpeg -i ./wav/intro_theme.mp3 ./wav/intro_theme.wav");
     ALuint alBuffer = alutCreateBufferFromFile("./wav/intro_theme.wav");

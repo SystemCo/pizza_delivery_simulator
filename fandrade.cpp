@@ -22,9 +22,7 @@ void init_openal()
     if (alGetError() != AL_NO_ERROR) {
         printf("ERROR: alutInit()\n");
     }
-    
-    //Clear error state.
-    alGetError();
+    alGetError(); //Clear error state.
     
     //Setup the listener.
     //Forward and up vectors are used.

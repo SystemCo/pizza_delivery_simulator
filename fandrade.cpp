@@ -22,9 +22,10 @@ void init_openal()
     if (alGetError() != AL_NO_ERROR) {
         printf("ERROR: alutInit()\n");
     }
+    
     //Clear error state.
     alGetError();
-    //
+    
     //Setup the listener.
     //Forward and up vectors are used.
     //The person listening is facing forward toward the sound.

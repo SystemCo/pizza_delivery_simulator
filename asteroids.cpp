@@ -136,7 +136,8 @@ int main()
    // physicsforCollision();
 #ifdef USE_OPENAL_SOUND
     // Create buffer to hold sound information
-    ALuint alBuffer = alutCreateBufferFromFile("./wav/737engine.wav");
+    system("ffmpeg -i ./wav/intro_theme.mp3 ./wav/intro_theme.wav");
+    ALuint alBuffer = alutCreateBufferFromFile("./wav/intro_theme.wav");
 
     // Create sound source and store buffer in it
     ALuint alSource;
@@ -219,7 +220,8 @@ int main()
     }
     cleanup_fonts();
 #ifdef USE_OPENAL_SOUND
-    //cleanup_openal();
+    cleanup_openal(&alSource, &alBuffer);
+    system("rm ./wav/intro_theme.wav");
 #endif //USE_OPENAL_SOUND
     logClose();
     return 0;

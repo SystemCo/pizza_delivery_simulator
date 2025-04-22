@@ -30,6 +30,18 @@ Of course not, but now you can!
 * run make
 * run ./pizza\_deliv
 
+# Meet the developers
+## Avelina
+* Manager of Menus
+## David
+* Group Lead
+## Fenoon
+* Head of Physics
+## Francisco
+* Auditor of Audio
+## Lesslie
+* Head of Gameplay UI/Display
+
 ## Schedules:
 ### Avelina
 My schedule is subject to change based on my work schedule + work meetings. 
@@ -99,19 +111,13 @@ My schedule is usually subject to change depending on my work schedule
 ## TODO:
 
 ### Avelina
-* New responsibility: Responsible for managing all background rendering.
+* New responsibility: Responsible for menus screens
 * Related TODO steps:
     * Implement a global array of backgrounds in your personal files.
     * Implement macros for indexing into the array.
     * Make an init_all() function for an array of images.
         * You can place the file names for all background images in your personal cpp file.
         * If someone wants to add a new background, they need to ask you to update your files to accommodate.
-
-* Make sure title button only displays when in the title screen
-    * Assigned on: Wednesday 03/12/25
-    * Assigned by: David
-    * Due by:      Wednesday 03/19/25
-    * Status:      Complete
 
 * Add start menu screen
     * Only needs a single button which will start gameplay
@@ -122,23 +128,6 @@ My schedule is usually subject to change depending on my work schedule
     * Status:      Incomplete
 
 ### David
-* Implement path following method using an array of points
-    * Assigned on: Monday 03/10/25
-    * Assigned by: David
-    * Due by:      Monday 03/17/25
-    * Status:      Complete 
-
-* Implement sprite sheets using the frameworks 
-    * Assigned on: Monday 03/10/25
-    * Assigned by: David
-    * Due by:      Monday 03/17/25
-    * Status:      Complete
-
-* Force application into fullscreen
-    * Assigned on: Friday 03/28/25
-    * Assigned by: David
-    * Due by:      Friday 03/28/25
-    * Status:      Complete 
 * Implement traffic logical calls for many vehicles to drive realistically along the road.
 
 ### Fenoon
@@ -153,39 +142,7 @@ My schedule is usually subject to change depending on my work schedule
     * Due by:      Friday 04/5/25
     * Status:      Incomplete
 
-* Add pause functionality when <esc> keyboaord key is pressed
-    * Assigned on: Monday 03/03/25
-    * Assigned by: David
-    * Due by:      Monday 03/10/25
-    * Status:      Complete
-
-* Add clickable button that will return to play while in pause menu
-    * Assigned on: Wednesday 03/12/25
-    * Assigned by: David
-    * Due by:      Wednesday 03/19/25
-    * Status:      Incomplete
-    * Note:        Talk to Lina for help!
-
 ### Francisco
-* Extract audio files for intro
-    * Assigned on: Sunday 03/02/25
-    * Assigned by: Francisco
-    * Due by:      Monday 03/11/25
-    * Status:      Complete
-
-* Make sure that only the title background displays during the title
-    And only the map background displays during the playing state
-    * Talk to Fen if you need help!
-    * Assigned on: Wednesday 03/12/25
-    * Assigned by: David
-    * Due by:      Wednesday 03/19/25
-    * Status:      Complete
-
-* Make buttons dim when and only when mouse is hovering over them.
-    * Assigned on: Thursday 03/13/25
-    * Assigned by: Francisco
-    * Due by:      Thursday 03/20/25
-    * Status:      Complete
 
 ### Lesslie
 * Get started on timer system
@@ -199,7 +156,6 @@ My schedule is usually subject to change depending on my work schedule
     * Assigned by: David
     * Due by:      Wednesday 03/19/25
     * Status:      Incomplete
-
 * Make a list of timers which can all be rendered with a single function call.
     * Could implement an array or a linked list. 
     * Assigned on: Friday 03/28/25
@@ -208,7 +164,7 @@ My schedule is usually subject to change depending on my work schedule
     * Status:      Incomplete
 
 
-## Project Phases
+## Project Sections
 ### Basic UI / UX
 * Animated intro
     -> Timeout, Click, any button push
@@ -289,6 +245,7 @@ My schedule is usually subject to change depending on my work schedule
 
 * Completed In: March 2025
     * Add title button
+    * Make sure title button only displays when in the title screen
 
 ### David
 * Completed In: February 2025
@@ -300,6 +257,11 @@ My schedule is usually subject to change depending on my work schedule
     * Make the player motorcycle character visually turn the handlebars when turning
     * Create parent mouse click Button class
     * Modify Motorcycle physics to match new handlebar turning.
+    * Implement path following method using an array of points
+    * Implement sprite sheets using the frameworks 
+
+* Completed In: April 2025
+    * Force application into fullscreen
 
 ### Fenoon
 * Completed In: February 2025
@@ -307,6 +269,12 @@ My schedule is usually subject to change depending on my work schedule
 
 * Completed In: March 2025
     * Add name to credits
+    * Add pause functionality when <esc> keyboaord key is pressed
+    * Add clickable button that will return to play while in pause menu
+
+* Completed In: April 2025
+    * Add collision functions to detect when the motorcycle collides with an AABB
+    
 
 ### Francisco
 * Completed In: February 2025
@@ -316,6 +284,10 @@ My schedule is usually subject to change depending on my work schedule
     * Extracted audio files for animated intro
     * Made title and map background display in their respective states
     * Added logic for title button to darken when hovered over
+    * Make sure only one background displays at a time
+
+* Completed In: April 2025
+    * Make buttons dim when and only when mouse is hovering over them.
 
 ### Lesslie
 * Completed In: February 2025

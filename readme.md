@@ -156,14 +156,23 @@ My schedule is usually subject to change depending on my work schedule
 
   
 ### Francisco
-* Implement audio functions
-    * Function for adjusting volume
-    * Function for playing sound effect
-    * Function for pausing soundtrack
+* Add global audio functions
+    * Assigned on:  Tuesday 04/22/25
+    * Assigned by:  Francisco
+    * Due by:       Sunday 04/27/25
+    * Status:       Incomplete
 
 * Import audio files
+    * Assigned on:  Tuesday 04/22/25
+    * Assigned by:  Francisco
+    * Due by:       Sunday 04/27/25
+    * Status:       Incomplete
 
 * Implement money system
+    * Assigned on:  Tuesday 04/22/25
+    * Assigned by:  Francisco
+    * Due by:       Sunday 04/27/25
+    * Status:       Incomplete
 
 
 ### Lesslie

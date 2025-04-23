@@ -6,6 +6,8 @@ Of course not, but now you can!
 * Fight against the clock! Pay your victims’ horrific medical bills! 
 * In Pizza Delivery Simulator!
 
+---
+
 ## Technical Requirements:
 * Programming in C++
 * Graphics package with OpenGL
@@ -18,6 +20,8 @@ Of course not, but now you can!
         * Navigate title screen
         * Initiate and close deliveries
         * Daily options selections
+
+---
 
 ## Build requirements:
 * Currently only supports linux

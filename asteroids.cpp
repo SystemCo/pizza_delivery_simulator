@@ -87,6 +87,7 @@ Game_Button pauseButton;
 
 //extern GameState gameState;
 GameState gameState = PLAYING;
+
 //*/
 //Box box(100, 50);
 Global::Global() 
@@ -107,15 +108,7 @@ Global::Global()
     moto_side = new Entity("images/moto_side.gif");
     scale = resolution_scale(&background);
     gameState = PLAYING;
-    car1.set_points(new Position[6] {
-            {200, 200}, 
-            {300, 300},
-            {400, 200},
-            {500, 300},
-            {100, 100},
-            {100, 500},
-            }, 6);
-}
+    }
 
 Global gl;
 X11_wrapper x11(960, 720);
@@ -137,6 +130,7 @@ void render();
 //==========================================================================
 int main()
 {
+    printf("Entered main");
     logOpen();
     init_opengl();
    // physicsforCollision();
@@ -170,6 +164,7 @@ int main()
     //auto lasttime = std::chrono::steady_clock::now();
     x11.set_mouse_position(200, 200);
     x11.show_mouse_cursor(gl.mouse_cursor_on);
+    initCars();
     int done=0;
     //Game_System pstats;
     while (!done) {
@@ -255,7 +250,7 @@ void init_opengl(void)
     //called intro image here 
     gl.show.init_gl();
     gl.moto_side->init_gl();
-    gl.car1.init_gl();
+    cars[0].init_gl();
     //gl.attempts.init_gl();
     for (int i = 0; i < 3; i++) {
         gl.attempts[i].init_gl();
@@ -456,8 +451,8 @@ int check_keys(XEvent *e)
 
 void physics()
 {
-    gl.car1.update_frame();
-    gl.car1.physics();
+    cars[0].update_frame();
+    cars[0].physics();
     physicsforCollision();
     gl.bike.move();    
     //timerList.updateAll();
@@ -540,7 +535,7 @@ void render()
       //  physicsforCollision();
         // Commented this so title button would disappear during playing state
         //gl.title_button.render();
-        gl.car1.render();
+        cars[0].render();
         attemptsRender(&r);
       //  gl.box.render();
         //added this here

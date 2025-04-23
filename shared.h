@@ -44,10 +44,12 @@ class Global { // Originally from Asteroids framework
     // Image show {"./images/Web_Photo_Editor.jpg"};
     //Image show {"./images/game2.jpg"};
     //TimerBar timerbar = {320,240, 100.0f, 0.0f, "./images/TimeBar.png",black, 1, 12};
+    /*
     Line_Follower car1 {
         200, 200, 40.0, 0.0, 
             "images/Car1_sprite.png", red, 1, 8
     };
+    */
     Entity attempts[3] = {
     {1360, 850,20.0f, 0.0f, "./images/pizza.png", black, 1, 1},
     {1320, 850, 20.0f, 0.0f, "./images/pizza.png", black, 1, 1},

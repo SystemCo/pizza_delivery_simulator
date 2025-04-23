@@ -3,13 +3,19 @@
 #include "fonts.h"
 #include "image.h"
 //include "shared.h"
-//#include "falrowhani.h"
+
+
+
+
 class Box;
 // Simple text display wrapper used for the credits page
 void show_david(Rect* r);
 
 // Functions based on how often func is called
 void show_fps(Rect* r);
+
+// Define the path for all cars
+void initCars();
 
 // Rendering and physics for the title screen
 struct Animation {
@@ -127,9 +133,12 @@ class Line_Follower : public Entity { // Only allowed to follow lines
         float speed = 2.0;
         Line_Follower(float pos_x, float pos_y, float scale, float angle, 
             const char infile[], unsigned char color[3], int rows, int cols);
+        Line_Follower();
         void set_points(Position* points, int count);
         void physics();
 };
+extern Line_Follower cars[10];
+
 struct RectStruct;
 // Models the main playable character
 class Motorcycle : public Entity {
@@ -188,6 +197,7 @@ public:
         // 
         // Nothing burger. Meant to be mutated by child classes.
         void click(int x, int y);
+        void onHardCollision();
 };
 
 

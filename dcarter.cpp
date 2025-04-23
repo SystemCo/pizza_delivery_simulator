@@ -18,12 +18,19 @@
 #define TO_RAD(x) ((x+90) / 360.0f) * PI * 2.0 // from asteroids framework
 #define SPEED 4 // Moto Linear Speed
 
+unsigned char red[3] {255,0,0};
+
 /* 
  **  This is the global variable for the whole project. 
  **  Declared in asteroids.cpp
  */
 
+Line_Follower cars[10];
 extern Global gl;
+
+// ***************** Variables That May Be Called Externally *************
+//
+
 
 // ***************** Non-Class functions **********************************
 // ************************************************************************
@@ -56,6 +63,22 @@ void show_fps(Rect* r)
     sprintf(buffer, "fps: %3.0f", show_delay / timeSpan);
     ggprint8b(r, 16, 0xf3ab00, buffer);
     timeCopy(&timeStart, &timeCurrent);
+}
+
+void initCars()
+{
+    printf("Entered InitCars");
+    Position position[6] {
+            {200, 200}, 
+            {300, 300},
+            {400, 200},
+            {500, 300},
+            {100, 100},
+            {100, 500}
+    };
+
+    cars[0].set_points(position, 6);
+    printf("Set the points");
 }
 
 // **************** Convenient Math funcs *****************
@@ -365,6 +388,11 @@ Line_Follower::Line_Follower(float pos_x, float pos_y, float scale,
     Entity(pos_x, pos_y, scale, angle, infile, alphaColor, rows, cols)
 {
 }
+
+
+Line_Follower::Line_Follower() :
+    Entity(0, 0, 40.0, 0, "images/Car1_sprite.png", red, 1, 8)
+{}
 
 void Line_Follower::set_points(Position points[], int count)
 {

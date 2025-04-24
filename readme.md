@@ -152,7 +152,14 @@ My schedule is usually subject to change depending on my work schedule
 * Add text to screen when collision detected with entities
 * Add text to screen when pizza is delivered
 * Fix animated text in animation page
-* Fix pause menu positions   
+* Fix pause menu positions
+
+* Create an array of delivery locations
+   * please create a 2d array to store the x and y delivery locations
+   * each location should represent a potential delivery spot
+   * This array will be used to create timer bars and to randomize delivery locations
+   * assigned on 04/23/2025
+   * assigned by: lesslie
 
   
 ### Francisco
@@ -194,6 +201,7 @@ My schedule is usually subject to change depending on my work schedule
     * Due by:      Friday 04/05/25
     * Status:      Incomplete
  * Orginally used linked list for list of timers, use array instead
+ * Create a function to activate random delivery locations
 
 
 # Project Tasks

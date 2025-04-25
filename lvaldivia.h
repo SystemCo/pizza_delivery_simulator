@@ -11,6 +11,7 @@
 extern int roundAttempts;
 extern bool timesUp;
 extern float  timesUpTimer;
+
 void show_lesslie(Rect* r);
 
 void attemptsRender(Rect* r);
@@ -37,6 +38,9 @@ class TimerBar : public Entity
         //int frameR = 0;
         void Timer(float t);
         void resetTimer();
+        bool removalNeeded = false;
+        bool getRemovalNeeded();
+
         /*void renderTimer() {
           timerbar.timeRender();
           }i
@@ -47,28 +51,22 @@ class TimerBar : public Entity
 
 
 };
-struct timerNode 
-{
-    TimerBar* timer;
-    timerNode *next;
-    timerNode *prev;
-};
 class TimerList
 {
     protected: 
-        timerNode *head;
-        timerNode *tail;
+        static const int maxTimers = 10;
+        TimerBar* timers[maxTimers];
+        int count;
     public:
         TimerList();
-        void Deallocate();
         ~TimerList();
-        timerNode *create(TimerBar* Timer);
         void timerAll( float dt);
         void updateAll();
-       void addTimer(TimerBar* timer);
+       bool addTimer(float x, float y, float scale, float angle, const char* infile, unsigned char alphaColor[3], int rows, int cols);
        void initAll();
-       void removeTimer(TimerBar* Timer);
-       void renderTimer(TimerBar* timer);
+       void removeTimer(int index);
+void removeExpiredTimers();
+       //void renderTimer(TimerBar* timer);
        void renderAll();
 
 };

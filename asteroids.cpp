@@ -75,11 +75,11 @@ void physicsforCollision();
 //void textMoveRight();
 Game_Button pauseButton;
 /*enum GameState {
-    PLAYING,
-    PAUSED,
-    MENU
-};
-*/
+  PLAYING,
+  PAUSED,
+  MENU
+  };
+  */
 //extern GameState gameState; 
 
 // Global variable to track current game state
@@ -92,11 +92,11 @@ GameState gameState = PLAYING;
 //Box box(100, 50);
 Global::Global() 
 {
-    xres = 1400;
-    yres = 900;
+    xres = 960;
+    yres = 720;
     //xres = 640;
     //yres = 480;
-//    Box box(100, 50);
+    //    Box box(100, 50);
     //screen = Playing;
     screen = Title;
     memset(keys, 0, 65536);
@@ -108,7 +108,7 @@ Global::Global()
     moto_side = new Entity("images/moto_side.gif");
     scale = resolution_scale(&background);
     gameState = PLAYING;
-    }
+}
 
 Global gl;
 X11_wrapper x11(960, 720);
@@ -121,10 +121,6 @@ void check_mouse(XEvent *e);
 int check_keys(XEvent *e);
 void physics();
 void render();
-//unsigned char black[3] {0, 0, 0};
-//TimerBar timerbar(gl.xres/2, gl.yres/2, 100.0f, 0.0f, "./images/TimeBar.png",black, 1, 12); 
-//TimerBar timerbar(gl.xres/2, gl.yres/2, 100.0f, 0.0f, "images/Car1_sprite.png",black, 1, 8); 
-//test
 //==========================================================================
 // M A I N
 //==========================================================================
@@ -132,8 +128,11 @@ int main()
 {
     printf("Entered main");
     logOpen();
+   // std::cout << "about to create timerbar" << std::endl;
+    //timerList.addTimer(320,240, 100.0f, 0.0f, "./images/TimeBar.png",gl.black2, 1, 12);
+    //std::cout << "timer bar created" << std::endl;
     init_opengl();
-   // physicsforCollision();
+    // physicsforCollision();
 #ifdef USE_OPENAL_SOUND
     init_openal();
 
@@ -156,11 +155,6 @@ int main()
 
     alSourcePlay(alSource);
 #endif //USE_OPENAL_SOUND
-    /*std::cout << "about to create timerbar" << std::endl;
-    TimerBar* deliveryTimer = new TimerBar(320,240, 100.0f, 0.0f, "./images/TimeBar.png",gl.black2, 1, 12);
-    std::cout << "timer bar created" << std::endl;
-    timerList.addTimer(deliveryTimer);
-    */
     srand(time(NULL));
     clock_gettime(CLOCK_REALTIME, &timePause);
     clock_gettime(CLOCK_REALTIME, &timeStart);
@@ -168,6 +162,7 @@ int main()
     x11.set_mouse_position(200, 200);
     x11.show_mouse_cursor(gl.mouse_cursor_on);
     initCars();
+    //timerList.addTimer(320,240, 100.0f, 0.0f, "./images/TimeBar.png",gl.black2, 1, 12);
     int done=0;
     //Game_System pstats;
     while (!done) {
@@ -180,7 +175,7 @@ int main()
         clock_gettime(CLOCK_REALTIME, &timeCurrent);
         timeSpan = timeDiff(&timeStart, &timeCurrent);
         timeCopy(&timeStart, &timeCurrent);
-       // float dTime = timeSpan; //commenting out for now
+        // float dTime = timeSpan; //commenting out for now
         // if gl.screen state is paused, don't do physics
         physicsCountdown += timeSpan;
         //float dTime = timeSpan; commenting out for now
@@ -188,8 +183,8 @@ int main()
             case Title:
                 while (physicsCountdown >= physicsRate) {
                     //coommenting this out 
-                     title_physics();
-                  //  title_physics();
+                    title_physics();
+                    //  title_physics();
                     //timerbar.Timer(dTime); //commenting out for now
                     physicsCountdown -= physicsRate;
                 }
@@ -200,10 +195,11 @@ int main()
             case Credits:
             case Playing:
                 while (physicsCountdown >= physicsRate) {
-                      //gl.timerbar.Timer(physicsRate);
-//                        timerList.timerAll(physicsRate);
                     physics();
+                    timerList.timerAll(physicsRate);
+                    //gl.timerbar.Timer(physicsRate);
                     physicsCountdown -= physicsRate;
+                    timerList.removeExpiredTimers();
                 }
                 render();
                 break;
@@ -255,18 +251,18 @@ void init_opengl(void)
     gl.show.init_gl();
     gl.moto_side->init_gl();
     cars[0].init_gl();
-    //gl.attempts.init_gl();
+    //std::cout << "about to initialize timer" << std::endl;
+    //timerList.initAll();
     for (int i = 0; i < 3; i++) {
         gl.attempts[i].init_gl();
     }
     initGame();
-        
-   // gl.box.pos[0] = 100.0f;
-//gl.box.pos[1] = 100.0f;
+
+    // gl.box.pos[0] = 100.0f;
+    //gl.box.pos[1] = 100.0f;
     //add timerbar
     //gl.timerbar.init_gl();
     //gl.timerList.initALL();
-   //timerList.initAll();
 }
 
 void normalize2d(Vec v)
@@ -303,12 +299,12 @@ void check_mouse(XEvent *e)
             //Right button is down
         }
         if (gameState == PAUSED) {
-                gl.pause_button.click(e->xbutton.x, true_y);
-            }
+            gl.pause_button.click(e->xbutton.x, true_y);
+        }
 
         if (gameState == PAUSED) {
-                gl.restart.click(e->xbutton.x, true_y);
-            }
+            gl.restart.click(e->xbutton.x, true_y);
+        }
     }
     //keys[XK_Up] = 0;
     if (savex != e->xbutton.x || savey != e->xbutton.y) {
@@ -328,13 +324,13 @@ void check_mouse(XEvent *e)
         //
         if (gl.title_button.is_inside(e->xbutton.x, true_y)) {
             gl.title_button.darken = true;
-            
+
             // Debugging
             //std::cout << "Inside title button" << std::endl << std::flush;
         }
         else {
             gl.title_button.darken = false;
-            
+
             // Debugging
             //std::cout << "Outside title button" << std::endl << std::flush;
         }
@@ -403,50 +399,50 @@ int check_keys(XEvent *e)
     if (e->type == KeyPress) {
         gl.screen = Playing;
         switch (key) {
-        case XK_F4:
-            return 1;
-        case XK_a:
-            gl.bike.turn_sharpness = 5.0;
-            break;
-        case XK_s:
-            gl.bike.scale = 10;
-            break;
-        case XK_Shift_L:
-        case XK_Shift_R:
-            shift = true;
-            break;
-        case XK_Escape:
-            if (gameState == PLAYING) {
-                gameState = PAUSED;
-            } else if (gameState == PAUSED) {
-                gameState = PLAYING;
-            }
-            break;
-        case XK_m:
-            gl.mouse_cursor_on = !gl.mouse_cursor_on;
-            x11.show_mouse_cursor(gl.mouse_cursor_on);
-            break;
-        case XK_c:
-            gl.credits = !gl.credits;
-            break;
-        case XK_b:
-            gl.show_bike = !gl.show_bike;
-            break;
-        case XK_Left:
-            gl.bike.left = true;
-            break;
-        case XK_Right:
-            gl.bike.right = true;
-            break;
-        case XK_Down:
-            gl.bike.pedal = Backward;
-            break;
-        case XK_Up:
-            gl.bike.pedal = Forward;
-        case XK_equal:
-            break;
-        case XK_minus:
-            break;
+            case XK_F4:
+                return 1;
+            case XK_a:
+                gl.bike.turn_sharpness = 5.0;
+                break;
+            case XK_s:
+                gl.bike.scale = 10;
+                break;
+            case XK_Shift_L:
+            case XK_Shift_R:
+                shift = true;
+                break;
+            case XK_Escape:
+                if (gameState == PLAYING) {
+                    gameState = PAUSED;
+                } else if (gameState == PAUSED) {
+                    gameState = PLAYING;
+                }
+                break;
+            case XK_m:
+                gl.mouse_cursor_on = !gl.mouse_cursor_on;
+                x11.show_mouse_cursor(gl.mouse_cursor_on);
+                break;
+            case XK_c:
+                gl.credits = !gl.credits;
+                break;
+            case XK_b:
+                gl.show_bike = !gl.show_bike;
+                break;
+            case XK_Left:
+                gl.bike.left = true;
+                break;
+            case XK_Right:
+                gl.bike.right = true;
+                break;
+            case XK_Down:
+                gl.bike.pedal = Backward;
+                break;
+            case XK_Up:
+                gl.bike.pedal = Forward;
+            case XK_equal:
+                break;
+            case XK_minus:
+                break;
         }
     }
     return 0;
@@ -459,7 +455,7 @@ void physics()
     cars[0].physics();
     physicsforCollision();
     gl.bike.move();    
-    //timerList.updateAll();
+    timerList.updateAll();
 
 }
 
@@ -469,7 +465,7 @@ void title_render()
 
     // This line below caused both images to appear at once during the title screen
     //gl.background.show(gl.scale, gl.xres/2, gl.yres/2, 0.0f);
-    
+
     //added this to show intro image 
     gl.show.show(gl.scale, gl.xres/2 , gl.yres/2 +2, 0.0f);
     gl.moto_side->render();
@@ -491,36 +487,37 @@ void render()
     glClear(GL_COLOR_BUFFER_BIT);
     gl.background.show(gl.scale, gl.xres/2, gl.yres/2, 0.0f);
     //physicsforCollision();
-    
+
     // This line below rendered the intro image during the playing state
     //gl.show.show(gl.scale, gl.xres/2, gl.yres/2 +2, 0.0f);
-    
+
     r.bot = gl.yres - 20;
 
     /* Debugging..*/
     //timerbar.timeRender();
-     gl.box.render();
-     gl.box2.render();
-     gl.box3.render();
-     gl.box4.render();
-     gl.box5.render();
-     gl.box6.render();
-     gl.box7.render();
-     gl.box8.render();
-     gl.box9.render();
-     gl.box10.render();
+    gl.box.render();
+    gl.box2.render();
+    gl.box3.render();
+    gl.box4.render();
+    gl.box5.render();
+    gl.box6.render();
+    gl.box7.render();
+    gl.box8.render();
+    gl.box9.render();
+    gl.box10.render();
     r.left = 10;
     r.center = 0;
     ggprint8b(&r, 16, 0x00ff0000, "3350 - Asteroids");
-  
+
 
     show_fps(&r);
-//     if (gl.box.checkCollision(gl.bike)) {
-        // Stop the motorcycle or reverse its direction
-  //      gl.bike.velocity = 0; // Or apply any other collision response
-  //  }
+timerList.renderAll();
+    //     if (gl.box.checkCollision(gl.bike)) {
+    // Stop the motorcycle or reverse its direction
+    //      gl.bike.velocity = 0; // Or apply any other collision response
+    //  }
 
- //   box.render();   
+    //   box.render();   
     if (gameState == PAUSED) {
         // Draw pause menu
         drawPauseMenu();
@@ -532,25 +529,25 @@ void render()
             show_fenoon(&r);
             show_francisco(&r);
             show_lesslie(&r);
-        
+
         }
         if (gl.show_bike)
             gl.bike.render();
-      //  physicsforCollision();
+        //  physicsforCollision();
         // Commented this so title button would disappear during playing state
         //gl.title_button.render();
         cars[0].render();
         attemptsRender(&r);
-      //  gl.box.render();
+        //  gl.box.render();
         //added this here
-     //  if (gameState == PAUSED) {
-       //     drawPauseMenu();
-      // }
-   // }
-     //   if (gameState == PAUSED) {
-       //     drawPauseMenu();
+        //  if (gameState == PAUSED) {
+        //     drawPauseMenu();
+        // }
+        // }
+        //   if (gameState == PAUSED) {
+        //     drawPauseMenu();
         //}
-    }
-//           timerList.renderAll();
+}
+timerList.renderAll();
 }
 

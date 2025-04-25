@@ -29,6 +29,9 @@ class Global { // Originally from Asteroids framework
     Box box8;
     Box box9;
     Box box10;  
+    float deliveryLocations[10][2]; //index can be changed depending of delievery locations
+    int numActiveDelieries;
+    bool activeDeliveries[3];
     int mouse_cursor_on;
     int credits;
     int show_bike;
@@ -51,9 +54,9 @@ class Global { // Originally from Asteroids framework
     };
     */
     Entity attempts[3] = {
-    {1360, 850,20.0f, 0.0f, "./images/pizza.png", black, 1, 1},
-    {1320, 850, 20.0f, 0.0f, "./images/pizza.png", black, 1, 1},
-    {1280, 850, 20.0f, 0.0f, "./images/pizza.png", black, 1, 1}
+    {930, 700,20.0f, 0.0f, "./images/pizza.png", black, 1, 1},
+    {890, 700, 20.0f, 0.0f, "./images/pizza.png", black, 1, 1},
+    {850, 700, 20.0f, 0.0f, "./images/pizza.png", black, 1, 1}
 };
     //Entity attempts { 
       //  580, 440,10.0f , 0.0f, "./images/pizza.png", black, 1, 1

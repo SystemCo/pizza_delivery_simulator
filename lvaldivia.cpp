@@ -39,6 +39,7 @@ TimerBar::TimerBar(float pos_x, float pos_y, float scale, float angle, const cha
 
 }
 
+
 void TimerBar::Timer(float t) 
 { 
 
@@ -53,11 +54,10 @@ void TimerBar::Timer(float t)
         if  (deliverytime <= 0 && !timesUp) {
             deliverytime = 0;
             timesUp = true;
-
+            removalNeeded = true;
             if (roundAttempts > 0) 
             {
                 roundAttempts--;
-                timesUp = true;
                 timesUpTimer = 2.0f;
             }
 
@@ -65,6 +65,9 @@ void TimerBar::Timer(float t)
 
     }
 }
+
+bool TimerBar::getRemovalNeeded() { return removalNeeded; }
+
 void TimerBar::resetTimer()
 {
     deliverytime = 15.0f;
@@ -75,11 +78,10 @@ void TimerBar::update()
 { //updates frame based on the time
     int maxFrames = rows * cols;
     float frameRatio = (((maxTime - deliverytime) / maxTime) * maxFrames);
-    // float frameRatio = ((1- deliveryTime) / maxTime) * (maxFrames-1) + 1;
 
     int frameR = static_cast<int>(frameRatio);
 
-    if (frameR < 1) {
+    if (frameR < 0) {
         frameR = 0;
     } else if (frameR > maxFrames) {
         frameR = maxFrames - 1;
@@ -89,207 +91,149 @@ void TimerBar::update()
 
     this->frame = frameR;
 
-    /*   
-         cout << " deliveryTime=" << deliverytime 
-         << ", maxTime=" << maxTime 
-         << ", frameRatio=" << frameRatio 
-         << ", frame=" << frameR <<endl;
+       
+        // cout << " deliveryTime=" << deliverytime 
+        // << ", maxTime=" << maxTime 
+         //<< ", frameRatio=" << frameRatio 
+         //<< ", frame=" << frameR <<endl;
 
-*/
+
 }
 
 void TimerBar::timeRender()
 { //remder the time sprite 
   //cout << "Rendering sprite frame " << this->frame << " of " << rows*cols << endl;
-  //this->frame = frameR;
-    this->render();
-    /*
-       int width = scale / 2;
-       int height = scale;
-       glPushMatrix();
-       glColor3f(1.0, 1.0, 1.0);
-       glBindTexture(GL_TEXTURE_2D, texture);
-    //
-    glEnable(GL_ALPHA_TEST);
-    glAlphaFunc(GL_GREATER, alpha_cutoff.get());
+  
+   //doesn't work?  
+  // this->render();
+    
+     const int   wid       = scale;
+    const int   height    = scale * (this->height / rows) / (width / cols);
+    const int   frame_row = frame / cols; // trunkated by design
+    const int   frame_col = frame % cols;
+    const float delta_x   = 1.0f / (float)cols;
+    const float delta_y   = 1.0f / (float)rows;
+    const float left      = (float)(frame_col - 1) / (float)cols;
+    const float right     = left + delta_x;
+    const float bottom    = (float) (frame_row - 1) / (float)rows;
+    const float top       = bottom + delta_y;
+
     glColor4ub(255,255,255,255);
+    glBindTexture(GL_TEXTURE_2D, texture);
 
-    int ix = frame / cols;
-    int iy = frame % cols;
-
-    float fx = (float)iy / (float)cols;
-    float fy = (float)ix / (float)rows;
-    float deltaX = 1.0f / (float)cols;
-    float deltaY = 1.0f / (float)rows;
-
-    glBegin(GL_QUADS);
-
-    glTexCoord2f(fx, fy+deltaY); glVertex2i(-width, -height);
-    glTexCoord2f(fx, fy);             glVertex2i(-width, height);
-    glTexCoord2f(fx + deltaX, fy);    glVertex2i(width, height);
-    glTexCoord2f(fx + deltaX,fy+deltaY); glVertex2i(width, -height);
-    glEnd();
+    glPushMatrix();
+        glEnable(GL_ALPHA_TEST);
+        glAlphaFunc(GL_GREATER, alpha_cutoff.get());
+        glTranslatef(pos.x, pos.y, 0.0f);
+        glRotatef(angle, 0.0f, 0.0f, 1.0f);
+        glBegin(GL_QUADS);
+           glTexCoord2f( left,    top);  glVertex2i(-wid, -height);
+           glTexCoord2f( left, bottom);  glVertex2i(-wid, +height);
+           glTexCoord2f(right, bottom);  glVertex2i(+wid, +height);
+           glTexCoord2f(right,    top);  glVertex2i(+wid, -height);
+        glEnd();
     glPopMatrix();
     glBindTexture(GL_TEXTURE_2D, 0);
-
-*/
+    
+    
 }
 //=================================================
 //Created list for Timers
 //=================================================
 
+//queue like structure
 TimerList::TimerList()
 {
-    tail = NULL;
-    head = NULL;
+    count = 0;
 }
-void TimerList::Deallocate()
-{
-    timerNode* t = head;
-    while( t != NULL)
-    {
-        timerNode* nn = t->next;
-        delete t;
-        t = nn;
 
-    }
-
-}
 TimerList::~TimerList()
 {
-    Deallocate();
-    head = NULL;
-    tail = NULL;
-}
-timerNode* TimerList::create(TimerBar* Timer)
-{
-    timerNode* newnode;
-    try
-    {
-        newnode = new timerNode;
-        newnode->timer = Timer;
-        newnode->prev = NULL;
-        newnode->next = NULL;
-    }
-    catch (bad_alloc &e)
-    {
-        newnode = NULL;
-    }
-    return newnode;
+for (int i = 0; i < count; i++) {
+         if (timers[i] != NULL) {
+             delete timers[i];
+             timers[i] = NULL;
+         }
+     }
+     count = 0;
+ 
 }
 
-
-void TimerList::addTimer(TimerBar* timer)
+bool TimerList::addTimer(float x, float y, float scale, float angle, const char* infile, unsigned char alphaColor[3], int rows, int cols)
 {
-
-    timerNode* newnode = create(timer);
-    if (newnode == NULL) {
-        cout << "failed to create node" << endl;
-    }
-
-    if (head != NULL)
-    {
-        newnode->next = head;
-        head->prev = newnode;
-        head = newnode;
-    }
-    else
-    {
-        head = newnode;
-        tail = newnode;
-    }
-    cout << "Node created" << endl;
-
+cout << "creating timer" << endl;
+ if (count >= maxTimers)
+         return false;
+ 
+     timers[count] = new TimerBar(x, y, scale, angle, infile, alphaColor, rows, cols);
+     timers[count]->init_gl();
+     count++;
+cout << "done creatinf" << endl;
+     return true;
 
 }
 
-void TimerList::removeTimer(TimerBar* timer)
+void TimerList::removeTimer(int index)
 {
 
-    timerNode* t = head;
+ if (index >= 0) {
+         if (index < count) {
+             delete timers[index];
+ 
+ 
+             for (int i = index; i < count - 1; i++) {
+                 timers[i] = timers[i - 1];
+             }
+ 
+             timers[count - 1] = NULL;
+             count--;
+         }
+ 
+ 
+     }
 
-    if(head->timer == timer)
-    {
-        t = head;
-        head = head->next;
-        head->prev = NULL;
+}
 
-        if (head == NULL) {
-            tail = NULL;
+void TimerList::removeExpiredTimers()
+{
+    for (int i =0; i < count; i++) {
+        if (timers[i] != NULL && timers[i]->getRemovalNeeded()) {
+            removeTimer(i);
+            i--;
         }
-        delete t->timer;
-        delete t;
-        return;
-
     }
-    //traverse to delete node 
-    timerNode* c = head;
-    while (c->next != NULL) {
-        if (c->next->timer == timer) {
-            timerNode* t = c->next;
-            c->next = t->next;
-
-            if (t == tail) {
-                tail = c;
-            }
-            delete t->timer;
-            delete t; 
-            return;
-        }
-        c = c->next;
-    }
-
-
 }
-void TimerList::initAll()
+/*void TimerList::initAll()
 {
-    timerNode* t = head;
-    while ( t != NULL)
-    {
-        if (t->timer != NULL)
-        {
-            cout << "initializing" << endl;
-            t->timer->init_gl();
-        }
-        t = t->next;
-    }
+    cout << " testing" << endl;
+for (int i = 0; i < count; i++) {
+         cout << "initializing" << endl;
+         timers[i]->init_gl();
+     }
 }
+*/
 void TimerList::timerAll(float dT)
 {
-    timerNode* t = head;
-    while (t != NULL) {
-        if ( t->timer != NULL) {
-            t->timer->Timer(dT);
-        }
-        t = t->next;
-    }
+for (int i = 0; i < count; i++) {
+         if (timers[i] != NULL)
+             timers[i]->Timer(dT);
+     }
 }
 void TimerList::updateAll()
 {
-    timerNode* t = head;
-    while ( t != NULL) {
-        if (t->timer != NULL) {
-            t ->timer->update();
-        }
-        t = t-> next;
-    }
+for (int i = 0; i < count; i++) {
+         if (timers[i] != NULL)
+             timers[i]->update();
+     }
 }
 void TimerList::renderAll() 
 {
-    timerNode* t = head;
-    while (t != NULL)
-    {
-        if (t->timer != NULL)
-        { //attempting rendering
-          //cout << "rendering" << endl;
-            t->timer->timeRender();
-
-        }
-        t = t->next;
-
-    }
+for (int i = 0; i < count; i++) {
+         if (timers[i] != NULL)
+             timers[i]->timeRender();
+     }
 }
-
+/*
 void TimerList::renderTimer(TimerBar* timer)
 {
     timerNode* t = head;
@@ -303,6 +247,7 @@ void TimerList::renderTimer(TimerBar* timer)
         t = t->next;
     }
 }
+*/
 // 04/06/2024
 // White box showing,initialization is the problem?
 //==================================

@@ -125,8 +125,8 @@ public:
 
 class Line_Follower : public Entity { // Only allowed to follow lines
     private:
-        Position* lines; // Need to know size at compile time?
-        int point_count;
+        const int point_count = 12;
+        Position lines[10]; // Need to know size at compile time?
         int line_on;
         bool approach(Position point);
     public:
@@ -134,7 +134,7 @@ class Line_Follower : public Entity { // Only allowed to follow lines
         Line_Follower(float pos_x, float pos_y, float scale, float angle, 
             const char infile[], unsigned char color[3], int rows, int cols);
         Line_Follower();
-        void set_points(Position* points, int count);
+        void set_points(Position* points);
         void physics();
 };
 extern Line_Follower cars[10];

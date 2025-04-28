@@ -294,6 +294,7 @@ void check_mouse(XEvent *e)
     if (e->type == ButtonPress) {
         if (e->xbutton.button==1) { // Left button
             gl.title_button.click(e->xbutton.x, true_y);
+            printf("x: %d, y: %d", e->xbutton.x, true_y);
         }
         if (e->xbutton.button==3) {
             //Right button is down
@@ -456,7 +457,6 @@ void physics()
     physicsforCollision();
     gl.bike.move();    
     timerList.updateAll();
-
 }
 
 void title_render()
@@ -537,6 +537,7 @@ timerList.renderAll();
         // Commented this so title button would disappear during playing state
         //gl.title_button.render();
         cars[0].render();
+        //printf("%f\n", cars[0].pos.x);
         attemptsRender(&r);
         //  gl.box.render();
         //added this here

@@ -36,6 +36,26 @@ void init_openal()
     alListenerf(AL_GAIN, 1.0f);
 }
 
+/*
+void playSong(string name)
+{
+    // if 
+    alDeleteSources(1, source);
+    alDeleteBuffers(1, buffer);
+
+}
+
+void playSFX(string name)
+{
+
+}
+
+void changeSong(string name)
+{
+
+}
+*/
+
 void cleanup_openal(ALuint *source, ALuint *buffer)
 {
     alDeleteSources(1, source);

@@ -163,12 +163,6 @@ My schedule is usually subject to change depending on my work schedule
     * Due by:       Sunday 04/27/25
     * Status:       Incomplete
 
-* Import audio files
-    * Assigned on:  Tuesday 04/22/25
-    * Assigned by:  Francisco
-    * Due by:       Sunday 04/27/25
-    * Status:       Incomplete
-
 * Implement money system
     * Assigned on:  Tuesday 04/22/25
     * Assigned by:  Francisco
@@ -313,6 +307,7 @@ My schedule is usually subject to change depending on my work schedule
 
 * Completed In: April 2025
     * Make buttons dim when and only when mouse is hovering over them.
+    * Imported audio files
 
 ### Lesslie
 * Completed In: February 2025

@@ -218,7 +218,6 @@ int main()
     cleanup_fonts();
 #ifdef USE_OPENAL_SOUND
     cleanup_openal(&alSource, &alBuffer);
-    system("rm ./wav/intro_theme.wav");
 #endif //USE_OPENAL_SOUND
     logClose();
     return 0;

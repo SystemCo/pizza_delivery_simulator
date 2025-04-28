@@ -60,7 +60,9 @@ void cleanup_openal(ALuint *source, ALuint *buffer)
 {
     alDeleteSources(1, source);
     alDeleteBuffers(1, buffer);
-    
+    system("rm ./audio/music/*.wav");
+    system("rm ./audio/sfx/*.wav");
+
     //Close out OpenAL itself
     //Get active context
     ALCcontext *Context = alcGetCurrentContext();

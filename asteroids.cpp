@@ -137,8 +137,8 @@ int main()
     init_openal();
 
     // Create buffer to hold sound information
-    system("ffmpeg -i ./wav/intro_theme.mp3 ./wav/intro_theme.wav");
-    ALuint alBuffer = alutCreateBufferFromFile("./wav/intro_theme.wav");
+    system("ffmpeg -i ./audio/music/intro_theme.mp3 ./audio/music/intro_theme.wav");
+    ALuint alBuffer = alutCreateBufferFromFile("./audio/music/intro_theme.wav");
 
     // Create sound source and store buffer in it
     ALuint alSource;

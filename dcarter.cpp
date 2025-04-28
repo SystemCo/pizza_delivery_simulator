@@ -447,6 +447,7 @@ bool Line_Follower::approach(Position point)
     const double angle = atan2f( delta_y, delta_x);
     pos.x += speed * cos(angle);
     pos.y += speed * sin(angle);
+    this->angle = angle / PI / 2.0 * 360.0;
     return false;
 }
 

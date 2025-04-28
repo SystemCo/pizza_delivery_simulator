@@ -8,6 +8,7 @@
 #include "aolmedo.h"
 #include "falrowhani.h"
 #include "lvaldivia.h"
+class TimerList;
 enum ScreenState { Title, Home, Pause, Credits, Playing };
 
 class Global { // Originally from Asteroids framework  
@@ -29,9 +30,19 @@ class Global { // Originally from Asteroids framework
     Box box8;
     Box box9;
     Box box10;  
-    float deliveryLocations[10][2]; //index can be changed depending of delievery locations
-    int numActiveDelieries;
-    bool activeDeliveries[3];
+    
+    TimerList* timerList;   
+    bool gameOver = false;
+    int gameAttempts = 3; 
+    static const int maxActiveDeliveries = 3; //no more than three active
+    static const int maxDeliveryLocations = 3;
+    int timerLocation[maxDeliveryLocations]; //to know what timer corresponds to which location
+    int activeDeliveries = 0; // to keep count
+    bool activeDeliveryLocations[maxDeliveryLocations];
+    float deliveryLocations[maxDeliveryLocations][2];
+    float deliveryDeltaTime = 0.0f;
+    float nextDelivery = 0.0f; 
+    
     int mouse_cursor_on;
     int credits;
     int show_bike;
@@ -46,26 +57,27 @@ class Global { // Originally from Asteroids framework
     //   Image show {"./images/Web_Photo_Editor.jpg"};
     // Image show {"./images/Web_Photo_Editor.jpg"};
     //Image show {"./images/game2.jpg"};
-    //TimerBar timerbar = {320,240, 100.0f, 0.0f, "./images/TimeBar.png",black, 1, 12};
     /*
-    Line_Follower car1 {
-        200, 200, 40.0, 0.0, 
-            "images/Car1_sprite.png", red, 1, 8
-    };
-    */
+       Line_Follower car1 {
+       200, 200, 40.0, 0.0, 
+       "images/Car1_sprite.png", red, 1, 8
+       };
+       */
     Entity attempts[3] = {
-    {930, 700,20.0f, 0.0f, "./images/pizza.png", black, 1, 1},
-    {890, 700, 20.0f, 0.0f, "./images/pizza.png", black, 1, 1},
-    {850, 700, 20.0f, 0.0f, "./images/pizza.png", black, 1, 1}
-};
+        {930, 700,20.0f, 0.0f, "./images/pizza.png", black, 1, 1},
+        {890, 700, 20.0f, 0.0f, "./images/pizza.png", black, 1, 1},
+        {850, 700, 20.0f, 0.0f, "./images/pizza.png", black, 1, 1}
+    };
     //Entity attempts { 
-      //  580, 440,10.0f , 0.0f, "./images/pizza.png", black, 1, 1
-   // };
+    //  580, 440,10.0f , 0.0f, "./images/pizza.png", black, 1, 1
+    // };
     ScreenState screen;
     //TODO: 
     // implement switch statements in main func as well as other funcs
     // using screen state enum
     Global();
+    ~Global();
+
 };
 
 class X11_wrapper { // from Asteroids framework

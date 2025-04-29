@@ -157,9 +157,9 @@ class Motorcycle : public Entity {
         Percent velocity;
         //Percent turn_dir;
         float direction = 0;
+        int crash_dir = 0; // -1 for backward, 1 for forward
         Turn turning;
         Image head {"./images/Moto_head.jpg"}; // white alphaColor
-        
         void set_turn();
     public:
         bool right;
@@ -174,6 +174,7 @@ class Motorcycle : public Entity {
         void move();
         void render();
         void init_gl();
+        void crash();
         bool collides_with_box(const Box& box);
     };
 

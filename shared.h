@@ -29,6 +29,13 @@ class Global { // Originally from Asteroids framework
     Box box8;
     Box box9;
     Box box10;  
+    Box box11; 
+    Box box12; 
+    Box box13; 
+    Box box14; 
+    Box box15; 
+    Box box16; 
+
     float deliveryLocations[10][2]; //index can be changed depending of delievery locations
     int numActiveDelieries;
     bool activeDeliveries[3];

@@ -495,16 +495,7 @@ void render()
 
     /* Debugging..*/
     //timerbar.timeRender();
-    gl.box.render();
-    gl.box2.render();
-    gl.box3.render();
-    gl.box4.render();
-    gl.box5.render();
-    gl.box6.render();
-    gl.box7.render();
-    gl.box8.render();
-    gl.box9.render();
-    gl.box10.render();
+   
     r.left = 10;
     r.center = 0;
     ggprint8b(&r, 16, 0x00ff0000, "3350 - Asteroids");
@@ -533,21 +524,14 @@ timerList.renderAll();
         }
         if (gl.show_bike)
             gl.bike.render();
-        //  physicsforCollision();
-        // Commented this so title button would disappear during playing state
-        //gl.title_button.render();
+        
         cars[0].render();
         attemptsRender(&r);
-        //  gl.box.render();
-        //added this here
-        //  if (gameState == PAUSED) {
-        //     drawPauseMenu();
-        // }
-        // }
-        //   if (gameState == PAUSED) {
-        //     drawPauseMenu();
-        //}
+
+      
 }
+myRender();
+
 timerList.renderAll();
 }
 

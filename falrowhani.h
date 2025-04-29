@@ -1,12 +1,15 @@
 #ifndef _FENOON_H_
 #define _FENOON_H_
-//#ifndef GL_H
-//#define GL_H
 
 
 #include "fonts.h"
 #include <GL/glx.h>
 //extern GL gl; 
+
+extern int show_warning;
+extern int warning_timer;
+
+
 
 //extern GameState gameState; 
 enum GameState {
@@ -23,6 +26,7 @@ void title_physics();
 void initGame();
 void physicsforCollision();
 void title(Rect &r);
+void myRender();
 //bool checkCollision(Motorcycle& moto);
 
 
@@ -57,7 +61,7 @@ public:
      void render() {
         glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    //cahnge to .01 
+    //change to .01 
 
     glColor4f(color[0], color[1], color[2], 0.01f); // 40% opacity
 
@@ -73,8 +77,8 @@ public:
 
     // Default Constructor
     Box() {
-        width = 200;
-        height = 275;
+        width = 100;
+        height = 145;
         vel[0] = vel[1] = 0.0f;
         color[0] = 0.3f;
         color[1] = 0.7f;

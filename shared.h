@@ -8,6 +8,8 @@
 #include "aolmedo.h"
 #include "falrowhani.h"
 #include "lvaldivia.h"
+#include "fandrade.h"
+
 class TimerList;
 enum ScreenState { Title, Home, Pause, Credits, Playing };
 
@@ -75,6 +77,7 @@ class Global { // Originally from Asteroids framework
     //TODO: 
     // implement switch statements in main func as well as other funcs
     // using screen state enum
+    MoneySystem money;
     Global();
     ~Global();
 

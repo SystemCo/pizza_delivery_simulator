@@ -168,6 +168,18 @@ int main()
     x11.set_mouse_position(200, 200);
     x11.show_mouse_cursor(gl.mouse_cursor_on);
     initCars();
+    
+    // Debugging money system
+    /*
+    std::cout << gl.money.getTotalMoney() << std::endl;
+    std::cout << gl.money.getRevenue() << std::endl;
+    gl.money.increaseRevenue(10.00);
+    std::cout << gl.money.getRevenue() << std::endl;
+    gl.money.cashInRevenue();
+    std::cout << gl.money.getTotalMoney() << std::endl;
+    */
+    // End of debugging
+    
     int done=0;
     while (!done) {
         while (x11.getXPending()) {

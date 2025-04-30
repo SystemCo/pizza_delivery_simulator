@@ -37,6 +37,16 @@ struct AABB {
     float height;
 };
 
+struct Intersections {
+    float left;
+    float right;
+    float top;
+    float bottom;
+    float off_left;
+    float off_right;
+    float off_top;
+};
+
 // Entity::animate() wrapper
 void title_moto_physics(int frame, Animation animations[5]);
 void title_physics();
@@ -125,8 +135,8 @@ public:
 
 class Line_Follower : public Entity { // Only allowed to follow lines
     private:
-        Position* lines; // Need to know size at compile time?
-        int point_count;
+        const int point_count = 6;
+        Position lines[6]; // Need to know size at compile time?
         int line_on;
         bool approach(Position point);
     public:
@@ -134,8 +144,9 @@ class Line_Follower : public Entity { // Only allowed to follow lines
         Line_Follower(float pos_x, float pos_y, float scale, float angle, 
             const char infile[], unsigned char color[3], int rows, int cols);
         Line_Follower();
-        void set_points(Position* points, int count);
+        void set_points(Position* points);
         void physics();
+        void quickSnap();
 };
 extern Line_Follower cars[10];
 

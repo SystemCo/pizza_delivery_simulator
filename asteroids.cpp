@@ -92,6 +92,7 @@ GameState gameState = PLAYING;
 //Box box(100, 50);
 Global::Global() 
 {
+    timerList = new TimerList();
     xres = 960;
     yres = 720;
     //xres = 640;
@@ -108,6 +109,10 @@ Global::Global()
     moto_side = new Entity("images/moto_side.gif");
     scale = resolution_scale(&background);
     gameState = PLAYING;
+}
+Global::~Global()
+{
+    delete timerList;
 }
 
 Global gl;
@@ -128,8 +133,7 @@ int main()
 {
     printf("Entered main");
     logOpen();
-   // std::cout << "about to create timerbar" << std::endl;
-    //timerList.addTimer(320,240, 100.0f, 0.0f, "./images/TimeBar.png",gl.black2, 1, 12);
+    // std::cout << "about to create timerbar" << std::endl;
     //std::cout << "timer bar created" << std::endl;
     init_opengl();
     // physicsforCollision();
@@ -162,9 +166,7 @@ int main()
     x11.set_mouse_position(200, 200);
     x11.show_mouse_cursor(gl.mouse_cursor_on);
     initCars();
-    //timerList.addTimer(320,240, 100.0f, 0.0f, "./images/TimeBar.png",gl.black2, 1, 12);
     int done=0;
-    //Game_System pstats;
     while (!done) {
         while (x11.getXPending()) {
             XEvent e = x11.getXNextEvent();
@@ -175,17 +177,14 @@ int main()
         clock_gettime(CLOCK_REALTIME, &timeCurrent);
         timeSpan = timeDiff(&timeStart, &timeCurrent);
         timeCopy(&timeStart, &timeCurrent);
-        // float dTime = timeSpan; //commenting out for now
         // if gl.screen state is paused, don't do physics
         physicsCountdown += timeSpan;
-        //float dTime = timeSpan; commenting out for now
         switch (gl.screen) {
             case Title:
                 while (physicsCountdown >= physicsRate) {
                     //coommenting this out 
                     title_physics();
                     //  title_physics();
-                    //timerbar.Timer(dTime); //commenting out for now
                     physicsCountdown -= physicsRate;
                 }
                 title_render();
@@ -196,10 +195,8 @@ int main()
             case Playing:
                 while (physicsCountdown >= physicsRate) {
                     physics();
-                    timerList.timerAll(physicsRate);
-                    //gl.timerbar.Timer(physicsRate);
+                    manageDeliveries(physicsRate);
                     physicsCountdown -= physicsRate;
-                    timerList.removeExpiredTimers();
                 }
                 render();
                 break;
@@ -251,13 +248,14 @@ void init_opengl(void)
     gl.show.init_gl();
     gl.moto_side->init_gl();
     cars[0].init_gl();
-    //std::cout << "about to initialize timer" << std::endl;
     //timerList.initAll();
+    cars[1].init_gl();
+    //gl.attempts.init_gl();
     for (int i = 0; i < 3; i++) {
         gl.attempts[i].init_gl();
     }
     initGame();
-
+    initDeliveryLocations();
     // gl.box.pos[0] = 100.0f;
     //gl.box.pos[1] = 100.0f;
     //add timerbar
@@ -294,6 +292,7 @@ void check_mouse(XEvent *e)
     if (e->type == ButtonPress) {
         if (e->xbutton.button==1) { // Left button
             gl.title_button.click(e->xbutton.x, true_y);
+            printf("x: %d, y: %d", e->xbutton.x, true_y);
         }
         if (e->xbutton.button==3) {
             //Right button is down
@@ -313,6 +312,7 @@ void check_mouse(XEvent *e)
         int ydiff = savey - e->xbutton.y;
         savex = e->xbutton.x;
         savey = e->xbutton.y;
+        //std::cout << savex << ", " << savey << std::endl;
         if (++ct < 10)
             return;
         //std::cout << "savex: " << savex << std::endl << std::flush;
@@ -452,11 +452,11 @@ int check_keys(XEvent *e)
 void physics()
 {
     cars[0].update_frame();
+    cars[1].update_frame();
     cars[0].physics();
+    cars[1].physics();
     physicsforCollision();
     gl.bike.move();    
-    timerList.updateAll();
-
 }
 
 void title_render()
@@ -502,7 +502,7 @@ void render()
 
 
     show_fps(&r);
-timerList.renderAll();
+    gl.timerList->renderAll();
     //     if (gl.box.checkCollision(gl.bike)) {
     // Stop the motorcycle or reverse its direction
     //      gl.bike.velocity = 0; // Or apply any other collision response
@@ -526,6 +526,8 @@ timerList.renderAll();
             gl.bike.render();
         
         cars[0].render();
+        cars[1].render();
+        //printf("%f\n", cars[0].pos.x);
         attemptsRender(&r);
 
       

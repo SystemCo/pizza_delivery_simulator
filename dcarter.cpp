@@ -19,6 +19,15 @@
 #define SPEED 4 // Moto Linear Speed
 
 unsigned char red[3] {255,0,0};
+const Intersections map1Intersections {
+    .left      = 180,
+    .right     = 675,
+    .top       = 550,
+    .bottom    = 250,
+    .off_left  = -100,
+    .off_right = 1500,
+    .off_top   = 1000,
+};
 
 /* 
  **  This is the global variable for the whole project. 
@@ -67,18 +76,37 @@ void show_fps(Rect* r)
 
 void initCars()
 {
-    printf("Entered InitCars");
-    Position position[6] {
-            {200, 200}, 
-            {300, 300},
-            {400, 200},
-            {500, 300},
-            {100, 100},
-            {100, 500}
-    };
+    const Intersections ints = map1Intersections;
+    cars[0].set_points(new Position[6] {
+            {ints.off_left, ints.top},
+            {ints.left, ints.top},
+            {ints.right, ints.top},
+            {ints.right, ints.bottom},
+            {ints.left, ints.bottom},
+            {ints.off_left, ints.bottom},
+        });
 
-    cars[0].set_points(position, 6);
-    printf("Set the points");
+    cars[1].set_points(new Position[6] {
+            {ints.right, ints.off_top},
+            {ints.right, ints.bottom},
+            {ints.left, ints.bottom},
+            {ints.left, ints.top},
+            {ints.right, ints.top},
+            {ints.off_right, ints.top},
+        });
+
+    for (int i = 2; i < 10; i++)
+        cars[2].set_points(new Position[6] {
+            {ints.off_left, ints.top},
+            {ints.left, ints.top},
+            {ints.right, ints.top},
+            {ints.left, ints.top},
+            {ints.left, ints.bottom},
+            {ints.off_left, ints.bottom},
+        });
+    for (int i = 0; i < 10; i++) {
+        cars[i].quickSnap();
+    }
 }
 
 // **************** Convenient Math funcs *****************
@@ -391,14 +419,15 @@ Line_Follower::Line_Follower(float pos_x, float pos_y, float scale,
 
 
 Line_Follower::Line_Follower() :
-    Entity(0, 0, 40.0, 0, "images/Car1_sprite.png", red, 1, 8)
+    Entity(30, 30, 40.0, 0, "images/Car1_sprite.png", red, 1, 8)
 {}
 
-void Line_Follower::set_points(Position points[], int count)
+void Line_Follower::set_points(Position points[10])
 {
     line_on = 0;
-    lines = points;
-    point_count = count;
+
+    for (int i = 0; i < point_count; i++)
+        lines[i] = points[i];
 }
 
 // returns true if snapped to point
@@ -415,20 +444,16 @@ bool Line_Follower::approach(Position point)
         pos.y = point.y;
         return true;
     }
-    const double angle = atan( delta_y / delta_x);
-    const bool be_positive = delta_x > 0 || (delta_x == 0 && delta_y > 0);
-    if (be_positive) {
-        pos.x += speed * cos(angle);
-        pos.y += speed * sin(angle);
-    } else {
-        pos.x -= speed * cos(angle);
-        pos.y -= speed * sin(angle);
-    }
+    const double angle = atan2f( delta_y, delta_x);
+    pos.x += speed * cos(angle);
+    pos.y += speed * sin(angle);
+    this->angle = angle / PI / 2.0 * 360.0;
     return false;
 }
 
 void Line_Follower::physics()
 {
+    //std::cout << lines[line_on].x << ", " << lines[line_on].y << std::endl;
     const bool snapped = this->approach(lines[line_on]);
     if(snapped) {
         line_on += 1;
@@ -437,9 +462,15 @@ void Line_Follower::physics()
     fflush(stdout);
 }
 
+void Line_Follower::quickSnap()
+{
+    pos.x = lines[line_on].x;
+    pos.y = lines[line_on].y;
+}
+
 // ****************** Motorcycle Method Implementations ********************
 // *************************************************************************
-#define MOTO_SIZE 25
+#define MOTO_SIZE 17
 
 Motorcycle::Motorcycle() :
     // main entity default colorToAlpha white because jpg
@@ -609,25 +640,9 @@ void Button::set_text(const char new_text[])
     strcpy(text, new_text);
 }
 
-// Title_Exit_Button::Title_Exit_Button() : Button(200, 200)
-// {
-//     this->set_text("Exit title");
-//     this->set_color(255, 0, 0);
-//     this->set_pos(300, 300);
-//     this->set_dims(200, 50);
-// }
-
-// void Title_Exit_Button::click(int x, int y)
-// {
-//     if (is_inside(x, y))
-//         printf("CLICK!\n");
-// }
-
 void Button::click(int x, int y)
 {
     if (is_inside(x, y))
         printf("click!\n");
 }
-
-// ****************** Contributions to shared ***********************
 

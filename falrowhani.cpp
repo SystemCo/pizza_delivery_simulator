@@ -489,6 +489,11 @@ void myRender()
     }
 }
 
+//Motorcycle::crash()
+//crashdir -1 or 1; 
+{
+    //cal g.bike.crash(); 
+}
 
 /*
 void title_physics()

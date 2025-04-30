@@ -5,14 +5,18 @@
 //#include "image.h"
 //#include "dcarter.h"
 #include "shared.h"
+#include <cmath>
+#include <cstdlib>
+#include <ctime>
 
 //extern Global gl;
 
-extern int roundAttempts;
+//extern int roundAttempts;
 extern bool timesUp;
 extern float  timesUpTimer;
 
 void show_lesslie(Rect* r);
+void manageDeliveries(float dT);
 
 void attemptsRender(Rect* r);
 
@@ -41,35 +45,31 @@ class TimerBar : public Entity
         bool removalNeeded = false;
         bool getRemovalNeeded();
 
-        /*void renderTimer() {
-          timerbar.timeRender();
-          }i
-          */
-        //void renderTimer(Position pos, float scale) {
-        //void timerbar.timeRender(pos, scale);
-
 
 
 };
 class TimerList
 {
-    protected: 
-        static const int maxTimers = 10;
+    public:
+         static const int maxTimers = 3;
         TimerBar* timers[maxTimers];
         int count;
-    public:
         TimerList();
         ~TimerList();
         void timerAll( float dt);
         void updateAll();
        bool addTimer(float x, float y, float scale, float angle, const char* infile, unsigned char alphaColor[3], int rows, int cols);
-       void initAll();
+       //void initAll();
        void removeTimer(int index);
 void removeExpiredTimers();
        //void renderTimer(TimerBar* timer);
        void renderAll();
 
 };
+
+void initDeliveryLocations();
+void activateRandomDeliveries();
+
 #endif
 
 //add a counter that calls the physics counter, instead of real time

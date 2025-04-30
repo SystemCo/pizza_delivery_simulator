@@ -78,6 +78,7 @@ public:
 
 class Sprite : public Image {
 private:
+    int delay_counter = 0;
 public:
     int frame;
     int delay;

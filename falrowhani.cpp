@@ -291,14 +291,16 @@ void physicsforCollision() {
         show_warning = 1;
         warning_timer = 100;
 
-        if (gl.bike.vel[1] > 0) {
+        gl.bike.crash();
+
+        /*if (gl.bike.vel[1] > 0) {
             printf("Bike was moving forward\n");
         } else if (gl.bike.vel[1] < 0) {
             printf("Bike was moving backward\n");
         } else {
             printf("Bike was moving randomly\n");
         }
-
+*/
         gl.bike.vel[0] = 0.0f;
         gl.bike.vel[1] = 0.0f;
         gl.bike.force[0] = 0.0f;
@@ -317,6 +319,8 @@ void physicsforCollision() {
         warning_timer = 100;
         //gl.bike.velocity = 0.0;
 
+        gl.bike.crash();
+
         gl.bike.vel[0] = 0.0f;
         gl.bike.vel[1] = 0.0f;
         gl.bike.force[0] = 0.0f;
@@ -330,6 +334,8 @@ void physicsforCollision() {
         show_warning = 1;
         warning_timer = 100;
        // gl.bike.velocity = 0.0;
+
+       gl.bike.crash();
 
        gl.bike.vel[0] = 0.0f;
        gl.bike.vel[1] = 0.0f;
@@ -345,6 +351,9 @@ void physicsforCollision() {
         show_warning = 1;
         warning_timer = 100;
 
+        gl.bike.crash();
+
+
         gl.bike.vel[0] = 0.0f;
         gl.bike.vel[1] = 0.0f;
         gl.bike.force[0] = 0.0f;
@@ -359,10 +368,15 @@ void physicsforCollision() {
         show_warning = 1;
         warning_timer = 100;
 
+        gl.bike.crash();
+
+
         gl.bike.vel[0] = 0.0f;
         gl.bike.vel[1] = 0.0f;
         gl.bike.force[0] = 0.0f;
         gl.bike.force[1] = 0.0f;
+
+
     }
     
     if (gl.bike.pos.x >= gl.box6.pos[0] &&
@@ -373,10 +387,15 @@ void physicsforCollision() {
         show_warning = 1;
         warning_timer = 100;
 
+        gl.bike.crash();
+
         gl.bike.vel[0] = 0.0f;
         gl.bike.vel[1] = 0.0f;
         gl.bike.force[0] = 0.0f;
         gl.bike.force[1] = 0.0f;
+
+    
+
     }
     
     if (gl.bike.pos.x >= gl.box7.pos[0] &&
@@ -387,10 +406,15 @@ void physicsforCollision() {
         show_warning = 1;
         warning_timer = 100;
 
+        gl.bike.crash();
+
         gl.bike.vel[0] = 0.0f;
         gl.bike.vel[1] = 0.0f;
         gl.bike.force[0] = 0.0f;
         gl.bike.force[1] = 0.0f;
+
+    
+
     }
     
     if (gl.bike.pos.x >= gl.box8.pos[0] &&
@@ -400,6 +424,9 @@ void physicsforCollision() {
         std::cout << "Collision with box 8!\n";
         show_warning = 1;
         warning_timer = 100;
+
+        gl.bike.crash();
+
 
 
         gl.bike.vel[0] = 0.0f;
@@ -416,6 +443,9 @@ void physicsforCollision() {
         show_warning = 1;
         warning_timer = 100;
 
+        gl.bike.crash();
+
+
         gl.bike.vel[0] = 0.0f;
         gl.bike.vel[1] = 0.0f;
         gl.bike.force[0] = 0.0f;
@@ -429,6 +459,8 @@ void physicsforCollision() {
         std::cout << "Collision with box 10!\n";
         show_warning = 1;
         warning_timer = 100;
+
+        gl.bike.crash();
 
         gl.bike.vel[0] = 0.0f;
         gl.bike.vel[1] = 0.0f;
@@ -489,7 +521,14 @@ void myRender()
     }
 }
 
-//Motorcycle::crash()
+void Motorcycle::crash() { 
+    int crashdir;
+    if (vel[1] > 0) {
+        crashdir = 1;  // Moving "forward"
+    } else {
+        crashdir = -1; // Moving "backward"
+    }
+}
 //crashdir -1 or 1; 
 {
     //cal g.bike.crash(); 

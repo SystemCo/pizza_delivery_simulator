@@ -175,6 +175,7 @@ class Motorcycle : public Entity {
         void render();
         void init_gl();
         bool collides_with_box(const Box& box);
+        void crash();
     };
 
 // Mouse clickable buttons. These are intended to be a parent class.

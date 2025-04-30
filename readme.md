@@ -157,17 +157,18 @@ My schedule is usually subject to change depending on my work schedule
 
   
 ### Francisco
+* Fully import audio system to program
+    * Assigned on:  Tuesday 04/22/25
+    * Assigned by:  Francisco
+    * Due by:       Saturday 05/03/25
+    * Status:       Incomplete
+
 * Add global audio functions
     * Assigned on:  Tuesday 04/22/25
     * Assigned by:  Francisco
-    * Due by:       Sunday 04/27/25
+    * Due by:       Saturday 05/03/25
     * Status:       Incomplete
 
-* Implement money system
-    * Assigned on:  Tuesday 04/22/25
-    * Assigned by:  Francisco
-    * Due by:       Sunday 04/27/25
-    * Status:       Incomplete
 
 
 ### Lesslie
@@ -308,6 +309,7 @@ My schedule is usually subject to change depending on my work schedule
 * Completed In: April 2025
     * Make buttons dim when and only when mouse is hovering over them.
     * Imported audio files
+    * Implemented money system
 
 ### Lesslie
 * Completed In: February 2025

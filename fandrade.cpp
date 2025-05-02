@@ -6,6 +6,8 @@
 
 #include <iostream>
 #include "fonts.h"
+#include "fandrade.h"
+
 #ifdef USE_OPENAL_SOUND
 #include <AL/alut.h>
 #endif //USE_OPENAL_SOUND
@@ -60,7 +62,9 @@ void cleanup_openal(ALuint *source, ALuint *buffer)
 {
     alDeleteSources(1, source);
     alDeleteBuffers(1, buffer);
-    
+    system("rm ./audio/music/*.wav");
+    system("rm ./audio/sfx/*.wav");
+
     //Close out OpenAL itself
     //Get active context
     ALCcontext *Context = alcGetCurrentContext();
@@ -75,3 +79,34 @@ void cleanup_openal(ALuint *source, ALuint *buffer)
 }
 #endif //USE_OPENAL_SOUND
 
+MoneySystem::MoneySystem()
+{
+    this->totalMoney = 100.00f;
+    this->revenue = 0.00f;
+}
+
+float MoneySystem::getTotalMoney()
+{
+    return this->totalMoney;
+}
+
+float MoneySystem::getRevenue()
+{
+    return this->revenue;
+}
+
+void MoneySystem::increaseRevenue(float change)
+{
+    this->revenue += change;
+}
+
+void MoneySystem::cashInRevenue()
+{
+    this->totalMoney += this->revenue;
+    this->revenue = 0.00f;
+}
+
+void MoneySystem::displayRevenue(Rect *r)
+{
+    ggprint8b(r, 16, 0x00ff00ff, "Revenue: ");
+}

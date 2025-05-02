@@ -8,6 +8,8 @@
 #include "aolmedo.h"
 #include "falrowhani.h"
 #include "lvaldivia.h"
+#include "fandrade.h"
+
 class TimerList;
 enum ScreenState { Title, Home, Pause, Credits, Playing };
 
@@ -37,9 +39,9 @@ class Global { // Originally from Asteroids framework
     Box box15; 
     Box box16; 
 
-    float deliveryLocations[10][2]; //index can be changed depending of delievery locations
+    //float deliveryLocations[10][2]; //index can be changed depending of delievery locations
     int numActiveDelieries;
-    bool activeDeliveries[3];
+    //bool activeDeliveries[3];
     
     TimerList* timerList;   
     bool gameOver = false;
@@ -85,6 +87,7 @@ class Global { // Originally from Asteroids framework
     //TODO: 
     // implement switch statements in main func as well as other funcs
     // using screen state enum
+    MoneySystem money;
     Global();
     ~Global();
 

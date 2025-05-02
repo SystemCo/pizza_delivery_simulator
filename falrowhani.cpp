@@ -37,6 +37,7 @@ void initGame();
 void physicsforCollision();
 void know();
 void myRender();
+void deliveryDetection();
 //GameState gameState = PLAYING;
 
 //function prototypes 
@@ -52,25 +53,33 @@ int show_warning = 0;
 int warning_timer = 0;
 
 
+
+
+
+
+
 void show_fenoon(Rect*r)
 {
     ggprint8b(r, 16, 0x00FFFF, "Fenoon");
 }
 
-Game_Button::Game_Button() : Button(200, 200) {
+Game_Button::Game_Button() : Button(200, 200) 
+{
     this->set_text("Resume");       // Set the button's text
     this->set_color(252, 136,3);    // Set the button's color (RGB)
     this->set_pos(200, 400);         // Set the position of the button
     this->set_dims(100, 50);         // Set the dimensions of the button
 }
 
-void Game_Button::click(int x, int y) {
+void Game_Button::click(int x, int y)
+ {
     if (this->is_inside(x, y)) { // Check if the click is inside the button
-        std::cout << "Resume Button Clicked!" << std::endl;
+        //std::cout << "Resume Button Clicked!" << std::endl;
         gameState = PLAYING; // Change game state to PLAYING
     }
 }
-Restart_Button::Restart_Button() : Button(200, 200) {
+Restart_Button::Restart_Button() : Button(200, 200) 
+{
     this->set_text("Restart");       // Set the button's text
     this->set_color(252, 136, 3);    // Set the button's color (RGB)
     this->set_pos(200, 200);         // Set the position of the button
@@ -81,7 +90,8 @@ Restart_Button::Restart_Button() : Button(200, 200) {
 //    reset_game();  // Call reset function
 //}
 
-void reset_game() {
+void reset_game() 
+{
     std::cout << " Reset!" << std::endl;
     // gl.show=Image {"./images/game2.jpg"};
     gl.show = Image {"./images/game2.jpg"};
@@ -93,14 +103,16 @@ void reset_game() {
 //    reset_game();  // Call reset function
 //}
 
-void Restart_Button::click(int x, int y) {
+void Restart_Button::click(int x, int y) 
+{
     if (this->is_inside(x, y)) { // Check if the click is inside the button
-        std::cout << "RgjfkngnkdkButton Clicked!" << std::endl;
+       // std::cout << "RgjfkngnkdkButton Clicked!" << std::endl;
         //  Image show {"./images/game2.jpg"};
         reset_game();
     }
 }
-void drawPauseMenu() {
+void drawPauseMenu() 
+{
     Rect r;
 
     glColor4f(0.0, 0.0, 0.0, 1.0);// transparency
@@ -158,7 +170,8 @@ void title_physics()
 //currently not working 
 
 
-void title(Rect &r) {
+void title(Rect &r) 
+{
     const char* sentence = "Pizza Delivery Simulator";
 
     r.bot = gl.yres - 20;
@@ -172,7 +185,8 @@ void title(Rect &r) {
 }
 //collision positions defined 
 
-void initGame() {
+void initGame()
+ {
     gl.box.pos[0] = 5.0f;
     gl.box.pos[1] = 325.0f;
 
@@ -232,49 +246,95 @@ void initGame() {
 
     //delivery place postions starts here:///
     
-    Box box11;
-    box11.color[0] = 0.0f;
-    box11.color[1] = 0.0f;
-    box11.color[2] = 1.0f;
-
-    Box box12;
-    box12.color[0] = 0.0f;
-    box12.color[1] = 0.0f;
-    box12.color[2] = 1.0f;
-
-    Box box13;
-    box13.color[0] = 0.0f;
-    box13.color[1] = 0.0f;
-    box13.color[2] = 1.0f;
-
-    Box box14;
-    box14.color[0] = 0.0f;
-    box14.color[1] = 0.0f;
-    box14.color[2] = 1.0f;
-
-    Box box15;
-    box15.color[0] = 0.0f;
-    box15.color[1] = 0.0f;
-    box15.color[2] = 1.0f;
-
-    Box box16;
-    box16.color[0] = 0.0f;
-    box16.color[1] = 0.0f;
-    box16.color[2] = 1.0f;
+   
+    gl.box11.color[0] = 0.0f;
+    gl.box11.color[1] = 0.0f;
+    gl.box11.color[2] = 1.0f;
 
 
-    gl.box11.width = 25;
+    gl.box12.color[0] = 0.0f;
+    gl.box12.color[1] = 0.0f;
+    gl.box12.color[2] = 1.0f;
+
+    
+    gl.box13.color[0] = 0.0f;
+    gl.box13.color[1] = 0.0f;
+    gl.box13.color[2] = 1.0f;
+
+
+    gl.box14.color[0] = 0.0f;
+    gl.box14.color[1] = 0.0f;
+    gl.box14.color[2] = 1.0f;
+
+
+    gl.box15.color[0] = 0.0f;
+    gl.box15.color[1] = 0.0f;
+    gl.box15.color[2] = 1.0f;
+
+    
+    gl.box16.color[0] = 0.0f;
+    gl.box16.color[1] = 0.0f;
+    gl.box16.color[2] = 1.0f;
+
+
+    gl.box11.width = 55;
     gl.box11.height = 20;
 
-    gl.box11.pos[0] =  235.0f; 
-    gl.box11.pos[1] = 165.0f;
+    gl.box11.pos[0] =  382.0f; 
+    gl.box11.pos[1] = 470.0f;
+
+
+    gl.box12.width = 55;
+    gl.box12.height = 20;
+
+    gl.box12.pos[0] =  457.0f; 
+    gl.box12.pos[1] = 470.0f;
+
+
+    gl.box13.width = 55;
+    gl.box13.height = 20;
+
+    gl.box13.pos[0] =  520.0f; 
+    gl.box13.pos[1] = 470.0f;
+
+
+    gl.box14.width = 85;
+    gl.box14.height = 30;
+
+    gl.box14.pos[0] =  382.0f; 
+    gl.box14.pos[1] = 150.0f;
+
+    gl.box15.width = 85;
+    gl.box15.height = 20;
+
+    gl.box15.pos[0] =  750.0f; 
+    gl.box15.pos[1] = 150.0f;
+
+    gl.box16.width = 85;
+    gl.box16.height = 20;
+
+    gl.box16.pos[0] =  890.0f; 
+    gl.box16.pos[1] = 150.0f;
+    
 
 }
+//code me and david talked about 
 
+/*if (PhysicsForCollision) {
+    if (crash_dir != 0) {
+        velocity.set(0.0);
+    }
+}
 
-void physicsforCollision() {
+*/
+void physicsforCollision() 
+{
     Motorcycle& moto = gl.bike;
     Box& box = gl.box;
+
+    bool crashed =false; 
+
+    static bool was_colliding = false;
 
     float motoX = moto.pos.x;
     float motoY = moto.pos.y;
@@ -285,193 +345,281 @@ void physicsforCollision() {
     float boxTop    = box.pos[1] + box.height;
 
     // Point-based AABB collision
-    if (motoX >= boxLeft && motoX <= boxRight &&
-        motoY >= boxBottom && motoY <= boxTop) {
-        std::cout << "Collision detected!\n";
+    if ((motoX >= boxLeft && motoX <= boxRight &&
+        motoY >= boxBottom && motoY <= boxTop)&& !was_colliding) {
+       // std::cout << "Collision detected!\n";
         show_warning = 1;
         warning_timer = 100;
 
         gl.bike.crash();
-
-        /*if (gl.bike.vel[1] > 0) {
-            printf("Bike was moving forward\n");
-        } else if (gl.bike.vel[1] < 0) {
-            printf("Bike was moving backward\n");
-        } else {
-            printf("Bike was moving randomly\n");
-        }
-*/
-        gl.bike.vel[0] = 0.0f;
-        gl.bike.vel[1] = 0.0f;
-        gl.bike.force[0] = 0.0f;
-        gl.bike.force[1] = 0.0f;
-
-    
-        
+        crashed=true; 
+  
+  }
+  else { 
+    //ig gl .baike crash is no called 
+    //crash direction is set to 0 
+    crashed=false; 
+    if (crashed!=true) { 
+        gl.bike.crash_dir =0;
     }
+
+
+  }
     if (gl.bike.pos.x >= gl.box2.pos[0] &&
         gl.bike.pos.x <= gl.box2.pos[0] + gl.box2.width &&
         gl.bike.pos.y >= gl.box2.pos[1] &&
         gl.bike.pos.y <= gl.box2.pos[1] + gl.box2.height) {
         
-        std::cout << "Collision with box 2!\n";
+        //std::cout << "Collision with box 2!\n";
         show_warning = 1;
         warning_timer = 100;
         //gl.bike.velocity = 0.0;
 
         gl.bike.crash();
 
-        gl.bike.vel[0] = 0.0f;
-        gl.bike.vel[1] = 0.0f;
-        gl.bike.force[0] = 0.0f;
-        gl.bike.force[1] = 0.0f;
+        
     }
+    else { 
+        //ig gl .baike crash is no called 
+        //crash direction is set to 0 
+        crashed=false; 
+        if (crashed!=true) { 
+            gl.bike.crash_dir =0;
+        }
+    
+    
+      }
     if (gl.bike.pos.x >= gl.box3.pos[0] &&
         gl.bike.pos.x <= gl.box3.pos[0] + gl.box3.width &&
         gl.bike.pos.y >= gl.box3.pos[1] &&
         gl.bike.pos.y <= gl.box3.pos[1] + gl.box3.height) {
-        std::cout << "Collision with box 3!\n";
+       // std::cout << "Collision with box 3!\n";
         show_warning = 1;
         warning_timer = 100;
        // gl.bike.velocity = 0.0;
 
        gl.bike.crash();
 
-       gl.bike.vel[0] = 0.0f;
-       gl.bike.vel[1] = 0.0f;
-       gl.bike.force[0] = 0.0f;
-       gl.bike.force[1] = 0.0f;
+       
     }
+    else { 
+        
+        crashed=false; 
+        if (crashed!=true) { 
+            gl.bike.crash_dir =0;
+        }
+    
+    
+      }
     
     if (gl.bike.pos.x >= gl.box4.pos[0] &&
         gl.bike.pos.x <= gl.box4.pos[0] + gl.box4.width &&
         gl.bike.pos.y >= gl.box4.pos[1] &&
         gl.bike.pos.y <= gl.box4.pos[1] + gl.box4.height) {
-        std::cout << "Collision with box 4!\n";
+       // std::cout << "Collision with box 4!\n";
         show_warning = 1;
         warning_timer = 100;
 
-        gl.bike.crash();
+       // gl.bike.crash();
 
+        }
+        else { 
+        
+            crashed=false; 
+            if (crashed!=true) { 
+                gl.bike.crash_dir =0;
+            }
+        
+        
+          }
 
-        gl.bike.vel[0] = 0.0f;
-        gl.bike.vel[1] = 0.0f;
-        gl.bike.force[0] = 0.0f;
-        gl.bike.force[1] = 0.0f;
-    }
     
     if (gl.bike.pos.x >= gl.box5.pos[0] &&
         gl.bike.pos.x <= gl.box5.pos[0] + gl.box5.width &&
         gl.bike.pos.y >= gl.box5.pos[1] &&
         gl.bike.pos.y <= gl.box5.pos[1] + gl.box5.height) {
-        std::cout << "Collision with box 5!\n";
+        //std::cout << "Collision with box 5!\n";
         show_warning = 1;
         warning_timer = 100;
 
         gl.bike.crash();
 
 
-        gl.bike.vel[0] = 0.0f;
-        gl.bike.vel[1] = 0.0f;
-        gl.bike.force[0] = 0.0f;
-        gl.bike.force[1] = 0.0f;
-
 
     }
+    else { 
+        
+        crashed=false; 
+        if (crashed!=true) { 
+            gl.bike.crash_dir =0;
+        }
+    
+    
+      }
     
     if (gl.bike.pos.x >= gl.box6.pos[0] &&
         gl.bike.pos.x <= gl.box6.pos[0] + gl.box6.width &&
         gl.bike.pos.y >= gl.box6.pos[1] &&
         gl.bike.pos.y <= gl.box6.pos[1] + gl.box6.height) {
-        std::cout << "Collision with box 6!\n";
+       // std::cout << "Collision with box 6!\n";
         show_warning = 1;
         warning_timer = 100;
 
-        gl.bike.crash();
+     gl.bike.crash();
 
-        gl.bike.vel[0] = 0.0f;
-        gl.bike.vel[1] = 0.0f;
-        gl.bike.force[0] = 0.0f;
-        gl.bike.force[1] = 0.0f;
-
-    
 
     }
+    else { 
+        
+        crashed=false; 
+        if (crashed!=true) { 
+            gl.bike.crash_dir =0;
+        }
+    
+    
+      }
     
     if (gl.bike.pos.x >= gl.box7.pos[0] &&
         gl.bike.pos.x <= gl.box7.pos[0] + gl.box7.width &&
         gl.bike.pos.y >= gl.box7.pos[1] &&
         gl.bike.pos.y <= gl.box7.pos[1] + gl.box7.height) {
-        std::cout << "Collision with box 7!\n";
+       // std::cout << "Collision with box 7!\n";
         show_warning = 1;
         warning_timer = 100;
 
-        gl.bike.crash();
-
-        gl.bike.vel[0] = 0.0f;
-        gl.bike.vel[1] = 0.0f;
-        gl.bike.force[0] = 0.0f;
-        gl.bike.force[1] = 0.0f;
-
+    gl.bike.crash();
     
 
     }
+    else { 
+        
+        crashed=false; 
+        if (crashed!=true) { 
+            gl.bike.crash_dir =0;
+        }
+    
+    
+      }
     
     if (gl.bike.pos.x >= gl.box8.pos[0] &&
         gl.bike.pos.x <= gl.box8.pos[0] + gl.box8.width &&
         gl.bike.pos.y >= gl.box8.pos[1] &&
         gl.bike.pos.y <= gl.box8.pos[1] + gl.box8.height) {
-        std::cout << "Collision with box 8!\n";
+        //std::cout << "Collision with box 8!\n";
         show_warning = 1;
         warning_timer = 100;
 
         gl.bike.crash();
-
-
-
-        gl.bike.vel[0] = 0.0f;
-        gl.bike.vel[1] = 0.0f;
-        gl.bike.force[0] = 0.0f;
-        gl.bike.force[1] = 0.0f;
+    
     }
+    else { 
+        
+        crashed=false; 
+        if (crashed!=true) { 
+            gl.bike.crash_dir =0;
+        }
+    
+    
+      }
     
     if (gl.bike.pos.x >= gl.box9.pos[0] &&
         gl.bike.pos.x <= gl.box9.pos[0] + gl.box9.width &&
         gl.bike.pos.y >= gl.box9.pos[1] &&
         gl.bike.pos.y <= gl.box9.pos[1] + gl.box9.height) {
-        std::cout << "Collision with box 9!\n";
+        //std::cout << "Collision with box 9!\n";
         show_warning = 1;
         warning_timer = 100;
 
         gl.bike.crash();
 
 
-        gl.bike.vel[0] = 0.0f;
-        gl.bike.vel[1] = 0.0f;
-        gl.bike.force[0] = 0.0f;
-        gl.bike.force[1] = 0.0f;
+    
     }
+    else { 
+        
+        crashed=false; 
+        if (crashed!=true) { 
+            gl.bike.crash_dir =0;
+        }
+    
+    
+      }
     
     if (gl.bike.pos.x >= gl.box10.pos[0] &&
         gl.bike.pos.x <= gl.box10.pos[0] + gl.box10.width &&
         gl.bike.pos.y >= gl.box10.pos[1] &&
         gl.bike.pos.y <= gl.box10.pos[1] + gl.box10.height) {
-        std::cout << "Collision with box 10!\n";
+        //std::cout << "Collision with box 10!\n";
         show_warning = 1;
         warning_timer = 100;
 
         gl.bike.crash();
-
-        gl.bike.vel[0] = 0.0f;
-        gl.bike.vel[1] = 0.0f;
-        gl.bike.force[0] = 0.0f;
-        gl.bike.force[1] = 0.0f;
+     
     }
+    else { 
+        
+        crashed=false; 
+        if (crashed!=true) { 
+            gl.bike.crash_dir =0;
+        }
+    
+    
+      }
 
     //delivery places collision starts here: 
 
     
 }   
+
+void deliveryDetection() 
+{
+    float motoX = gl.bike.pos.x;
+    float motoY = gl.bike.pos.y;
+
+    if (motoX >= gl.box11.pos[0] &&
+        motoX <= gl.box11.pos[0] + gl.box11.width &&
+        motoY >= gl.box11.pos[1] &&
+        motoY <= gl.box11.pos[1] + gl.box11.height) {
+        std::cout << "Delivery at box11!\n";
+    }
+
+    if (motoX >= gl.box12.pos[0] &&
+        motoX <= gl.box12.pos[0] + gl.box12.width &&
+        motoY >= gl.box12.pos[1] &&
+        motoY <= gl.box12.pos[1] + gl.box12.height) {
+        std::cout << "Delivery at box12!\n";
+    }
+
+    if (motoX >= gl.box13.pos[0] &&
+        motoX <= gl.box13.pos[0] + gl.box13.width &&
+        motoY >= gl.box13.pos[1] &&
+        motoY <= gl.box13.pos[1] + gl.box13.height) {
+        std::cout << "Delivery at box13!\n";
+    }
+
+    if (motoX >= gl.box14.pos[0] &&
+        motoX <= gl.box14.pos[0] + gl.box14.width &&
+        motoY >= gl.box14.pos[1] &&
+        motoY <= gl.box14.pos[1] + gl.box14.height) {
+        std::cout << "Delivery at box14!\n";
+    }
+
+    if (motoX >= gl.box15.pos[0] &&
+        motoX <= gl.box15.pos[0] + gl.box15.width &&
+        motoY >= gl.box15.pos[1] &&
+        motoY <= gl.box15.pos[1] + gl.box15.height) {
+        std::cout << "Delivery at box15!\n";
+    }
+
+    if (motoX >= gl.box16.pos[0] &&
+        motoX <= gl.box16.pos[0] + gl.box16.width &&
+        motoY >= gl.box16.pos[1] &&
+        motoY <= gl.box16.pos[1] + gl.box16.height) {
+        std::cout << "Delivery at box16!\n";
+    }
+}
+
+
 
 void myRender()
 {
@@ -522,17 +670,30 @@ void myRender()
 }
 
 void Motorcycle::crash() { 
-    int crashdir;
-    if (vel[1] > 0) {
-        crashdir = 1;  // Moving "forward"
-    } else {
-        crashdir = -1; // Moving "backward"
+
+
+    if (crash_dir == 0) {
+        velocity.set(0.0);
     }
+
+
+    if (velocity.get() > 0) {
+        crash_dir = 1;  // Moving "forward"
+    } else {
+        crash_dir = -1; // Moving "backward"
+    }
+
+   
+//if (!physicsforCollision()) {
+  
+//}
+
+
 }
 //crashdir -1 or 1; 
-{
+
     //cal g.bike.crash(); 
-}
+
 
 /*
 void title_physics()

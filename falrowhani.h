@@ -27,6 +27,7 @@ void initGame();
 void physicsforCollision();
 void title(Rect &r);
 void myRender();
+void deliveryDetection();
 //bool checkCollision(Motorcycle& moto);
 
 
@@ -63,7 +64,7 @@ public:
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     //change to .01 
 
-    glColor4f(color[0], color[1], color[2], 0.01f); // 40% opacity
+    glColor4f(color[0], color[1], color[2], 0.4f); // 40% opacity
 
     glBegin(GL_QUADS);
     glVertex2f(pos[0], pos[1]);

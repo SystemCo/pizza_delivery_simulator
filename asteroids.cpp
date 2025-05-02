@@ -70,6 +70,8 @@ extern void timeCopy(struct timespec *dest, struct timespec *source);
 
 //-----------------------------------------------------------------------------
 
+const int carCount = 5;
+
 void drawPauseMenu();
 void physicsforCollision();
 //void textMoveRight();
@@ -166,6 +168,18 @@ int main()
     x11.set_mouse_position(200, 200);
     x11.show_mouse_cursor(gl.mouse_cursor_on);
     initCars();
+    
+    // Debugging money system
+    /*
+    std::cout << gl.money.getTotalMoney() << std::endl;
+    std::cout << gl.money.getRevenue() << std::endl;
+    gl.money.increaseRevenue(10.00);
+    std::cout << gl.money.getRevenue() << std::endl;
+    gl.money.cashInRevenue();
+    std::cout << gl.money.getTotalMoney() << std::endl;
+    */
+    // End of debugging
+    
     int done=0;
     while (!done) {
         while (x11.getXPending()) {
@@ -216,7 +230,6 @@ int main()
     cleanup_fonts();
 #ifdef USE_OPENAL_SOUND
     cleanup_openal(&alSource, &alBuffer);
-    system("rm ./wav/intro_theme.wav");
 #endif //USE_OPENAL_SOUND
     logClose();
     return 0;
@@ -247,9 +260,9 @@ void init_opengl(void)
     //called intro image here 
     gl.show.init_gl();
     gl.moto_side->init_gl();
-    cars[0].init_gl();
+    for (int i=0; i<carCount; i++)
+        cars[i].init_gl();
     //timerList.initAll();
-    cars[1].init_gl();
     //gl.attempts.init_gl();
     for (int i = 0; i < 3; i++) {
         gl.attempts[i].init_gl();
@@ -451,10 +464,10 @@ int check_keys(XEvent *e)
 
 void physics()
 {
-    cars[0].update_frame();
-    cars[1].update_frame();
-    cars[0].physics();
-    cars[1].physics();
+    for (int i=0; i<carCount; i++)
+        cars[i].update_frame();
+    for (int i=0; i<carCount; i++)
+        cars[i].physics();
     physicsforCollision();
     gl.bike.move();    
 }
@@ -524,10 +537,12 @@ void render()
         }
         if (gl.show_bike)
             gl.bike.render();
-        
-        cars[0].render();
-        cars[1].render();
-        //printf("%f\n", cars[0].pos.x);
+        //  physicsforCollision();
+        // Commented this so title button would disappear during playing state
+        //gl.title_button.render();
+        for (int i=0; i<carCount; i++)
+            cars[i].render();
+
         attemptsRender(&r);
 
       

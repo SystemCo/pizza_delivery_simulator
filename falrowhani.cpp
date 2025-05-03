@@ -391,7 +391,7 @@ void physicsforCollision()
     //ig gl .baike crash is no called 
     //crash direction is set to 0 
     crashed=false; 
-    if (crashed!=true) { 
+    if (!crashed) { 
         gl.bike.crash_dir =0;
     }
 
@@ -417,7 +417,7 @@ void physicsforCollision()
         //ig gl .baike crash is no called 
         //crash direction is set to 0 
         crashed=false; 
-        if (crashed!=true) { 
+        if (!crashed) { 
             gl.bike.crash_dir =0;
         }
     
@@ -441,7 +441,7 @@ void physicsforCollision()
     else { 
         
         crashed=false; 
-        if (crashed!=true) { 
+        if (!crashed) { 
             gl.bike.crash_dir =0;
         }
     
@@ -465,7 +465,7 @@ void physicsforCollision()
         else { 
         
             crashed=false; 
-            if (crashed!=true) { 
+            if (!crashed) { 
                 gl.bike.crash_dir =0;
             }
         
@@ -491,7 +491,7 @@ void physicsforCollision()
     else { 
         
         crashed=false; 
-        if (crashed!=true) { 
+        if (!crashed) { 
             gl.bike.crash_dir =0;
         }
     
@@ -515,7 +515,7 @@ void physicsforCollision()
     else { 
         
         crashed=false; 
-        if (crashed!=true) { 
+        if (!crashed) { 
             gl.bike.crash_dir =0;
         }
     
@@ -539,7 +539,7 @@ void physicsforCollision()
     else { 
         
         crashed=false; 
-        if (crashed!=true) { 
+        if (!crashed) { 
             gl.bike.crash_dir =0;
         }
     
@@ -562,7 +562,7 @@ void physicsforCollision()
     else { 
         
         crashed=false; 
-        if (crashed!=true) { 
+        if (!crashed) { 
             gl.bike.crash_dir =0;
         }
     
@@ -587,7 +587,8 @@ void physicsforCollision()
     else { 
         
         crashed=false; 
-        if (crashed!=true) { 
+        if (!crashed) { 
+        
             gl.bike.crash_dir =0;
         }
     
@@ -610,7 +611,7 @@ void physicsforCollision()
     else { 
         
         crashed=false; 
-        if (crashed!=true) { 
+        if (!crashed) { 
             gl.bike.crash_dir =0;
         }
     

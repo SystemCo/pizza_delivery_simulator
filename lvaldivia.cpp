@@ -318,7 +318,7 @@ void TimerBar::update()
     int maxFrames = rows * cols;
     float frameRatio = (((maxTime - deliverytime) / maxTime) * maxFrames);
 
-    int frameR = static_cast<int>(frameRatio);
+    int frameR = (int)(frameRatio);
 
     if (frameR < 0) {
         frameR = 0;

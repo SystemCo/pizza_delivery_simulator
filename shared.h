@@ -41,24 +41,23 @@ class Global { // Originally from Asteroids framework
     Box box15; 
     Box box16;
 
-     //float deliveryLocations[10][2]; //index can be changed depending of delievery locations
-     int numActiveDelieries;
-     //bool activeDeliveries[3];
-     
-     TimerList* timerList;   
-     bool gameOver = false;
-     int gameAttempts = 3; 
-     static const int maxActiveDeliveries = 3; //no more than three active
-     static const int maxDeliveryLocations = 6;
-     int timerLocation[maxDeliveryLocations]; //to know what timer corresponds to which location
-     int activeDeliveries = 0; // to keep count
-     bool activeDeliveryLocations[maxDeliveryLocations];
-     float deliveryLocations[maxDeliveryLocations][2];
-     float deliveryDeltaTime = 0.0f;
-     float nextDelivery = 0.0f; 
+    //float deliveryLocations[10][2]; //index can be changed depending of delievery locations
+    int numActiveDelieries;
+    //bool activeDeliveries[3];
+    
+    TimerList* timerList;   
+    bool gameOver = false;
+    int gameAttempts = 3; 
+    static const int maxActiveDeliveries = 3; //no more than three active
+    static const int maxDeliveryLocations = 6;
+    int timerLocation[maxDeliveryLocations]; //to know what timer corresponds to which location
+    int activeDeliveries = 0; // to keep count
+    bool activeDeliveryLocations[maxDeliveryLocations];
+    float deliveryLocations[maxDeliveryLocations][2];
+    float deliveryDeltaTime = 0.0f;
+    float nextDelivery = 0.0f; 
 
-
-     float gameTime;
+    float gameTime;
     float remainingTime;
     TimerBar* mainTime;
     

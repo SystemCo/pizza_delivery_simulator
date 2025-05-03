@@ -432,6 +432,7 @@ Line_Follower::Line_Follower(float pos_x, float pos_y, float scale,
 {
 }
 
+
 Line_Follower::Line_Follower() :
     Entity(30, 30, 40.0, 0, "images/Car1_sprite.png", red, 1, 8)
 {}

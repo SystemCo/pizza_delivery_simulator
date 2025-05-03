@@ -106,6 +106,12 @@ Global::Global()
     credits = true;
     show_bike = true;
 
+    gameTime = 150.0f;
+    remainingTime = gameTime;
+    mainTime = new TimerBar(125, 680, 100, 0, "./images/gameTime.png", black2, 1, 24);
+    mainTime->maxTime = gameTime;
+    mainTime->deliverytime = remainingTime;
+
     // mouse value 1 = true = mouse is a regular mouse.
     mouse_cursor_on = 1;
     moto_side = new Entity("images/moto_side.gif");
@@ -115,6 +121,8 @@ Global::Global()
 Global::~Global()
 {
     delete timerList;
+        delete mainTime;
+
 }
 
 Global gl;
@@ -208,11 +216,22 @@ int main()
             case Credits:
             case Playing:
                 while (physicsCountdown >= physicsRate) {
+                    //physics();
+                    manageDeliveries(physicsRate); 
+                    manageGame(physicsRate); //for the main timer
                     physics();
-                    manageDeliveries(physicsRate);
+
                     physicsCountdown -= physicsRate;
                 }
-                render();
+                if(gl.gameOver == true) {
+                        gl.screen = GameOver;
+                    }
+                    else {
+                        render();
+                    }
+                break;
+            case GameOver:
+                drawGameOver();
                 break;
         }
 
@@ -269,6 +288,7 @@ void init_opengl(void)
     }
     initGame();
     initDeliveryLocations();
+    gl.mainTime->init_gl();
     // gl.box.pos[0] = 100.0f;
     //gl.box.pos[1] = 100.0f;
     //add timerbar
@@ -410,7 +430,9 @@ int check_keys(XEvent *e)
                  // if any button is pushed, exit the title menu. 
                  // Currently would break pause and credits
     if (e->type == KeyPress) {
+        if (gl.screen != GameOver) {
         gl.screen = Playing;
+        }
         switch (key) {
             case XK_F4:
                 return 1;
@@ -456,6 +478,11 @@ int check_keys(XEvent *e)
                 break;
             case XK_minus:
                 break;
+            case XK_x:
+                if (gl.screen == GameOver) { 
+                    return 1;
+                }
+                break;
         }
     }
     return 0;
@@ -469,7 +496,8 @@ void physics()
     for (int i=0; i<carCount; i++)
         cars[i].physics();
     physicsforCollision();
-    gl.bike.move();    
+    gl.bike.move();
+gl.mainTime->update();
 }
 
 void title_render()
@@ -516,6 +544,7 @@ void render()
 
     show_fps(&r);
     gl.timerList->renderAll();
+    gl.mainTime->timeRender();
     //     if (gl.box.checkCollision(gl.bike)) {
     // Stop the motorcycle or reverse its direction
     //      gl.bike.velocity = 0; // Or apply any other collision response
@@ -537,6 +566,7 @@ void render()
         }
         if (gl.show_bike)
             gl.bike.render();
+        printScoreNTime();
         //  physicsforCollision();
         // Commented this so title button would disappear during playing state
         //gl.title_button.render();

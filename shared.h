@@ -9,9 +9,9 @@
 #include "falrowhani.h"
 #include "lvaldivia.h"
 #include "fandrade.h"
-
+class TimerBar;
 class TimerList;
-enum ScreenState { Title, Home, Pause, Credits, Playing };
+enum ScreenState { Title, Home, Pause, Credits, Playing, GameOver };
 
 class Global { // Originally from Asteroids framework  
     unsigned char white[3] {255, 255, 255};
@@ -47,13 +47,17 @@ class Global { // Originally from Asteroids framework
     bool gameOver = false;
     int gameAttempts = 3; 
     static const int maxActiveDeliveries = 3; //no more than three active
-    static const int maxDeliveryLocations = 3;
+    static const int maxDeliveryLocations = 6;
     int timerLocation[maxDeliveryLocations]; //to know what timer corresponds to which location
     int activeDeliveries = 0; // to keep count
     bool activeDeliveryLocations[maxDeliveryLocations];
     float deliveryLocations[maxDeliveryLocations][2];
     float deliveryDeltaTime = 0.0f;
     float nextDelivery = 0.0f; 
+
+     float gameTime;
+    float remainingTime;
+    TimerBar* mainTime;
     
     int mouse_cursor_on;
     int credits;
@@ -76,9 +80,9 @@ class Global { // Originally from Asteroids framework
        };
        */
     Entity attempts[3] = {
-        {930, 700,20.0f, 0.0f, "./images/pizza.png", black, 1, 1},
-        {890, 700, 20.0f, 0.0f, "./images/pizza.png", black, 1, 1},
-        {850, 700, 20.0f, 0.0f, "./images/pizza.png", black, 1, 1}
+        {930, 690,25.0f, 0.0f, "./images/pizza.png", black, 1, 1},
+        {880, 690, 25.0f, 0.0f, "./images/pizza.png", black, 1, 1},
+        {830, 690, 25.0f, 0.0f, "./images/pizza.png", black, 1, 1}
     };
     //Entity attempts { 
     //  580, 440,10.0f , 0.0f, "./images/pizza.png", black, 1, 1

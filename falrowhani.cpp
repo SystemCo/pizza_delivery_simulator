@@ -10,6 +10,7 @@
 
 //#include "GL.h"
 #include "dcarter.h"
+#include "fandrade.h"
 #include <iostream>
 #include "falrowhani.h"
 #include "shared.h" 
@@ -39,6 +40,7 @@ void know();
 void myRender();
 void deliveryDetection();
 //GameState gameState = PLAYING;
+MoneySystem money; 
 
 //function prototypes 
 //void title_moto_physics(int frame, Animation animation[3]);
@@ -67,7 +69,7 @@ Game_Button::Game_Button() : Button(200, 200)
 {
     this->set_text("Resume");       // Set the button's text
     this->set_color(252, 136,3);    // Set the button's color (RGB)
-    this->set_pos(200, 400);         // Set the position of the button
+    this->set_pos(400, 400);         // Set the position of the button
     this->set_dims(100, 50);         // Set the dimensions of the button
 }
 
@@ -82,7 +84,7 @@ Restart_Button::Restart_Button() : Button(200, 200)
 {
     this->set_text("Restart");       // Set the button's text
     this->set_color(252, 136, 3);    // Set the button's color (RGB)
-    this->set_pos(200, 200);         // Set the position of the button
+    this->set_pos(400, 200);         // Set the position of the button
     this->set_dims(100, 50);         // Set the dimensions of the button
 }
 
@@ -170,7 +172,7 @@ void title_physics()
 //currently not working 
 
 
-void title(Rect &r) 
+/*void title(Rect &r) 
 {
     const char* sentence = "Pizza Delivery Simulator";
 
@@ -183,6 +185,28 @@ void title(Rect &r)
         r.left += 16;  // Move the text position to the right 
     }
 }
+*/
+void title(Rect &r) 
+{
+    static int frame = 0;
+    const char* sentence = "Pizza Delivery Simulator";
+    int letters_to_show = frame / 80;
+
+    r.bot = 400;
+    r.left = 500 - ((int)strlen(sentence) * 9);
+
+    char buffer[64] = {0};
+    strncpy(buffer, sentence, letters_to_show);
+    ggprint8b(&r, 62, 0xFFFFFF00, "%s", buffer);
+
+    if (letters_to_show < (int)strlen(sentence)) {
+        frame++;
+    }
+}
+
+
+
+
 //collision positions defined 
 
 void initGame()
@@ -318,15 +342,22 @@ void initGame()
     
 
 }
-//code me and david talked about 
-
-/*if (PhysicsForCollision) {
-    if (crash_dir != 0) {
-        velocity.set(0.0);
-    }
+void deductMoney(MoneySystem &money, float amount) {
+    float current = money.getTotalMoney();
+    float newTotal = current - amount;
+    if (newTotal < 0.0f)
+        newTotal = 0.0f;
+    
+    money.increaseRevenue(newTotal - current);
+    money.cashInRevenue();
 }
 
-*/
+void addMoney(MoneySystem &money, float amount) {
+    money.increaseRevenue(amount);
+    money.cashInRevenue();
+}
+
+
 void physicsforCollision() 
 {
     Motorcycle& moto = gl.bike;
@@ -353,6 +384,7 @@ void physicsforCollision()
 
         gl.bike.crash();
         crashed=true; 
+        deductMoney(money, 5.0f);
   
   }
   else { 
@@ -376,6 +408,8 @@ void physicsforCollision()
         //gl.bike.velocity = 0.0;
 
         gl.bike.crash();
+        crashed=true; 
+        deductMoney(money, 5.0f);
 
         
     }
@@ -399,6 +433,8 @@ void physicsforCollision()
        // gl.bike.velocity = 0.0;
 
        gl.bike.crash();
+       crashed=true; 
+       deductMoney(money, 5.0f);
 
        
     }
@@ -419,8 +455,11 @@ void physicsforCollision()
        // std::cout << "Collision with box 4!\n";
         show_warning = 1;
         warning_timer = 100;
+        
 
-       // gl.bike.crash();
+        gl.bike.crash();
+        crashed=true; 
+        deductMoney(money, 5.0f);
 
         }
         else { 
@@ -443,6 +482,8 @@ void physicsforCollision()
         warning_timer = 100;
 
         gl.bike.crash();
+        crashed=true; 
+        deductMoney(money, 5.0f);
 
 
 
@@ -466,6 +507,8 @@ void physicsforCollision()
         warning_timer = 100;
 
      gl.bike.crash();
+     crashed=true; 
+     deductMoney(money, 5.0f);
 
 
     }
@@ -488,6 +531,8 @@ void physicsforCollision()
         warning_timer = 100;
 
     gl.bike.crash();
+    crashed=true; 
+    deductMoney(money, 5.0f);
     
 
     }
@@ -510,6 +555,8 @@ void physicsforCollision()
         warning_timer = 100;
 
         gl.bike.crash();
+        crashed=true; 
+        deductMoney(money, 5.0f);
     
     }
     else { 
@@ -531,6 +578,8 @@ void physicsforCollision()
         warning_timer = 100;
 
         gl.bike.crash();
+        crashed=true; 
+        deductMoney(money, 5.0f);
 
 
     
@@ -554,6 +603,8 @@ void physicsforCollision()
         warning_timer = 100;
 
         gl.bike.crash();
+        crashed=true; 
+        deductMoney(money, 5.0f);
      
     }
     else { 
@@ -580,14 +631,18 @@ void deliveryDetection()
         motoX <= gl.box11.pos[0] + gl.box11.width &&
         motoY >= gl.box11.pos[1] &&
         motoY <= gl.box11.pos[1] + gl.box11.height) {
-        std::cout << "Delivery at box11!\n";
+       // std::cout << "Delivery at box11!\n";
+       addMoney(money, 10.0f);
+
     }
 
     if (motoX >= gl.box12.pos[0] &&
         motoX <= gl.box12.pos[0] + gl.box12.width &&
         motoY >= gl.box12.pos[1] &&
         motoY <= gl.box12.pos[1] + gl.box12.height) {
-        std::cout << "Delivery at box12!\n";
+        //std::cout << "Delivery at box12!\n";
+        addMoney(money, 10.0f);
+
     }
 
     if (motoX >= gl.box13.pos[0] &&
@@ -595,27 +650,36 @@ void deliveryDetection()
         motoY >= gl.box13.pos[1] &&
         motoY <= gl.box13.pos[1] + gl.box13.height) {
         std::cout << "Delivery at box13!\n";
+        addMoney(money, 10.0f);
+
     }
 
     if (motoX >= gl.box14.pos[0] &&
         motoX <= gl.box14.pos[0] + gl.box14.width &&
         motoY >= gl.box14.pos[1] &&
         motoY <= gl.box14.pos[1] + gl.box14.height) {
-        std::cout << "Delivery at box14!\n";
+       // std::cout << "Delivery at box14!\n";
+        addMoney(money, 10.0f);
+
     }
 
     if (motoX >= gl.box15.pos[0] &&
         motoX <= gl.box15.pos[0] + gl.box15.width &&
         motoY >= gl.box15.pos[1] &&
         motoY <= gl.box15.pos[1] + gl.box15.height) {
-        std::cout << "Delivery at box15!\n";
+        //std::cout << "Delivery at box15!\n";
+        addMoney(money, 10.0f);
+
     }
+
 
     if (motoX >= gl.box16.pos[0] &&
         motoX <= gl.box16.pos[0] + gl.box16.width &&
         motoY >= gl.box16.pos[1] &&
         motoY <= gl.box16.pos[1] + gl.box16.height) {
-        std::cout << "Delivery at box16!\n";
+       // std::cout << "Delivery at box16!\n";
+       addMoney(money, 10.0f);
+
     }
 }
 
@@ -658,7 +722,7 @@ void myRender()
         r.left = gl.xres/2 - 50;
         r.bot = gl.yres/2;
         r.center = 0;
-        ggprint16(&r, 64, 0x00ff0000, "WATCH OUT!");
+        ggprint16(&r, 1000, 0xffff00ff, "WATCH OUT!");
     }
 
     if (warning_timer > 0) {

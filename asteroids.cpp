@@ -101,6 +101,7 @@ Global::Global()
     //    Box box(100, 50);
     //screen = Playing;
     screen = Title;
+    volume = 100;
     memset(keys, 0, 65536);
     credits = true;
     show_bike = true;
@@ -119,6 +120,7 @@ Global::Global()
 
     // Initialize the current background to the menu background
     current_background = MENU_BG;
+    //gl.current_background = MENU_BG;
 }
 Global::~Global()
 {
@@ -227,6 +229,14 @@ int main()
             
             case Home:
                 render_menu_screen();
+                break;
+            
+            case Instructions:
+                render_instructions_screen();
+                break;
+
+            case Settings:
+                render_settings_screen();
                 break;
 
             case Pause:
@@ -524,7 +534,7 @@ void physics()
     gl.bike.move();    
 }
 
-void title_render()
+/*void title_render()
 {
     glClear(GL_COLOR_BUFFER_BIT);
 
@@ -556,7 +566,7 @@ void title_render()
     // Render start game button
     gl.start_button.render();
 }
-
+*/
 void render()
 {
     Rect r;

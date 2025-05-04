@@ -9,7 +9,7 @@
 
 
 // Macros for background indexing
-#define SPASH_BG 0
+#define SPLASH_BG 0
 #define MENU_BG 1
 #define GAME_BG 2
 #define NUM_BACKGROUNDS 3
@@ -20,10 +20,24 @@
 void show_avelina(Rect *r);
 void init_backgrounds();
 
-void aolmedo_title_physics();
-
+// "Home" pizza menu
 void render_menu_screen();
 void handle_menu_click(int x, int y, bool is_press);
+
+// “How to play” screen
+void render_instructions_screen();
+void handle_instructions_click(int x, int y, bool is_press);
+
+// “Settings” screen
+void render_settings_screen();
+void handle_settings_click(int x, int y, bool is_press);
+
+void render_title_screen();
+void handle_title_input(int x, int y, bool is_press);
+
+void aolmedo_title_physics();
+
+
 
 // Global array of background images
 extern Image* backgrounds[NUM_BACKGROUNDS];

@@ -82,7 +82,9 @@ void render_title_screen() {
       ->show(gl.scale, gl.xres/2, gl.yres/2, 0.0f);
     gl.moto_side->render();
 
-    Rect r = { .bot = gl.yres - 20, .left = 10 };
+    Rect r;
+r.bot  = gl.yres - 20;
+r.left = 10;
     ggprint8b(&r, 16, 0xffec407a, "Pizza Delivery Simulator");
 
     gl.title_button.render();
@@ -95,6 +97,25 @@ void handle_title_input(int x, int y, bool is_press) {
     gl.start_button.click(x,y);
 }
 
+void handle_menu_click(int x, int y, bool is_press) {
+    if (!is_press) return;
+    
+    // You’ll need to tweak these Y‐ranges to match your art:
+    //   Start game sits near y ≈ gl.yres/2 +  60 …  gl.yres/2 + 120
+    //   How to play near       y ≈ gl.yres/2 -  40 …  gl.yres/2 +  20
+    //   Settings near          y ≈ gl.yres/2 - 140 …  gl.yres/2 -  80
+
+    if (y > gl.yres/2 + 60 && y < gl.yres/2 + 120) {
+        gl.screen = Playing;
+    }
+    else if (y > gl.yres/2 - 40 && y < gl.yres/2 + 20) {
+        gl.screen = Instructions;
+    }
+    else if (y > gl.yres/2 - 140 && y < gl.yres/2 - 80) {
+        gl.screen = Settings;
+    }
+}
+
 void render_menu_screen() {
     // clear
     glClear(GL_COLOR_BUFFER_BIT);
@@ -103,7 +124,58 @@ void render_menu_screen() {
       ->show(gl.scale, gl.xres/2, gl.yres/2, 0.0f);
 }
 
-void handle_menu_click(int x, int y, bool is_press) {
+void handle_instructions_click(int x, int y, bool is_press) {
+    if (!is_press) return;
+    // anywhere you click, go back to menu:
+    gl.screen = Home;
+}
+
+void render_instructions_screen() {
+    glClear(GL_COLOR_BUFFER_BIT);
+
+    // Dim background
+    backgrounds[MENU_BG]
+      ->show(gl.scale, gl.xres/2, gl.yres/2, 0.0f);
+
+    // Draw a centered text block
+    Rect r;
+    r.bot  = gl.yres - 100;
+    r.left = 50;
+    ggprint8b(&r, 24, 0xffffff00,
+      "HOW TO PLAY:\n"
+      "- Arrow keys to steer\n"
+      "- Space to drop pizza\n"
+      "- Deliver as many as you can!");
+
+    // Hint
+    ggprint8b(&r, 24, 0xff0000ff,
+      "\n(click anywhere to return)");
+}
+
+// Simple volume control
+void handle_settings_click(int x, int y, bool is_press) {
+    if (!is_press) return;
+    gl.screen = Home;
+}
+
+void render_settings_screen() {
+    glClear(GL_COLOR_BUFFER_BIT);
+
+    // Draw same menu BG
+    backgrounds[MENU_BG]
+      ->show(gl.scale, gl.xres/2, gl.yres/2, 0.0f);
+
+    Rect r;
+    r.bot  = gl.yres -  80;
+    r.left = 50;
+    ggprint8b(&r, 24, 0xffffff00,
+      "SETTINGS:\n"
+      "- Volume: %d%%\n"
+      "- (click to return)", gl.volume);
+}
+
+
+/*void handle_menu_click(int x, int y, bool is_press) {
     if (!is_press) return;
     // just one button for now: if they click roughly in the “Start game” region…
     // you may want to fine-tune these bounds to match the pixels in your image!
@@ -117,5 +189,8 @@ void handle_menu_click(int x, int y, bool is_press) {
     }
     
 }
+    */
+
+
 
 

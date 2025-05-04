@@ -6,42 +6,21 @@
 //#include <GL/glx.h>
 #include "dcarter.h"
 #include "aolmedo.h"
-<<<<<<< HEAD
-
-enum ScreenState { Title, Home, Pause, Credits, Playing };
-class Global { // Originally from Asteroids framework  
-public:
-	int xres, yres, scale;
-	char keys[65536];
-	int mouse_cursor_on;
-        int credits;
-        int show_bike;
-        Motorcycle bike;
-        Entity* moto_side;
-        Title_Exit_Button title_button;
-        //Image background {"./images/Background2.png"};
-        Image background {"./images/map1.png"};
-        ScreenState screen;
-       
-        //TODO: 
-        // implement switch statements in main func as well as other funcs
-        // using screen state enum
-	Global();
-=======
 #include "falrowhani.h"
 #include "lvaldivia.h"
 #include "fandrade.h"
 class TimerBar;
 class TimerList;
-enum ScreenState { Title, Home, Pause, Credits, Playing, GameOver };
+enum ScreenState { Title, Home, Instructions, Settings, Pause, Credits, Playing, GameOver };
 
-enum ScreenState { Title, Home, Pause, Credits, Playing };
 class Global { // Originally from Asteroids framework  
         unsigned char white[3] {255, 255, 255};
     unsigned char blue[3] {0, 0, 255};
     unsigned char black[3] {0, 0, 0};
     unsigned char red[3] {255, 0, 0};
     public:
+    int volume;
+    int current_background;
     int xres, yres, scale;
     unsigned char black2[3] {0, 0, 0};
     char keys[65536];
@@ -89,6 +68,7 @@ class Global { // Originally from Asteroids framework
     Motorcycle bike;
     Entity* moto_side;
     Title_Exit_Button title_button;
+    StartGame_Button  start_button;
     Game_Button pause_button;
     Restart_Button restart;  
     //Image background {"./images/Background2.png"};
@@ -112,6 +92,7 @@ class Global { // Originally from Asteroids framework
      //Entity attempts { 
     //  580, 440,10.0f , 0.0f, "./images/pizza.png", black, 1, 1
     // };
+
     ScreenState screen;
     //TODO: 
     // implement switch statements in main func as well as other funcs

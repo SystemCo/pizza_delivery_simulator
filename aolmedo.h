@@ -5,17 +5,25 @@
 #define AOLMEDO_H
 #include "fonts.h"
 #include "image.h"
+#include "dcarter.h"
+
 
 // Macros for background indexing
-#define MENU_BG 0
-#define GAME_BG 1
-#define NUM_BACKGROUNDS 2
+#define SPASH_BG 0
+#define MENU_BG 1
+#define GAME_BG 2
+#define NUM_BACKGROUNDS 3
+
 
 
 // Function declarations
 void show_avelina(Rect *r);
 void init_backgrounds();
+
 void aolmedo_title_physics();
+
+void render_menu_screen();
+void handle_menu_click(int x, int y, bool is_press);
 
 // Global array of background images
 extern Image* backgrounds[NUM_BACKGROUNDS];
@@ -24,21 +32,24 @@ extern Image* backgrounds[NUM_BACKGROUNDS];
 
 // Title exit button class
 class Title_Exit_Button : public Button {
-    private:
-        char text[100] = "Exit title";
+    //private:
+    
+        //char text[100] = "Exit title";
     public:
-        void click(int x, int y);
         Title_Exit_Button();
+        void click(int x, int y);
+        
 };
 
 
 // Start Game button for main menu
 class StartGame_Button : public Button {
-    private:
-        char text[100] = "Start Game";
+    //private:
+        //char text[100] = "Start Game";
     public:
-        void click(int x, int y);
         StartGame_Button();
+        void click(int x, int y);
+        
 };
 
 

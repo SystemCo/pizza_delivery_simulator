@@ -157,47 +157,31 @@ My schedule is usually subject to change depending on my work schedule
 
   
 ### Francisco
+* Fully import audio system to program
+    * Assigned on:  Tuesday 04/22/25
+    * Assigned by:  Francisco
+    * Due by:       Saturday 05/03/25
+    * Status:       Incomplete
+
 * Add global audio functions
     * Assigned on:  Tuesday 04/22/25
     * Assigned by:  Francisco
-    * Due by:       Sunday 04/27/25
+    * Due by:       Saturday 05/03/25
     * Status:       Incomplete
 
-* Import audio files
-    * Assigned on:  Tuesday 04/22/25
-    * Assigned by:  Francisco
-    * Due by:       Sunday 04/27/25
-    * Status:       Incomplete
-
-* Implement money system
-    * Assigned on:  Tuesday 04/22/25
-    * Assigned by:  Francisco
-    * Due by:       Sunday 04/27/25
-    * Status:       Incomplete
 
 
 ### Lesslie
-* Get started on timer system
-    * Assigned on: Monday 03/10/25
-    * Assigned by: Lesslie
-    * Due by:      Monday 03/17/25
-    * Status:      Incomplete
-
-* Make a timer sprite that will visually indicate how much time an order has left
-    * Assigned on: Wednesday 03/12/25
-    * Assigned by: David
-    * Due by:      Wednesday 03/19/25
-    * Status:      Incomplete
-* Make a list of timers which can all be rendered with a single function call.
-    * Could implement an array or a linked list. 
-    * Assigned on: Friday 03/28/25
-    * Assigned by: David
-    * Due by:      Friday 04/05/25
-    * Status:      Incomplete
- * Orginally used linked list for list of timers, use array instead
- * Initialize delivery locations
- * Create a function to activate random delivery locations
- * Function that manages the entire delivery system
+* Termination Logic 
+  * Assigned on: Monday 04/28/25
+  * Asigned by: Lesslie
+  * Due by: Saturday 05/03/25
+  * Status: Incomplete
+* Game Over Screen
+  * Assigned on: Monday 04/28/25
+  * Asigned by: Lesslie
+  * Due by: Saturday 05/03/25
+  * Status: Incomplete
  * A function for visual indication of active deliveries 
 
 
@@ -313,6 +297,8 @@ My schedule is usually subject to change depending on my work schedule
 
 * Completed In: April 2025
     * Make buttons dim when and only when mouse is hovering over them.
+    * Imported audio files
+    * Implemented money system
 
 ### Lesslie
 * Completed In: February 2025
@@ -320,4 +306,10 @@ My schedule is usually subject to change depending on my work schedule
 
 * Completed In: March 2025
     * Design Map 1 of the game
+    * Make a timer sprite that will visually indicate how much time an order has left
+* Completed In: April 2025
+    * Make a list of timers which can all be rendered with a single function call.
+    * Initialize delivery locations
+    * Create a function to activate random delivery locations
+    * Function that manages the entire delivery system
 

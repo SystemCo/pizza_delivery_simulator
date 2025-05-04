@@ -11,15 +11,136 @@ extern TimerList timerList;
 
 void manageDeliveries(float dT);
 void initDeliveryLocations();
+void manageGame(float dT);
+void drawGameOver();
+void printScoreNTime();
 
+void printScoreNTime()
+{
+    Rect r;
+
+    r.bot = 680;
+    r.left = gl.xres/2 - 70;
+    r.center = 0;
+    gl.money.cashInRevenue();
+    //int score = (int)gl.money.getTotalMoney();
+    ggprint16(&r, 100, 0xFFCC5C, "SCORE: %i", (int)gl.money.getTotalMoney());
+
+
+    Rect r2;
+
+    r2.bot = 695;
+    r2.left = 80;
+    r2.center = 0;
+
+    ggprint16(&r2, 100, 0xFFCC5C, "TIME");
+}
+
+void drawGameOver()
+{
+    gl.background.show(gl.scale, gl.xres/2, gl.yres/2, 0.0f);
+
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glColor4f(0.1f, 0.14f, 0.34f, 0.5f);
+    glBegin(GL_QUADS);
+    glVertex2f(0,0);
+    glVertex2f(0, gl.xres);
+    glVertex2f(gl.xres, gl.yres);
+    glVertex2f(gl.xres, 0);
+    glEnd();
+
+
+    int boxW = gl.xres * 0.8f;
+    int boxH = gl.yres * 0.6f;
+    int boxL = (gl.xres - boxW) /2;
+    int boxT = (gl.yres - boxH) / 2;
+
+
+    glColor3f(0.1f, 0.14f, 0.34f);
+    glBegin(GL_QUADS);
+    glVertex2f(boxL, boxT);
+    glVertex2f(boxL, boxT + boxH);
+    glVertex2f(boxL + boxW, boxT + boxH);
+    glVertex2f(boxL + boxW, boxT);
+    glEnd();
+
+    Rect r;
+    r.bot = boxT + boxH - 50;
+    r.left = gl.xres/2;
+
+    ggprint16(&r, 1000, 0xFF6B6B, "GAME OVER");
+
+    int box2W = boxW * 0.8;
+    int box2H = 60;
+    int box2L = boxL + (boxW - box2W)/2;
+    int box2T = boxT + boxH - 120;
+
+    glColor3f(0.06f, 0.09f, 0.16f);
+    glBegin(GL_QUADS);
+    glVertex2f(box2L + 2, box2T + 2);
+    glVertex2f(box2L + 2, box2T + box2H - 2);
+    glVertex2f(box2L + box2W - 2, box2T + box2H - 2);
+    glVertex2f(box2L + box2W - 2, box2T +2);
+    glEnd();
+
+    r.bot = box2T + box2H/2;
+    r.left = gl.xres / 2;
+    ggprint16(&r, 1000, 0x6AAA64, "SCORE: %i", (int)gl.money.getTotalMoney()); //add the money total;
+
+    r.bot = boxT + 290;
+    r.left = gl.xres / 2;
+    ggprint16(&r, 1000, 0x62B1FF, "THANKS FOR PLAYING!");
+
+    r.bot = boxT + 250;
+    r.left = gl.xres / 2;
+    ggprint16(&r, 1000, 0xD6C1FF, "CREDITS: ");
+
+    r.bot = boxT + 230;
+    r.left = gl.xres / 2;
+    show_avelina(&r);
+
+    r.bot = boxT + 210;
+    r.left = gl.xres / 2;
+    show_david(&r);
+
+    r.bot = boxT + 190;
+    r.left = gl.xres / 2;
+    show_fenoon(&r);
+
+    r.bot = boxT + 160;
+    r.left = gl.xres / 2;
+    show_francisco(&r);
+
+    r.bot = boxT + 140;
+    r.left = gl.xres / 2;
+    
+    r.bot = boxT + 120;
+    r.left = gl.xres / 2;
+    show_lesslie(&r);
+
+    /*show_lesslie(&r);
+      show_avelina(&r);
+      show_david(&r);
+      show_fenoon(&r);
+      show_francisco(&r);
+      show_lesslie(&r);*/
+
+    r.bot = boxT + 40;
+    r.left = gl.xres / 2;
+    ggprint16(&r, 1000,  0xFFCC5C, "PRESS X TO EXIT GAME");
+
+    glDisable(GL_BLEND);
+}   
 //======================================
 //Random Delivery System
 //======================================
+
 void initDeliveryLocations()
 {
 
     //test locations
-    gl.deliveryLocations[0][0] = 277.0f + 70;
+    /*gl.deliveryLocations[0][0] = 277.0f + 70;
     gl.deliveryLocations[0][1] = 533.0f + 70;
 
     gl.deliveryLocations[1][0] = 13.0f + 70;
@@ -27,39 +148,27 @@ void initDeliveryLocations()
 
     gl.deliveryLocations[2][0] = 504.0f + 70;
     gl.deliveryLocations[2][1] = 533.0f + 70;
-    /*
-       gl.deliveryLocations[0][0] = gl.box.pos[0] + gl.box.width;
-       gl.deliveryLocations[0][1] = gl.box.pos[1] + gl.box.height;
+    */
+    
+   gl.deliveryLocations[0][0] = gl.box11.pos[0] + gl.box11.width;
+    gl.deliveryLocations[0][1] = gl.box11.pos[1] + gl.box11.height;
 
-       gl.deliveryLocations[1][0] = gl.box2.pos[0] + gl.box2.width;
-       gl.deliveryLocations[1][1] = gl.box2.pos[1] + gl.box2.height;
-
-
-       gl.deliveryLocations[2][0] = gl.box3.pos[0] + gl.box3.width;
-       gl.deliveryLocations[2][1] = gl.box3.pos[1] + gl.box3.height;
-
-       gl.deliveryLocations[3][0] = gl.box4.pos[0] + gl.box4.width;
-       gl.deliveryLocations[3][1] = gl.box4.pos[1] + gl.box4.height;
-
-       gl.deliveryLocations[4][0] = gl.box5.pos[0] + gl.box5.width;
-       gl.deliveryLocations[4][1] = gl.box5.pos[1] + gl.box5.height;
+    gl.deliveryLocations[1][0] = gl.box12.pos[0] + gl.box12.width;
+    gl.deliveryLocations[1][1] = gl.box12.pos[1] + gl.box12.height;
 
 
-       gl.deliveryLocations[5][0] = gl.box6.pos[0] + gl.box6.width;
-       gl.deliveryLocations[5][1] = gl.box6.pos[1] + gl.box6.height;
+    gl.deliveryLocations[2][0] = gl.box13.pos[0] + gl.box13.width;
+    gl.deliveryLocations[2][1] = gl.box13.pos[1] + gl.box13.height;
 
-       gl.deliveryLocations[6][0] = gl.box7.pos[0] + gl.box7.width;
-       gl.deliveryLocations[6][1] = gl.box7.pos[1] + gl.box7.height;
+    gl.deliveryLocations[3][0] = gl.box14.pos[0] + gl.box14.width;
+    gl.deliveryLocations[3][1] = gl.box14.pos[1] + gl.box14.height;
 
-       gl.deliveryLocations[7][0] = gl.box8.pos[0] + gl.box8.width;
-       gl.deliveryLocations[7][1] = gl.box8.pos[1] + gl.box8.height;
+    gl.deliveryLocations[4][0] = gl.box15.pos[0] + gl.box15.width;
+    gl.deliveryLocations[4][1] = gl.box15.pos[1] + gl.box15.height;
 
-       gl.deliveryLocations[8][0] = gl.box9.pos[0] + gl.box9.width;
-       gl.deliveryLocations[8][1] = gl.box9.pos[1] + gl.box9.height;
 
-       gl.deliveryLocations[9][0] = gl.box10.pos[0] + gl.box9.width;
-       gl.deliveryLocations[9][1] = gl.box10.pos[1] + gl.box9.height;
-       */
+    gl.deliveryLocations[5][0] = gl.box16.pos[0] + gl.box16.width;
+    gl.deliveryLocations[5][1] = gl.box16.pos[1] + gl.box16.height; 
     for (int i = 0; i < gl.maxDeliveryLocations ; i++) {
         gl.activeDeliveryLocations[i] = false;
     }
@@ -131,6 +240,22 @@ void manageDeliveries(float dT)
     }
 }
 
+void manageGame(float dT)
+{ //the main game time
+  //manageDeliveries(dT);
+
+    gl.remainingTime = gl.remainingTime - dT;
+    if (gl.remainingTime <= 0 ) {
+        gl.remainingTime = 0;
+        gl.gameOver = true;
+    }
+    gl.mainTime->deliverytime = gl.remainingTime;
+    gl.mainTime->update();
+
+    gl.money.cashInRevenue();
+
+}
+
 void attemptsRender(Rect* r);
 
 void show_lesslie(Rect* r)
@@ -138,8 +263,6 @@ void show_lesslie(Rect* r)
     ggprint8b(r, 16, 0xFFFF0000, "Lesslie");
 
 }
-bool timesUp = false;
-float timesUpTimer = 0.0f;
 //void show_lesslie(Rect* r);
 
 void attemptsRender(Rect* r) 
@@ -165,37 +288,37 @@ void TimerBar::Timer(float t)
         deliverytime = deliverytime - t;
         if  (deliverytime <= 0) {
             deliverytime = 0;
-            //            timesUp = true;
             removalNeeded = true;
-            
+           if(!gl.gameOver) { 
             if (gl.gameAttempts > 0) 
             {
                 gl.gameAttempts--;
-                timesUpTimer = 2.0f;
-            } else if ( gl.gameAttempts == 0) {
+             
+            if ( gl.gameAttempts == 0) {
                 gl.gameOver = true;
                 cout << "GAME OVER!" << endl;
             }
 
         }
+        }
 
     }
 }
-
+}
 //bool TimerBar::getRemovalNeeded() { return removalNeeded; }
-
+/*
 void TimerBar::resetTimer()
 {
     deliverytime = 15.0f;
     timesUp = false;
 }
-
+*/
 void TimerBar::update()
 { //updates frame based on the time
     int maxFrames = rows * cols;
     float frameRatio = (((maxTime - deliverytime) / maxTime) * maxFrames);
 
-    int frameR = static_cast<int>(frameRatio);
+    int frameR = (int)(frameRatio);
 
     if (frameR < 0) {
         frameR = 0;

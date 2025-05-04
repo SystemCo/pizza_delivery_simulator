@@ -12,8 +12,6 @@
 //extern Global gl;
 
 //extern int roundAttempts;
-extern bool timesUp;
-extern float  timesUpTimer;
 
 void show_lesslie(Rect* r);
 void manageDeliveries(float dT);
@@ -51,7 +49,7 @@ class TimerBar : public Entity
 class TimerList
 {
     public:
-         static const int maxTimers = 3;
+         static const int maxTimers = 6;
         TimerBar* timers[maxTimers];
         int count;
         TimerList();
@@ -69,7 +67,9 @@ void removeExpiredTimers();
 
 void initDeliveryLocations();
 void activateRandomDeliveries();
-
+void manageGame(float dT);
+void drawGameOver();
+void printScoreNTime();
 #endif
 
 //add a counter that calls the physics counter, instead of real time

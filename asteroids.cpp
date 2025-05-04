@@ -70,6 +70,7 @@ extern void timeCopy(struct timespec *dest, struct timespec *source);
 
 //-----------------------------------------------------------------------------
 
+const int carCount = 5;
 void drawPauseMenu();
 void physicsforCollision();
 //void textMoveRight();
@@ -104,6 +105,12 @@ Global::Global()
     credits = true;
     show_bike = true;
 
+    gameTime = 150.0f;
+    remainingTime = gameTime;
+    mainTime = new TimerBar(125, 680, 100, 0, "./images/gameTime.png", black2, 1, 24);
+    mainTime->maxTime = gameTime;
+    mainTime->deliverytime = remainingTime;
+
     // mouse value 1 = true = mouse is a regular mouse.
     mouse_cursor_on = 1;
     moto_side = new Entity("images/moto_side.gif");
@@ -124,6 +131,9 @@ Global::~Global()
             backgrounds[i] = nullptr;
         }
     }
+
+
+    delete mainTime;
 }
 
 Global gl;
@@ -177,6 +187,20 @@ int main()
     x11.set_mouse_position(200, 200);
     x11.show_mouse_cursor(gl.mouse_cursor_on);
     initCars();
+
+
+
+
+    // Debugging money system
+    /*
+    std::cout << gl.money.getTotalMoney() << std::endl;
+    std::cout << gl.money.getRevenue() << std::endl;
+    gl.money.increaseRevenue(10.00);
+    std::cout << gl.money.getRevenue() << std::endl;
+    gl.money.cashInRevenue();
+    std::cout << gl.money.getTotalMoney() << std::endl;
+    */
+    // End of debugging
     int done=0;
     while (!done) {
         while (x11.getXPending()) {
@@ -198,20 +222,35 @@ int main()
                     //  title_physics();
                     physicsCountdown -= physicsRate;
                 }
-                title_render();
+                render_title_screen();
                 break;
+            
             case Home:
+                render_menu_screen();
+                break;
+
             case Pause:
             case Credits:
             case Playing:
-                while (physicsCountdown >= physicsRate) {
-                    physics();
-                    manageDeliveries(physicsRate);
-                    physicsCountdown -= physicsRate;
+            while (physicsCountdown >= physicsRate) {
+                //physics();
+                manageDeliveries(physicsRate); 
+                manageGame(physicsRate); //for the main timer
+                physics();
+
+                physicsCountdown -= physicsRate;
+            }
+            if(gl.gameOver == true) {
+                    gl.screen = GameOver;
                 }
-                render();
-                break;
-        }
+                else {
+                    render();
+                }
+            break;
+        case GameOver:
+            drawGameOver();
+            break;
+    }
 
         x11.swapBuffers();
 #ifdef SLEEP_TEST
@@ -420,7 +459,7 @@ int check_keys(XEvent *e)
     //
     // if any button is pushed, exit the title menu. 
     // Currently would break pause and credits
-    /* if (e->type == KeyPress) {
+     if (e->type == KeyPress) {
        gl.screen = Playing;
        switch (key) {
        case XK_F4:
@@ -468,65 +507,7 @@ int check_keys(XEvent *e)
        case XK_minus:
        break;
        }
-       }*/
-
-    // If we're on the title screen, specific keys will start the game
-    if (gl.screen == Title) {
-        if (key == XK_Return || key == XK_space) {
-            gl.screen = Playing;
-            return 0;
-        }
-    } else {
-        // For other screens, process keys normally
-        switch (key) {
-            case XK_F4:
-                return 1;
-            case XK_a:
-                gl.bike.turn_sharpness = 5.0;
-                break;
-            case XK_s:
-                gl.bike.scale = 10;
-                break;
-            case XK_Shift_L:
-            case XK_Shift_R:
-                shift = true;
-                break;
-            case XK_Escape:
-                if (gameState == PLAYING) {
-                    gameState = PAUSED;
-                } else if (gameState == PAUSED) {
-                    gameState = PLAYING;
-                }
-                break;
-            case XK_m:
-                gl.mouse_cursor_on = !gl.mouse_cursor_on;
-                x11.show_mouse_cursor(gl.mouse_cursor_on);
-                break;
-            case XK_c:
-                gl.credits = !gl.credits;
-                break;
-            case XK_b:
-                gl.show_bike = !gl.show_bike;
-                break;
-            case XK_Left:
-                gl.bike.left = true;
-                break;
-            case XK_Right:
-                gl.bike.right = true;
-                break;
-            case XK_Down:
-                gl.bike.pedal = Backward;
-                break;
-            case XK_Up:
-                gl.bike.pedal = Forward;
-                break;
-            case XK_equal:
-                break;
-            case XK_minus:
-                break;
-        }
-    }
-    //}
+       }
 
 
 return 0;

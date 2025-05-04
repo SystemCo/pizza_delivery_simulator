@@ -78,6 +78,7 @@ public:
 
 class Sprite : public Image {
 private:
+    int delay_counter = 0;
 public:
     int frame;
     int delay;
@@ -157,24 +158,26 @@ class Motorcycle : public Entity {
         Percent velocity;
         //Percent turn_dir;
         float direction = 0;
+       // -1 for backward, 1 for forward
         Turn turning;
         Image head {"./images/Moto_head.jpg"}; // white alphaColor
-        
         void set_turn();
     public:
         bool right;
+        int crash_dir = 0; 
         bool left;
         float turn_sharpness;
         Pedal pedal;
         Motorcycle();
         //Vec2 prevPos;
         Position prevPos;
-        float vel[2];
-        float force[2];
+        //float vel[2];
+        //float force[2];
         void move();
         void render();
         void init_gl();
         bool collides_with_box(const Box& box);
+        void crash();
     };
 
 // Mouse clickable buttons. These are intended to be a parent class.

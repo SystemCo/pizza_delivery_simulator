@@ -77,6 +77,7 @@ void show_fps(Rect* r)
 void initCars()
 {
     const Intersections ints = map1Intersections;
+
     cars[0].set_points(new Position[6] {
             {ints.off_left, ints.top},
             {ints.left, ints.top},
@@ -85,7 +86,6 @@ void initCars()
             {ints.left, ints.bottom},
             {ints.off_left, ints.bottom},
         });
-
     cars[1].set_points(new Position[6] {
             {ints.right, ints.off_top},
             {ints.right, ints.bottom},
@@ -94,15 +94,31 @@ void initCars()
             {ints.right, ints.top},
             {ints.off_right, ints.top},
         });
-
-    for (int i = 2; i < 10; i++)
-        cars[2].set_points(new Position[6] {
+    cars[2].set_points(new Position[6] {
             {ints.off_left, ints.top},
             {ints.left, ints.top},
             {ints.right, ints.top},
             {ints.left, ints.top},
             {ints.left, ints.bottom},
             {ints.off_left, ints.bottom},
+        });
+    cars[3].set_points(new Position[6] {
+            {ints.off_right, ints.bottom},
+            {ints.left, ints.bottom},
+            {ints.right, ints.bottom},
+            {ints.left, ints.bottom},
+            {ints.right, ints.bottom},
+            {ints.off_left, ints.bottom},
+        });
+
+    for (int i = 2; i < 10; i++)
+        cars[4].set_points(new Position[6] {
+            {ints.left, ints.off_top},
+            {ints.left, ints.top},
+            {ints.left, ints.bottom},
+            {ints.right, ints.bottom},
+            {ints.right, ints.top},
+            {ints.right, ints.off_top},
         });
     for (int i = 0; i < 10; i++) {
         cars[i].quickSnap();
@@ -262,8 +278,7 @@ Sprite::Sprite(const char *fname, int rows, int cols) : Image(fname)
 }
 void Sprite::update_frame()
 {
-    static int delay_counter = 0;
-    if (delay_counter == delay) {
+    if (delay_counter > delay) {
         const int total_frames = rows * cols;
         frame += 1;
         frame %= total_frames;

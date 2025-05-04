@@ -109,10 +109,21 @@ Global::Global()
     moto_side = new Entity("images/moto_side.gif");
     scale = resolution_scale(&background);
     gameState = PLAYING;
+
+    // Initialize the current background to the menu background
+    current_background = MENU_BG;
 }
 Global::~Global()
 {
     delete timerList;
+
+    // Clean up the background images
+    for (int i = 0; i < NUM_BACKGROUNDS; i++) {
+        if (backgrounds[i] != nullptr) {
+            delete backgrounds[i];
+            backgrounds[i] = nullptr;
+        }
+    }
 }
 
 Global gl;
@@ -183,7 +194,7 @@ int main()
             case Title:
                 while (physicsCountdown >= physicsRate) {
                     //coommenting this out 
-                    title_physics();
+                    aolmedo_title_physics();
                     //  title_physics();
                     physicsCountdown -= physicsRate;
                 }
@@ -256,6 +267,9 @@ void init_opengl(void)
     }
     initGame();
     initDeliveryLocations();
+
+    // Initialize the background array
+    init_backgrounds();
     // gl.box.pos[0] = 100.0f;
     //gl.box.pos[1] = 100.0f;
     //add timerbar
@@ -292,6 +306,7 @@ void check_mouse(XEvent *e)
     if (e->type == ButtonPress) {
         if (e->xbutton.button==1) { // Left button
             gl.title_button.click(e->xbutton.x, true_y);
+            gl.start_button.click(e->xbutton.x, true_y);
             printf("x: %d, y: %d", e->xbutton.x, true_y);
         }
         if (e->xbutton.button==3) {
@@ -322,6 +337,15 @@ void check_mouse(XEvent *e)
         //std::cout << "e->xbutton.y: " << e->xbutton.y << std::endl <<
         //std::flush;
         //
+        // Check if mouse is inside the start button (for hover effect)
+        if (gl.start_button.is_inside(e->xbutton.x, true_y)) {
+            gl.start_button.darken = true;
+        }
+        else {
+            gl.start_button.darken = false;
+        }
+
+        // Check if mouse is inside the title button (for hover effect)
         if (gl.title_button.is_inside(e->xbutton.x, true_y)) {
             gl.title_button.darken = true;
 
@@ -354,8 +378,8 @@ void check_mouse(XEvent *e)
 int check_keys(XEvent *e)
 {
     static int shift=false; // shift variable is used to distinguish capitals
-                            // i.e. a vs A uses shift && a.
-                            // Currently not being used in this code base.
+                              // i.e. a vs A uses shift && a.
+                              // Currently not being used in this code base.
 
     if (e->type != KeyRelease && e->type != KeyPress) {
         //not a keyboard event
@@ -393,11 +417,67 @@ int check_keys(XEvent *e)
         return 0;
     }
     (void)shift; // I don't understand what this line does.
-                 //
-                 // if any button is pushed, exit the title menu. 
-                 // Currently would break pause and credits
-    if (e->type == KeyPress) {
-        gl.screen = Playing;
+    //
+    // if any button is pushed, exit the title menu. 
+    // Currently would break pause and credits
+    /* if (e->type == KeyPress) {
+       gl.screen = Playing;
+       switch (key) {
+       case XK_F4:
+       return 1;
+       case XK_a:
+       gl.bike.turn_sharpness = 5.0;
+       break;
+       case XK_s:
+       gl.bike.scale = 10;
+       break;
+       case XK_Shift_L:
+       case XK_Shift_R:
+       shift = true;
+       break;
+       case XK_Escape:
+       if (gameState == PLAYING) {
+       gameState = PAUSED;
+       } else if (gameState == PAUSED) {
+       gameState = PLAYING;
+       }
+       break;
+       case XK_m:
+       gl.mouse_cursor_on = !gl.mouse_cursor_on;
+       x11.show_mouse_cursor(gl.mouse_cursor_on);
+       break;
+       case XK_c:
+       gl.credits = !gl.credits;
+       break;
+       case XK_b:
+       gl.show_bike = !gl.show_bike;
+       break;
+       case XK_Left:
+       gl.bike.left = true;
+       break;
+       case XK_Right:
+       gl.bike.right = true;
+       break;
+       case XK_Down:
+       gl.bike.pedal = Backward;
+       break;
+       case XK_Up:
+       gl.bike.pedal = Forward;
+       case XK_equal:
+       break;
+       case XK_minus:
+       break;
+       }
+       }*/
+
+    // If we're on the title screen, specific keys will start the game
+    if (gl.screen == Title) {
+        if (key == XK_Return || key == XK_space) {
+            gl.screen = Playing;
+            return 0;
+        }
+    } else {
+        // For other screens, process keys normally
         switch (key) {
             case XK_F4:
                 return 1;
@@ -439,13 +519,17 @@ int check_keys(XEvent *e)
                 break;
             case XK_Up:
                 gl.bike.pedal = Forward;
+                break;
             case XK_equal:
                 break;
             case XK_minus:
                 break;
         }
     }
-    return 0;
+    //}
+
+
+return 0;
 }
 
 
@@ -467,17 +551,29 @@ void title_render()
     //gl.background.show(gl.scale, gl.xres/2, gl.yres/2, 0.0f);
 
     //added this to show intro image 
-    gl.show.show(gl.scale, gl.xres/2 , gl.yres/2 +2, 0.0f);
+    //    gl.show.show(gl.scale, gl.xres/2 , gl.yres/2 +2, 0.0f);
+
+
+    // Use the proper background from the array
+    backgrounds[MENU_BG]->show(gl.scale, gl.xres/2, gl.yres/2, 0.0f);
+
+    // Show the motorcycle side image
     gl.moto_side->render();
     //printf("%f, %f\n", gl.moto_side->pos.x, gl.moto_side->pos.y);
+    // Setup text rectangle
     Rect r;  // Rect object for text positioning
     r.bot = gl.yres - 20;  // Set the bottom of the text near the bottom of the screen
     r.left = 10; 
-    title(r);
-    gl.title_button.render();
+    //title(r);
+    //gl.title_button.render();
     //title(r);
     //physicsforCollision();
 
+    // Display game title text
+    ggprint8b(&r, 16, 0xffec407a, "Pizza Delivery Simulator");
+
+    // Render start game button
+    gl.start_button.render();
 }
 
 void render()
@@ -485,11 +581,17 @@ void render()
     Rect r;
     glClearColor(0.0, 0.0, 0.0, 1.0);
     glClear(GL_COLOR_BUFFER_BIT);
-    gl.background.show(gl.scale, gl.xres/2, gl.yres/2, 0.0f);
+    //gl.background.show(gl.scale, gl.xres/2, gl.yres/2, 0.0f);
     //physicsforCollision();
 
     // This line below rendered the intro image during the playing state
     //gl.show.show(gl.scale, gl.xres/2, gl.yres/2 +2, 0.0f);
+
+    // Use the game background from the background array when playing
+    backgrounds[GAME_BG]->show(gl.scale, gl.xres/2, gl.yres/2, 0.0f);
+
+
+
 
     r.bot = gl.yres - 20;
 

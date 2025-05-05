@@ -14,7 +14,18 @@ void initDeliveryLocations();
 void manageGame(float dT);
 void drawGameOver();
 void printScoreNTime();
+void checkDelivery(int locIndex);
 
+void checkDelivery(int locIndex)
+{
+    for(int i = 0; i < gl.timerList->count; i++) {
+       if (gl.timerLocation[i] == locIndex && gl.activeDeliveryLocations[locIndex]) {
+           cout << "delivery completed" << endl;
+           gl.timerList->removeTimer(i);
+       }
+    }
+
+}
 void printScoreNTime()
 {
     Rect r;

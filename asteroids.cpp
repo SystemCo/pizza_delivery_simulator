@@ -192,13 +192,13 @@ int main()
 
     // Debugging money system
     /*
-    std::cout << gl.money.getTotalMoney() << std::endl;
-    std::cout << gl.money.getRevenue() << std::endl;
-    gl.money.increaseRevenue(10.00);
-    std::cout << gl.money.getRevenue() << std::endl;
-    gl.money.cashInRevenue();
-    std::cout << gl.money.getTotalMoney() << std::endl;
-    */
+       std::cout << gl.money.getTotalMoney() << std::endl;
+       std::cout << gl.money.getRevenue() << std::endl;
+       gl.money.increaseRevenue(10.00);
+       std::cout << gl.money.getRevenue() << std::endl;
+       gl.money.cashInRevenue();
+       std::cout << gl.money.getTotalMoney() << std::endl;
+       */
     // End of debugging
     int done=0;
     while (!done) {
@@ -223,11 +223,11 @@ int main()
                 }
                 render_title_screen();
                 break;
-            
+
             case Home:
                 render_menu_screen();
                 break;
-            
+
             case Instructions:
                 render_instructions_screen();
                 break;
@@ -239,24 +239,24 @@ int main()
             case Pause:
             case Credits:
             case Playing:
-            while (physicsCountdown >= physicsRate) {
-                //physics();
-                manageDeliveries(physicsRate); 
-                manageGame(physicsRate); //for the main timer
-                physics();
+                while (physicsCountdown >= physicsRate) {
+                    //physics();
+                    manageDeliveries(physicsRate); 
+                    manageGame(physicsRate); //for the main timer
+                    physics();
 
-                physicsCountdown -= physicsRate;
-            }
-            if(gl.gameOver == true) {
-                gl.screen = GameOver;
-            }
-            else {
-                render();
-            }
-            break;
-        case GameOver:
-            drawGameOver();
-            break;
+                    physicsCountdown -= physicsRate;
+                }
+                if(gl.gameOver == true) {
+                    gl.screen = GameOver;
+                }
+                else {
+                    render();
+                }
+                break;
+            case GameOver:
+                drawGameOver();
+                break;
         }
         x11.swapBuffers();
 #ifdef SLEEP_TEST
@@ -351,9 +351,9 @@ void check_mouse(XEvent *e)
     }
     if (e->type == ButtonPress) {
         if (e->xbutton.button==1) { // Left button
-            // Handle different screens with appropriate click handlers
+                                    // Handle different screens with appropriate click handlers
             printf("Button press - current screen: %d\n", gl.screen);
-            
+
             switch (gl.screen) {
                 case Title:
                     printf("Processing Title screen click\n");
@@ -406,34 +406,34 @@ void check_mouse(XEvent *e)
         //std::cout << "e->xbutton.y: " << e->xbutton.y << std::endl <<
         //std::flush;
         //
-    // Handle hover effects based on current screen
-    switch (gl.screen) {
-        case Title:
-            // Check if mouse is inside the start button (for hover effect)
-            if (gl.start_button.is_inside(e->xbutton.x, true_y)) {
-                gl.start_button.darken = true;
-            }
-            else {
-                gl.start_button.darken = false;
-            }
+        // Handle hover effects based on current screen
+        switch (gl.screen) {
+            case Title:
+                // Check if mouse is inside the start button (for hover effect)
+                if (gl.start_button.is_inside(e->xbutton.x, true_y)) {
+                    gl.start_button.darken = true;
+                }
+                else {
+                    gl.start_button.darken = false;
+                }
 
-            // Check if mouse is inside the title button (for hover effect)
-            if (gl.title_button.is_inside(e->xbutton.x, true_y)) {
-                gl.title_button.darken = true;
-            }
-            else {
-                gl.title_button.darken = false;
-            }
-            break;
-        
-        case Home:
-            // Call the hover handler for menu items
-            handle_menu_hover(e->xbutton.x, true_y);
-            break;
-            
-        default:
-            break;
-    }
+                // Check if mouse is inside the title button (for hover effect)
+                if (gl.title_button.is_inside(e->xbutton.x, true_y)) {
+                    gl.title_button.darken = true;
+                }
+                else {
+                    gl.title_button.darken = false;
+                }
+                break;
+
+            case Home:
+                // Call the hover handler for menu items
+                handle_menu_hover(e->xbutton.x, true_y);
+                break;
+
+            default:
+                break;
+        }
         // If mouse cursor is on, it does not control the ship.
         // It's a regular mouse.
         if (gl.mouse_cursor_on)
@@ -454,8 +454,8 @@ void check_mouse(XEvent *e)
 int check_keys(XEvent *e)
 {
     static int shift=false; // shift variable is used to distinguish capitals
-                              // i.e. a vs A uses shift && a.
-                              // Currently not being used in this code base.
+                            // i.e. a vs A uses shift && a.
+                            // Currently not being used in this code base.
 
     if (e->type != KeyRelease && e->type != KeyPress) {
         //not a keyboard event
@@ -493,83 +493,12 @@ int check_keys(XEvent *e)
         return 0;
     }
     (void)shift; // I don't understand what this line does.
-    //
-    // if any button is pushed, exit the title menu. 
-    // Currently would break pause and credits
-     if (e->type == KeyPress) {
-       //gl.screen = Playing;
-       printf("Key press - current screen: %d\n", gl.screen);
-       switch (key) {
-       case XK_F4:
-           return 1;
-       case XK_a:
-           gl.bike.turn_sharpness = 5.0;
-           break;
-       case XK_s:
-           gl.bike.scale = 10;
-           break;
-       case XK_Shift_L:
-       case XK_Shift_R:
-           shift = true;
-           break;
-       case XK_Escape:
-           /*if (gameState == PLAYING) {
-             gameState = PAUSED;
-             } else if (gameState == PAUSED) {
-             gameState = PLAYING;
-             }
-             */
-           if (gl.screen == Title || gl.screen == Home || 
-                   gl.screen == Instructions || gl.screen == Settings) {
-               // In menus, ESC goes back to main menu
-               printf("ESC pressed in menu - returning to home\n");
-               gl.screen = Home;
-           } 
-           else if (gameState == PLAYING) {
-               gameState = PAUSED;
-           } 
-           else if (gameState == PAUSED) {
-               gameState = PLAYING;
-           }
-           break;
-       case XK_m:
-           gl.mouse_cursor_on = !gl.mouse_cursor_on;
-           x11.show_mouse_cursor(gl.mouse_cursor_on);
-           break;
-       case XK_c:
-           gl.credits = !gl.credits;
-           break;
-       case XK_b:
-           gl.show_bike = !gl.show_bike;
-           break;
-       case XK_Left:
-           gl.bike.left = true;
-           break;
-       case XK_Right:
-           gl.bike.right = true;
-           break;
-       case XK_Down:
-           gl.bike.pedal = Backward;
-           break;
-       case XK_Up:
-           gl.bike.pedal = Forward;
-       case XK_equal:
-           break;
-       case XK_minus:
-           break;
-       }
-       }
-
-
-return 0;
-    /*
                  //
                  // if any button is pushed, exit the title menu. 
                  // Currently would break pause and credits
     if (e->type == KeyPress) {
-        if (gl.screen != GameOver) {
-        gl.screen = Playing;
-        }
+        //gl.screen = Playing;
+        printf("Key press - current screen: %d\n", gl.screen);
         switch (key) {
             case XK_F4:
                 return 1;
@@ -584,9 +513,22 @@ return 0;
                 shift = true;
                 break;
             case XK_Escape:
-                if (gameState == PLAYING) {
+                /*if (gameState == PLAYING) {
+                  gameState = PAUSED;
+                  } else if (gameState == PAUSED) {
+                  gameState = PLAYING;
+                  }
+                  */
+                if (gl.screen == Title || gl.screen == Home || 
+                        gl.screen == Instructions || gl.screen == Settings) {
+                    // In menus, ESC goes back to main menu
+                    printf("ESC pressed in menu - returning to home\n");
+                    gl.screen = Home;
+                } 
+                else if (gameState == PLAYING) {
                     gameState = PAUSED;
-                } else if (gameState == PAUSED) {
+                } 
+                else if (gameState == PAUSED) {
                     gameState = PLAYING;
                 }
                 break;
@@ -619,8 +561,71 @@ return 0;
                 if (gl.screen == GameOver) { 
                     return 1;
                 }
-                break;
+
         }
+    }
+
+
+    return 0;
+    /*
+    //
+    // if any button is pushed, exit the title menu. 
+    // Currently would break pause and credits
+    if (e->type == KeyPress) {
+    if (gl.screen != GameOver) {
+    gl.screen = Playing;
+    }
+    switch (key) {
+    case XK_F4:
+    return 1;
+    case XK_a:
+    gl.bike.turn_sharpness = 5.0;
+    break;
+    case XK_s:
+    gl.bike.scale = 10;
+    break;
+    case XK_Shift_L:
+    case XK_Shift_R:
+    shift = true;
+    break;
+    case XK_Escape:
+    if (gameState == PLAYING) {
+    gameState = PAUSED;
+    } else if (gameState == PAUSED) {
+    gameState = PLAYING;
+    }
+    break;
+    case XK_m:
+    gl.mouse_cursor_on = !gl.mouse_cursor_on;
+    x11.show_mouse_cursor(gl.mouse_cursor_on);
+    break;
+    case XK_c:
+    gl.credits = !gl.credits;
+    break;
+    case XK_b:
+    gl.show_bike = !gl.show_bike;
+    break;
+    case XK_Left:
+    gl.bike.left = true;
+    break;
+    case XK_Right:
+    gl.bike.right = true;
+    break;
+    case XK_Down:
+    gl.bike.pedal = Backward;
+    break;
+    case XK_Up:
+    gl.bike.pedal = Forward;
+    case XK_equal:
+    break;
+    case XK_minus:
+    break;
+    case XK_x:
+    if (gl.screen == GameOver) { 
+    return 1;
+    }
+    break;
+    }
     }
     return 0;
     */
@@ -635,40 +640,40 @@ void physics()
     cars[1].physics();
     physicsforCollision();
     gl.bike.move();
-gl.mainTime->update();
+    gl.mainTime->update();
 }
 
 /*void title_render()
-{
-    glClear(GL_COLOR_BUFFER_BIT);
+  {
+  glClear(GL_COLOR_BUFFER_BIT);
 
-    // This line below caused both images to appear at once during the title screen
-    //gl.background.show(gl.scale, gl.xres/2, gl.yres/2, 0.0f);
+// This line below caused both images to appear at once during the title screen
+//gl.background.show(gl.scale, gl.xres/2, gl.yres/2, 0.0f);
 
-    //added this to show intro image 
-    //    gl.show.show(gl.scale, gl.xres/2 , gl.yres/2 +2, 0.0f);
+//added this to show intro image 
+//    gl.show.show(gl.scale, gl.xres/2 , gl.yres/2 +2, 0.0f);
 
 
-    // Use the proper background from the array
-    backgrounds[MENU_BG]->show(gl.scale, gl.xres/2, gl.yres/2, 0.0f);
+// Use the proper background from the array
+backgrounds[MENU_BG]->show(gl.scale, gl.xres/2, gl.yres/2, 0.0f);
 
-    // Show the motorcycle side image
-    gl.moto_side->render();
-    //printf("%f, %f\n", gl.moto_side->pos.x, gl.moto_side->pos.y);
-    // Setup text rectangle
-    Rect r;  // Rect object for text positioning
-    r.bot = gl.yres - 20;  // Set the bottom of the text near the bottom of the screen
-    r.left = 10; 
-    //title(r);
-    //gl.title_button.render();
-    //title(r);
-    //physicsforCollision();
+// Show the motorcycle side image
+gl.moto_side->render();
+//printf("%f, %f\n", gl.moto_side->pos.x, gl.moto_side->pos.y);
+// Setup text rectangle
+Rect r;  // Rect object for text positioning
+r.bot = gl.yres - 20;  // Set the bottom of the text near the bottom of the screen
+r.left = 10; 
+//title(r);
+//gl.title_button.render();
+//title(r);
+//physicsforCollision();
 
-    // Display game title text
-    ggprint8b(&r, 16, 0xffec407a, "Pizza Delivery Simulator");
+// Display game title text
+ggprint8b(&r, 16, 0xffec407a, "Pizza Delivery Simulator");
 
-    // Render start game button
-    gl.start_button.render();
+// Render start game button
+gl.start_button.render();
 }
 */
 void render()
@@ -704,7 +709,7 @@ void render()
     gl.box10.render();
     r.left = 10;
     r.center = 0;
-    ggprint8b(&r, 16, 0x00ff0000, "3350 - Asteroids");
+    //ggprint8b(&r, 16, 0x00ff0000, "3350 - Asteroids");
 
 
     show_fps(&r);
@@ -720,7 +725,7 @@ void render()
         // Draw pause menu
         drawPauseMenu();
     } else {
-        ggprint8b(&r, 16, 0x00ff00ff, "Press C for credits");
+       /* ggprint8b(&r, 16, 0x00ff00ff, "Press C for credits");
         if (gl.credits) {
             show_avelina(&r);
             show_david(&r);
@@ -728,7 +733,7 @@ void render()
             show_francisco(&r);
             show_lesslie(&r);
 
-        }
+        } */
         if (gl.show_bike)
             gl.bike.render();
         printScoreNTime();

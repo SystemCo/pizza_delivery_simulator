@@ -354,9 +354,32 @@ void check_mouse(XEvent *e)
     }
     if (e->type == ButtonPress) {
         if (e->xbutton.button==1) { // Left button
-            gl.title_button.click(e->xbutton.x, true_y);
-            gl.start_button.click(e->xbutton.x, true_y);
-            printf("x: %d, y: %d", e->xbutton.x, true_y);
+            // Handle different screens with appropriate click handlers
+            printf("Button press - current screen: %d\n", gl.screen);
+            
+            switch (gl.screen) {
+                case Title:
+                    printf("Processing Title screen click\n");
+                    gl.title_button.click(e->xbutton.x, true_y);
+                    gl.start_button.click(e->xbutton.x, true_y);
+                    break;
+                case Home:
+                    printf("Processing Home/Menu screen click\n");
+                    handle_menu_click(e->xbutton.x, true_y, true);
+                    break;
+                case Instructions:
+                    printf("Processing Instructions screen click\n");
+                    handle_instructions_click(e->xbutton.x, true_y, true);
+                    break;
+                case Settings:
+                    printf("Processing Settings screen click\n");
+                    handle_settings_click(e->xbutton.x, true_y, true);
+                    break;
+                default:
+                    printf("Unhandled screen in click handler: %d\n", gl.screen);
+                    break;
+            }
+            printf("After processing - x: %d, y: %d\n", e->xbutton.x, true_y);
         }
         if (e->xbutton.button==3) {
             //Right button is down
@@ -386,27 +409,34 @@ void check_mouse(XEvent *e)
         //std::cout << "e->xbutton.y: " << e->xbutton.y << std::endl <<
         //std::flush;
         //
-        // Check if mouse is inside the start button (for hover effect)
-        if (gl.start_button.is_inside(e->xbutton.x, true_y)) {
-            gl.start_button.darken = true;
-        }
-        else {
-            gl.start_button.darken = false;
-        }
+    // Handle hover effects based on current screen
+    switch (gl.screen) {
+        case Title:
+            // Check if mouse is inside the start button (for hover effect)
+            if (gl.start_button.is_inside(e->xbutton.x, true_y)) {
+                gl.start_button.darken = true;
+            }
+            else {
+                gl.start_button.darken = false;
+            }
 
-        // Check if mouse is inside the title button (for hover effect)
-        if (gl.title_button.is_inside(e->xbutton.x, true_y)) {
-            gl.title_button.darken = true;
-
-            // Debugging
-            //std::cout << "Inside title button" << std::endl << std::flush;
-        }
-        else {
-            gl.title_button.darken = false;
-
-            // Debugging
-            //std::cout << "Outside title button" << std::endl << std::flush;
-        }
+            // Check if mouse is inside the title button (for hover effect)
+            if (gl.title_button.is_inside(e->xbutton.x, true_y)) {
+                gl.title_button.darken = true;
+            }
+            else {
+                gl.title_button.darken = false;
+            }
+            break;
+        
+        case Home:
+            // Call the hover handler for menu items
+            handle_menu_hover(e->xbutton.x, true_y);
+            break;
+            
+        default:
+            break;
+    }
         // If mouse cursor is on, it does not control the ship.
         // It's a regular mouse.
         if (gl.mouse_cursor_on)
@@ -470,7 +500,8 @@ int check_keys(XEvent *e)
     // if any button is pushed, exit the title menu. 
     // Currently would break pause and credits
      if (e->type == KeyPress) {
-       gl.screen = Playing;
+       //gl.screen = Playing;
+       printf("Key press - current screen: %d\n", gl.screen);
        switch (key) {
        case XK_F4:
        return 1;
@@ -485,12 +516,25 @@ int check_keys(XEvent *e)
        shift = true;
        break;
        case XK_Escape:
-       if (gameState == PLAYING) {
+       /*if (gameState == PLAYING) {
        gameState = PAUSED;
        } else if (gameState == PAUSED) {
        gameState = PLAYING;
        }
-       break;
+       */
+       if (gl.screen == Title || gl.screen == Home || 
+        gl.screen == Instructions || gl.screen == Settings) {
+        // In menus, ESC goes back to main menu
+        printf("ESC pressed in menu - returning to home\n");
+        gl.screen = Home;
+    } 
+    else if (gameState == PLAYING) {
+        gameState = PAUSED;
+    } 
+    else if (gameState == PAUSED) {
+        gameState = PLAYING;
+    }
+    break;
        case XK_m:
        gl.mouse_cursor_on = !gl.mouse_cursor_on;
        x11.show_mouse_cursor(gl.mouse_cursor_on);

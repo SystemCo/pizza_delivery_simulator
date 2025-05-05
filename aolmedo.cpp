@@ -42,8 +42,12 @@ Title_Exit_Button::Title_Exit_Button()
     set_pos(300,300);
     set_dims(200,50);
 }
+
 void Title_Exit_Button::click(int x, int y) {
-    if (is_inside(x,y)) gl.screen = Home;
+    if (is_inside(x,y)) {
+        printf("Title clicked - navigating to Home menu\n");
+        gl.screen = Home;
+    }
 }
 
 StartGame_Button::StartGame_Button()
@@ -55,9 +59,11 @@ StartGame_Button::StartGame_Button()
     set_dims(250,80);
 }
 void StartGame_Button::click(int x, int y) {
-    if (is_inside(x,y)) gl.screen = Playing;
+    if (is_inside(x,y)) {
+        printf("Start button clicked - navigating to menu\n");
+        gl.screen = Home;
+    }
 }
-
 void aolmedo_title_physics() {
     static float moto_offset = 0.0f;
     moto_offset += 0.5f;
@@ -100,32 +106,100 @@ void handle_title_input(int x, int y, bool is_press) {
 void handle_menu_click(int x, int y, bool is_press) {
     if (!is_press) return;
     
-    // You’ll need to tweak these Y‐ranges to match your art:
-    //   Start game sits near y ≈ gl.yres/2 +  60 …  gl.yres/2 + 120
-    //   How to play near       y ≈ gl.yres/2 -  40 …  gl.yres/2 +  20
-    //   Settings near          y ≈ gl.yres/2 - 140 …  gl.yres/2 -  80
+    // Debug output to show click coordinates
+    //printf("Menu click: x=%d, y=%d\n", x, y);
 
-    if (y > gl.yres/2 + 60 && y < gl.yres/2 + 120) {
+     // Enhanced debug output to show click coordinates and current state
+     printf("Menu click: x=%d, y=%d, gl.screen=%d\n", x, y, gl.screen);
+    
+    // Define precise rectangular areas for each menu item
+    // X coordinates range from approximately 1/3 to 2/3 of screen width
+    //const int left_boundary = gl.xres / 3;
+   //const int right_boundary = (gl.xres * 2) / 3;
+
+    // Check the coordinates visually against the menu image
+    // The values below should be tuned based on the actual image layout
+    
+    // Center 60% of the screen width for x-bounds
+    const int center_width = gl.xres * 0.6;
+    const int left_boundary = (gl.xres - center_width) / 2;
+    const int right_boundary = left_boundary + center_width;
+    
+    // "Start game" button area - roughly 1/4 down from the top of usable space
+    // These y-values must be adjusted based on where items appear in the actual image
+    const int start_top = (int)(gl.yres * 0.65);
+    const int start_bottom = (int)(gl.yres * 0.55);
+    
+    // "How to play" button area - roughly middle of the screen
+    const int howto_top = (int)(gl.yres * 0.5);
+    const int howto_bottom = (int)(gl.yres * 0.4);
+    
+    // "Settings" button area - roughly 3/4 down the usable space
+    const int settings_top = (int)(gl.yres * 0.35);
+    const int settings_bottom = (int)(gl.yres * 0.25);
+    
+    // Print all boundaries for debugging
+    printf("Boundaries: left=%d, right=%d\n", left_boundary, right_boundary);
+    printf("Start game: bottom=%d, top=%d\n", start_bottom, start_top);
+    printf("How to play: bottom=%d, top=%d\n", howto_bottom, howto_top);
+    printf("Settings: bottom=%d, top=%d\n", settings_bottom, settings_top);
+    
+    // "Start game" button area
+    if (x >= left_boundary && x <= right_boundary && 
+        y >= start_bottom && y <= start_top) {
+            printf("Starting game... changing screen to Playing\n");
         gl.screen = Playing;
     }
-    else if (y > gl.yres/2 - 40 && y < gl.yres/2 + 20) {
+    // "How to play" button area
+    else if (x >= left_boundary && x <= right_boundary && 
+        y >= howto_bottom && y <= howto_top) {
+            printf("Opening instructions... changing screen to Instructions\n");
         gl.screen = Instructions;
     }
-    else if (y > gl.yres/2 - 140 && y < gl.yres/2 - 80) {
+    // "Settings" button area
+    else if (x >= left_boundary && x <= right_boundary && 
+        y >= settings_bottom && y <= settings_top) {
+            printf("Opening settings... changing screen to Settings\n");
         gl.screen = Settings;
     }
+    else {
+        printf("Click not in any menu area\n");
+    }
+    // Print current screen after handling the click
+    printf("Current screen after click: %d\n", gl.screen);
 }
 
 void render_menu_screen() {
     // clear
     glClear(GL_COLOR_BUFFER_BIT);
-    // draw the pizza menu full-screen
+    
+    // Calculate appropriate scaling to fit the screen
+    float img_scale = gl.scale * 0.8; // Reduce scale by 20% to make it smaller
+    
+    // draw the pizza menu properly scaled to fit the screen
     backgrounds[MENU_BG]
-      ->show(gl.scale, gl.xres/2, gl.yres/2, 0.0f);
+      ->show(img_scale, gl.xres/2, gl.yres/2, 0.0f);
+      
+    // Debug - show clickable regions (uncomment to visualize click areas)
+    /*
+    glColor3f(1.0, 0.0, 0.0);
+    glBegin(GL_LINE_LOOP);
+    int left = gl.xres/3;
+    int right = (gl.xres*2)/3;
+    int top = gl.yres/2 + 120;
+    int bottom = gl.yres/2 + 60;
+    glVertex2f(left, bottom);
+    glVertex2f(right, bottom);
+    glVertex2f(right, top);
+    glVertex2f(left, top);
+    glEnd();
+    */
 }
 
 void handle_instructions_click(int x, int y, bool is_press) {
     if (!is_press) return;
+    // Debug output
+    printf("Instructions screen click: x=%d, y=%d - returning to menu\n", x, y);
     // anywhere you click, go back to menu:
     gl.screen = Home;
 }
@@ -155,6 +229,8 @@ void render_instructions_screen() {
 // Simple volume control
 void handle_settings_click(int x, int y, bool is_press) {
     if (!is_press) return;
+    // Debug output
+    printf("Settings screen click: x=%d, y=%d - returning to menu\n", x, y);
     gl.screen = Home;
 }
 
@@ -174,23 +250,42 @@ void render_settings_screen() {
       "- (click to return)", gl.volume);
 }
 
-
-/*void handle_menu_click(int x, int y, bool is_press) {
-    if (!is_press) return;
-    // just one button for now: if they click roughly in the “Start game” region…
-    // you may want to fine-tune these bounds to match the pixels in your image!
-    const int left   = gl.xres/2 - 100;
-    const int right  = gl.xres/2 + 100;
-    const int top    = gl.yres/2 +  20;  // adjust based on your art
-    const int bottom = gl.yres/2 -  20;
-    if (x >= left && x <= right &&
-        y >= bottom && y <= top) {
-      gl.screen = Playing;
-    }
+// Add this new function to handle hover effects on menu items
+void handle_menu_hover(int x, int y) {
+    // Use the same boundaries as in the click handler
+    // Center 60% of the screen width for x-bounds
+    const int center_width = gl.xres * 0.6;
+    const int left_boundary = (gl.xres - center_width) / 2;
+    const int right_boundary = left_boundary + center_width;
     
+    // "Start game" button area
+    const int start_top = (int)(gl.yres * 0.65);
+    const int start_bottom = (int)(gl.yres * 0.55);
+    
+    // "How to play" button area
+    const int howto_top = (int)(gl.yres * 0.5);
+    const int howto_bottom = (int)(gl.yres * 0.4);
+    
+    // "Settings" button area
+    const int settings_top = (int)(gl.yres * 0.35);
+    const int settings_bottom = (int)(gl.yres * 0.25);
+    
+    // Check if mouse is over any menu item
+    if (x >= left_boundary && x <= right_boundary) {
+        if (y >= start_bottom && y <= start_top) {
+            // Hovering over Start Game
+            // Debug - uncomment to track hovering
+            // printf("Hovering over Start Game\n");
+        }
+        else if (y >= howto_bottom && y <= howto_top) {
+            // Hovering over How to Play
+            // Debug - uncomment to track hovering
+            // printf("Hovering over How to Play\n");
+        }
+        else if (y >= settings_bottom && y <= settings_top) {
+            // Hovering over Settings
+            // Debug - uncomment to track hovering
+            // printf("Hovering over Settings\n");
+        }
+    }
 }
-    */
-
-
-
-

@@ -23,6 +23,7 @@ void init_backgrounds();
 // "Home" pizza menu
 void render_menu_screen();
 void handle_menu_click(int x, int y, bool is_press);
+void handle_menu_hover(int x, int y);
 
 // “How to play” screen
 void render_instructions_screen();

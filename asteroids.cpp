@@ -251,11 +251,11 @@ int main()
                 physicsCountdown -= physicsRate;
             }
             if(gl.gameOver == true) {
-                    gl.screen = GameOver;
-                }
-                else {
-                    render();
-                }
+                gl.screen = GameOver;
+            }
+            else {
+                render();
+            }
             break;
         case GameOver:
             drawGameOver();
@@ -504,62 +504,62 @@ int check_keys(XEvent *e)
        printf("Key press - current screen: %d\n", gl.screen);
        switch (key) {
        case XK_F4:
-       return 1;
+           return 1;
        case XK_a:
-       gl.bike.turn_sharpness = 5.0;
-       break;
+           gl.bike.turn_sharpness = 5.0;
+           break;
        case XK_s:
-       gl.bike.scale = 10;
-       break;
+           gl.bike.scale = 10;
+           break;
        case XK_Shift_L:
        case XK_Shift_R:
-       shift = true;
-       break;
+           shift = true;
+           break;
        case XK_Escape:
-       /*if (gameState == PLAYING) {
-       gameState = PAUSED;
-       } else if (gameState == PAUSED) {
-       gameState = PLAYING;
-       }
-       */
-       if (gl.screen == Title || gl.screen == Home || 
-        gl.screen == Instructions || gl.screen == Settings) {
-        // In menus, ESC goes back to main menu
-        printf("ESC pressed in menu - returning to home\n");
-        gl.screen = Home;
-    } 
-    else if (gameState == PLAYING) {
-        gameState = PAUSED;
-    } 
-    else if (gameState == PAUSED) {
-        gameState = PLAYING;
-    }
-    break;
+           /*if (gameState == PLAYING) {
+             gameState = PAUSED;
+             } else if (gameState == PAUSED) {
+             gameState = PLAYING;
+             }
+             */
+           if (gl.screen == Title || gl.screen == Home || 
+                   gl.screen == Instructions || gl.screen == Settings) {
+               // In menus, ESC goes back to main menu
+               printf("ESC pressed in menu - returning to home\n");
+               gl.screen = Home;
+           } 
+           else if (gameState == PLAYING) {
+               gameState = PAUSED;
+           } 
+           else if (gameState == PAUSED) {
+               gameState = PLAYING;
+           }
+           break;
        case XK_m:
-       gl.mouse_cursor_on = !gl.mouse_cursor_on;
-       x11.show_mouse_cursor(gl.mouse_cursor_on);
-       break;
+           gl.mouse_cursor_on = !gl.mouse_cursor_on;
+           x11.show_mouse_cursor(gl.mouse_cursor_on);
+           break;
        case XK_c:
-       gl.credits = !gl.credits;
-       break;
+           gl.credits = !gl.credits;
+           break;
        case XK_b:
-       gl.show_bike = !gl.show_bike;
-       break;
+           gl.show_bike = !gl.show_bike;
+           break;
        case XK_Left:
-       gl.bike.left = true;
-       break;
+           gl.bike.left = true;
+           break;
        case XK_Right:
-       gl.bike.right = true;
-       break;
+           gl.bike.right = true;
+           break;
        case XK_Down:
-       gl.bike.pedal = Backward;
-       break;
+           gl.bike.pedal = Backward;
+           break;
        case XK_Up:
-       gl.bike.pedal = Forward;
+           gl.bike.pedal = Forward;
        case XK_equal:
-       break;
+           break;
        case XK_minus:
-       break;
+           break;
        }
        }
 

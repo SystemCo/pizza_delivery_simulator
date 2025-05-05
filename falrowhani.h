@@ -4,7 +4,7 @@
 
 #include "fonts.h"
 #include <GL/glx.h>
-//extern GL gl; 
+
 
 extern int show_warning;
 extern int warning_timer;
@@ -59,12 +59,13 @@ public:
     float color[3];
     char text[100];
 
-     void render() {
-        glEnable(GL_BLEND);
+     void render() 
+     {
+    glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     //change to .01 
 
-    glColor4f(color[0], color[1], color[2], 0.01f); // 40% opacity
+    glColor4f(color[0], color[1], color[2], 0.01f); //control transperency 
 
     glBegin(GL_QUADS);
     glVertex2f(pos[0], pos[1]);

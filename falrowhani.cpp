@@ -42,7 +42,7 @@ void deliveryDetection();
 //GameState gameState = PLAYING;
 MoneySystem money; 
 
-//function prototypes 
+
 //void title_moto_physics(int frame, Animation animation[3]);
 void show_fenoon(Rect*r);
 
@@ -53,11 +53,6 @@ using namespace std::chrono;
 
 int show_warning = 0;
 int warning_timer = 0;
-
-
-
-
-
 
 
 void show_fenoon(Rect*r)
@@ -75,9 +70,9 @@ Game_Button::Game_Button() : Button(200, 200)
 
 void Game_Button::click(int x, int y)
  {
-    if (this->is_inside(x, y)) { // Check if the click is inside the button
+    if (this->is_inside(x, y)) { 
         //std::cout << "Resume Button Clicked!" << std::endl;
-        gameState = PLAYING; // Change game state to PLAYING
+        gameState = PLAYING; 
     }
 }
 Restart_Button::Restart_Button() : Button(200, 200) 
@@ -108,7 +103,7 @@ void reset_game()
 void Restart_Button::click(int x, int y) 
 {
     if (this->is_inside(x, y)) { // Check if the click is inside the button
-       // std::cout << "RgjfkngnkdkButton Clicked!" << std::endl;
+       // std::cout << "Button Clicked!" << std::endl;
         //  Image show {"./images/game2.jpg"};
         reset_game();
     }
@@ -117,7 +112,7 @@ void drawPauseMenu()
 {
     Rect r;
 
-    glColor4f(0.0, 0.0, 0.0, 1.0);// transparency
+    glColor4f(0.0, 0.0, 0.0, 1.0);
     glBegin(GL_QUADS);
     glVertex2f(-1, -1);
     glVertex2f(1, -1);
@@ -342,7 +337,8 @@ void initGame()
     
 
 }
-void deductMoney(MoneySystem &money, float amount) {
+void deductMoney(MoneySystem &money, float amount) 
+{
     float current = money.getTotalMoney();
     float newTotal = current - amount;
     if (newTotal < 0.0f)
@@ -352,7 +348,8 @@ void deductMoney(MoneySystem &money, float amount) {
     money.cashInRevenue();
 }
 
-void addMoney(MoneySystem &money, float amount) {
+void addMoney(MoneySystem &money, float amount)
+{
     money.increaseRevenue(amount);
     money.cashInRevenue();
 }
@@ -365,7 +362,7 @@ void physicsforCollision()
 
     bool crashed =false; 
 
-    static bool was_colliding = false;
+    //static bool was_colliding = false;
 
     float motoX = moto.pos.x;
     float motoY = moto.pos.y;
@@ -377,7 +374,7 @@ void physicsforCollision()
 
     // Point-based AABB collision
     if ((motoX >= boxLeft && motoX <= boxRight &&
-        motoY >= boxBottom && motoY <= boxTop)&& !was_colliding) {
+        motoY >= boxBottom && motoY <= boxTop)) {
        // std::cout << "Collision detected!\n";
         show_warning = 1;
         warning_timer = 100;
@@ -387,16 +384,9 @@ void physicsforCollision()
         deductMoney(money, 5.0f);
   
   }
-  else { 
-    //ig gl .baike crash is no called 
-    //crash direction is set to 0 
-    crashed=false; 
-    if (!crashed) { 
-        gl.bike.crash_dir =0;
-    }
+  
 
 
-  }
     if (gl.bike.pos.x >= gl.box2.pos[0] &&
         gl.bike.pos.x <= gl.box2.pos[0] + gl.box2.width &&
         gl.bike.pos.y >= gl.box2.pos[1] &&
@@ -405,7 +395,7 @@ void physicsforCollision()
         //std::cout << "Collision with box 2!\n";
         show_warning = 1;
         warning_timer = 100;
-        //gl.bike.velocity = 0.0;
+        
 
         gl.bike.crash();
         crashed=true; 
@@ -413,16 +403,7 @@ void physicsforCollision()
 
         
     }
-    else { 
-        //ig gl .baike crash is no called 
-        //crash direction is set to 0 
-        crashed=false; 
-        if (!crashed) { 
-            gl.bike.crash_dir =0;
-        }
-    
-    
-      }
+   
     if (gl.bike.pos.x >= gl.box3.pos[0] &&
         gl.bike.pos.x <= gl.box3.pos[0] + gl.box3.width &&
         gl.bike.pos.y >= gl.box3.pos[1] &&
@@ -430,7 +411,7 @@ void physicsforCollision()
        // std::cout << "Collision with box 3!\n";
         show_warning = 1;
         warning_timer = 100;
-       // gl.bike.velocity = 0.0;
+       
 
        gl.bike.crash();
        crashed=true; 
@@ -438,15 +419,7 @@ void physicsforCollision()
 
        
     }
-    else { 
-        
-        crashed=false; 
-        if (!crashed) { 
-            gl.bike.crash_dir =0;
-        }
     
-    
-      }
     
     if (gl.bike.pos.x >= gl.box4.pos[0] &&
         gl.bike.pos.x <= gl.box4.pos[0] + gl.box4.width &&
@@ -462,15 +435,7 @@ void physicsforCollision()
         deductMoney(money, 5.0f);
 
         }
-        else { 
-        
-            crashed=false; 
-            if (!crashed) { 
-                gl.bike.crash_dir =0;
-            }
-        
-        
-          }
+       
 
     
     if (gl.bike.pos.x >= gl.box5.pos[0] &&
@@ -488,15 +453,7 @@ void physicsforCollision()
 
 
     }
-    else { 
-        
-        crashed=false; 
-        if (!crashed) { 
-            gl.bike.crash_dir =0;
-        }
     
-    
-      }
     
     if (gl.bike.pos.x >= gl.box6.pos[0] &&
         gl.bike.pos.x <= gl.box6.pos[0] + gl.box6.width &&
@@ -512,15 +469,7 @@ void physicsforCollision()
 
 
     }
-    else { 
-        
-        crashed=false; 
-        if (!crashed) { 
-            gl.bike.crash_dir =0;
-        }
     
-    
-      }
     
     if (gl.bike.pos.x >= gl.box7.pos[0] &&
         gl.bike.pos.x <= gl.box7.pos[0] + gl.box7.width &&
@@ -533,18 +482,8 @@ void physicsforCollision()
     gl.bike.crash();
     crashed=true; 
     deductMoney(money, 5.0f);
-    
-
-    }
-    else { 
-        
-        crashed=false; 
-        if (!crashed) { 
-            gl.bike.crash_dir =0;
         }
     
-    
-      }
     
     if (gl.bike.pos.x >= gl.box8.pos[0] &&
         gl.bike.pos.x <= gl.box8.pos[0] + gl.box8.width &&
@@ -559,15 +498,7 @@ void physicsforCollision()
         deductMoney(money, 5.0f);
     
     }
-    else { 
-        
-        crashed=false; 
-        if (!crashed) { 
-            gl.bike.crash_dir =0;
-        }
-    
-    
-      }
+   
     
     if (gl.bike.pos.x >= gl.box9.pos[0] &&
         gl.bike.pos.x <= gl.box9.pos[0] + gl.box9.width &&
@@ -584,16 +515,7 @@ void physicsforCollision()
 
     
     }
-    else { 
-        
-        crashed=false; 
-        if (!crashed) { 
-        
-            gl.bike.crash_dir =0;
-        }
     
-    
-      }
     
     if (gl.bike.pos.x >= gl.box10.pos[0] &&
         gl.bike.pos.x <= gl.box10.pos[0] + gl.box10.width &&
@@ -608,17 +530,12 @@ void physicsforCollision()
         deductMoney(money, 5.0f);
      
     }
-    else { 
-        
-        crashed=false; 
-        if (!crashed) { 
-            gl.bike.crash_dir =0;
-        }
+    if (!crashed) {
+        gl.bike.crash_dir = 0;
+    }
     
-    
-      }
 
-    //delivery places collision starts here: 
+ 
 
     
 }   
@@ -682,6 +599,7 @@ void deliveryDetection()
        addMoney(money, 10.0f);
 
     }
+
 }
 
 
@@ -734,7 +652,8 @@ void myRender()
     }
 }
 
-void Motorcycle::crash() { 
+void Motorcycle::crash() 
+{ 
 
 
     if (crash_dir == 0) {
@@ -743,23 +662,12 @@ void Motorcycle::crash() {
 
 
     if (velocity.get() > 0) {
-        crash_dir = 1;  // Moving "forward"
+        crash_dir = 1;  //moving forward
     } else {
-        crash_dir = -1; // Moving "backward"
+        crash_dir = -1; // Moving backward
     }
 
-   
-//if (!physicsforCollision()) {
-  
-//}
-
-
 }
-//crashdir -1 or 1; 
-
-    //cal g.bike.crash(); 
-
-
 /*
 void title_physics()
 {

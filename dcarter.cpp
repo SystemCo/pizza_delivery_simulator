@@ -518,13 +518,15 @@ void Motorcycle::move()
     // Pedal acclarates
     switch (pedal) {
     case Forward:
-        velocity.set(vel + acceleration);
+        if (crash_dir < 1)
+            velocity.set(vel + acceleration);
         break;
     case Neutral:
         velocity.set(vel*0.99);
         break;
     case Backward:
-        velocity.set(vel - acceleration);
+        if (crash_dir > -1)
+            velocity.set(vel - acceleration);
         break;
     }
 

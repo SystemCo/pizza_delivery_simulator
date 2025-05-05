@@ -11,6 +11,7 @@
 //#include "GL.h"
 #include "dcarter.h"
 #include "fandrade.h"
+#include "lvaldivia.h"
 #include <iostream>
 #include "falrowhani.h"
 #include "shared.h" 
@@ -362,6 +363,9 @@ void physicsforCollision()
 
     bool crashed =false; 
 
+    static bool alreadyDeducted = false;
+
+
     //static bool was_colliding = false;
 
     float motoX = moto.pos.x;
@@ -381,7 +385,7 @@ void physicsforCollision()
 
         gl.bike.crash();
         crashed=true; 
-        deductMoney(money, 5.0f);
+   //     deductMoney(gl.money, 5.0f);
   
     }
   
@@ -399,7 +403,7 @@ void physicsforCollision()
 
         gl.bike.crash();
         crashed=true; 
-        deductMoney(money, 5.0f);
+      //  deductMoney(gl.money, 5.0f);
 
         
     }
@@ -415,7 +419,7 @@ void physicsforCollision()
 
        gl.bike.crash();
        crashed=true; 
-       deductMoney(money, 5.0f);
+      // deductMoney(gl.money, 5.0f);
 
        
     }
@@ -432,7 +436,7 @@ void physicsforCollision()
 
         gl.bike.crash();
         crashed=true; 
-        deductMoney(money, 5.0f);
+        //deductMoney(gl.money, 5.0f);
 
     }
        
@@ -448,7 +452,7 @@ void physicsforCollision()
 
         gl.bike.crash();
         crashed=true; 
-        deductMoney(money, 5.0f);
+      //  deductMoney(gl.money, 5.0f);
 
 
 
@@ -465,7 +469,7 @@ void physicsforCollision()
 
         gl.bike.crash();
         crashed=true; 
-        deductMoney(money, 5.0f);
+       // deductMoney(gl.money, 5.0f);
     }
     
     
@@ -479,7 +483,7 @@ void physicsforCollision()
 
         gl.bike.crash();
         crashed=true; 
-        deductMoney(money, 5.0f);
+        //deductMoney(gl.money, 5.0f);
     }
 
     
@@ -493,7 +497,7 @@ void physicsforCollision()
 
         gl.bike.crash();
         crashed=true; 
-        deductMoney(money, 5.0f);
+        //deductMoney(gl.money, 5.0f);
     
     }
     
@@ -507,7 +511,7 @@ void physicsforCollision()
 
         gl.bike.crash();
         crashed=true; 
-        deductMoney(money, 5.0f);
+        //deductMoney(gl.money, 5.0f);
 
 
     
@@ -523,16 +527,24 @@ void physicsforCollision()
 
         gl.bike.crash();
         crashed=true; 
-        deductMoney(money, 5.0f);
+        //deductMoney(gl.money, 5.0f);
      
     }
+    if (crashed && !alreadyDeducted) {
+        deductMoney(gl.money, 5.0f);
+        std::cout << "Crash! -$5\n";
+        alreadyDeducted = true;
+    }
     if (!crashed) {
+        alreadyDeducted = false;
         gl.bike.crash_dir = 0;
     }
 }   
 
 void deliveryDetection() 
 {
+    bool detect =false; 
+
     float motoX = gl.bike.pos.x;
     float motoY = gl.bike.pos.y;
 
@@ -541,7 +553,8 @@ void deliveryDetection()
         motoY >= gl.box11.pos[1] &&
         motoY <= gl.box11.pos[1] + gl.box11.height) {
        // std::cout << "Delivery at box11!\n";
-       addMoney(money, 10.0f);
+       checkDelivery(0);
+       //addMoney(gl.money, 10.0f);
 
     }
 
@@ -550,7 +563,8 @@ void deliveryDetection()
         motoY >= gl.box12.pos[1] &&
         motoY <= gl.box12.pos[1] + gl.box12.height) {
         //std::cout << "Delivery at box12!\n";
-        addMoney(money, 10.0f);
+        checkDelivery(1);
+        //addMoney(gl.money, 10.0f);
 
     }
 
@@ -559,7 +573,8 @@ void deliveryDetection()
         motoY >= gl.box13.pos[1] &&
         motoY <= gl.box13.pos[1] + gl.box13.height) {
         std::cout << "Delivery at box13!\n";
-        addMoney(money, 10.0f);
+        checkDelivery(2);
+        //addMoney(gl.money, 10.0f);
 
     }
 
@@ -568,7 +583,8 @@ void deliveryDetection()
         motoY >= gl.box14.pos[1] &&
         motoY <= gl.box14.pos[1] + gl.box14.height) {
        // std::cout << "Delivery at box14!\n";
-        addMoney(money, 10.0f);
+       checkDelivery(3);
+        //addMoney(gl.money, 10.0f);
 
     }
 
@@ -577,7 +593,8 @@ void deliveryDetection()
         motoY >= gl.box15.pos[1] &&
         motoY <= gl.box15.pos[1] + gl.box15.height) {
         //std::cout << "Delivery at box15!\n";
-        addMoney(money, 10.0f);
+        checkDelivery(4);
+       // addMoney(gl.money, 10.0f);
 
     }
 
@@ -587,8 +604,18 @@ void deliveryDetection()
         motoY >= gl.box16.pos[1] &&
         motoY <= gl.box16.pos[1] + gl.box16.height) {
        // std::cout << "Delivery at box16!\n";
-       addMoney(money, 10.0f);
+       checkDelivery(5);
+       //ddMoney(gl.money, 10.0f);
 
+    }
+
+    if (detect) {
+        addMoney(gl.money, 10.0f);
+        detect = true;
+    }
+    if (!detect) {
+        detect = false;
+     
     }
 
 }

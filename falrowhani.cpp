@@ -383,7 +383,7 @@ void physicsforCollision()
         crashed=true; 
         deductMoney(money, 5.0f);
   
-  }
+    }
   
 
 
@@ -434,7 +434,7 @@ void physicsforCollision()
         crashed=true; 
         deductMoney(money, 5.0f);
 
-        }
+    }
        
 
     
@@ -463,11 +463,9 @@ void physicsforCollision()
         show_warning = 1;
         warning_timer = 100;
 
-     gl.bike.crash();
-     crashed=true; 
-     deductMoney(money, 5.0f);
-
-
+        gl.bike.crash();
+        crashed=true; 
+        deductMoney(money, 5.0f);
     }
     
     
@@ -479,11 +477,11 @@ void physicsforCollision()
         show_warning = 1;
         warning_timer = 100;
 
-    gl.bike.crash();
-    crashed=true; 
-    deductMoney(money, 5.0f);
-        }
-    
+        gl.bike.crash();
+        crashed=true; 
+        deductMoney(money, 5.0f);
+    }
+
     
     if (gl.bike.pos.x >= gl.box8.pos[0] &&
         gl.bike.pos.x <= gl.box8.pos[0] + gl.box8.width &&
@@ -498,7 +496,6 @@ void physicsforCollision()
         deductMoney(money, 5.0f);
     
     }
-   
     
     if (gl.bike.pos.x >= gl.box9.pos[0] &&
         gl.bike.pos.x <= gl.box9.pos[0] + gl.box9.width &&
@@ -516,7 +513,6 @@ void physicsforCollision()
     
     }
     
-    
     if (gl.bike.pos.x >= gl.box10.pos[0] &&
         gl.bike.pos.x <= gl.box10.pos[0] + gl.box10.width &&
         gl.bike.pos.y >= gl.box10.pos[1] &&
@@ -533,11 +529,6 @@ void physicsforCollision()
     if (!crashed) {
         gl.bike.crash_dir = 0;
     }
-    
-
- 
-
-    
 }   
 
 void deliveryDetection() 
@@ -657,14 +648,13 @@ void Motorcycle::crash()
 
 
     if (crash_dir == 0) {
+        if (velocity.get() > 0) {
+            crash_dir = 1;  //moving forward
+        } else {
+            crash_dir = -1; // Moving backward
+        }
+
         velocity.set(0.0);
-    }
-
-
-    if (velocity.get() > 0) {
-        crash_dir = 1;  //moving forward
-    } else {
-        crash_dir = -1; // Moving backward
     }
 
 }

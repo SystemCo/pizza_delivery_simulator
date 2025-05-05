@@ -244,6 +244,7 @@ int main()
             case Playing:
             while (physicsCountdown >= physicsRate) {
                 //physics();
+                // Only run game physics and management when actually playing
                 manageDeliveries(physicsRate); 
                 manageGame(physicsRate); //for the main timer
                 physics();

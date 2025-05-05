@@ -222,6 +222,9 @@ void activateRandomDeliveries()
 
 void manageDeliveries(float dT)
 {
+    // Only manage deliveries if we're actually playing the game
+    //if (gl.screen != Playing) return;
+
     gl.timerList->timerAll(dT);
     gl.timerList->updateAll();
     //gl.timerList->renderAll();
@@ -243,6 +246,9 @@ void manageDeliveries(float dT)
 void manageGame(float dT)
 { //the main game time
   //manageDeliveries(dT);
+
+  // Only manage game time if we're actually playing the game
+  //if (gl.screen != Playing) return;
 
     gl.remainingTime = gl.remainingTime - dT;
     if (gl.remainingTime <= 0 ) {

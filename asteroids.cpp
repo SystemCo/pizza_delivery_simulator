@@ -218,8 +218,8 @@ int main()
             case Title:
                 while (physicsCountdown >= physicsRate) {
                     //coommenting this out 
-                    aolmedo_title_physics();
-                    //  title_physics();
+                    //aolmedo_title_physics();
+                    title_physics();
                     physicsCountdown -= physicsRate;
                 }
                 render_title_screen();

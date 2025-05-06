@@ -3,6 +3,7 @@
 /***********************************************************************************/
 #include "shared.h"
 #include "aolmedo.h"
+#include "falrowhani.h"
 #include <cstdio>
 #include <GL/gl.h>
 #include <cmath>
@@ -91,6 +92,10 @@ void render_title_screen() {
     Rect r;
 r.bot  = gl.yres - 20;
 r.left = 10;
+
+
+title(r);  
+
     ggprint8b(&r, 16, 0xffec407a, "Pizza Delivery Simulator");
 
     gl.title_button.render();

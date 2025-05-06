@@ -99,17 +99,14 @@ void render_title_screen() {
     gl.moto_side2->render();
 
     Rect r;
-<<<<<<< HEAD
-    r.bot  = gl.yres - 20;
-    r.left = 10;
-=======
+
 r.bot  = gl.yres - 20;
 r.left = 10;
 
 
 title(r);  
 
->>>>>>> c22b46b430e47bd4c6c216f93f28d358f40e670e
+
     ggprint8b(&r, 16, 0xffec407a, "Pizza Delivery Simulator");
 
     gl.title_button.render();

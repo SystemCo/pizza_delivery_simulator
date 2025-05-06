@@ -764,14 +764,14 @@ void render()
            show_francisco(&r);
            show_lesslie(&r);
 
-<<<<<<< HEAD
+
            } */
-        if (gl.show_bike)
-            gl.bike.render();
-=======
+        //if (gl.show_bike)
+            //gl.bike.render();
+
         //} */
         gl.bike.render();
->>>>>>> c22b46b430e47bd4c6c216f93f28d358f40e670e
+
         printScoreNTime();
         //  physicsforCollision();
         // Commented this so title button would disappear during playing state

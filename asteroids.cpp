@@ -343,7 +343,7 @@ void check_mouse(XEvent *e)
     static int savex = 0;
     static int savey = 0;
     //
-    static int ct=0;
+    //static int ct=0;
     const int true_y = gl.yres - e->xbutton.y;
 
     if (e->type == ButtonRelease) {
@@ -392,13 +392,13 @@ void check_mouse(XEvent *e)
     //keys[XK_Up] = 0;
     if (savex != e->xbutton.x || savey != e->xbutton.y) {
         // the mouse moved
-        int xdiff = savex - e->xbutton.x;
-        int ydiff = savey - e->xbutton.y;
+       // int xdiff = savex - e->xbutton.x;
+       // int ydiff = savey - e->xbutton.y;
         savex = e->xbutton.x;
         savey = e->xbutton.y;
         //std::cout << savex << ", " << savey << std::endl;
-        if (++ct < 10)
-            return;
+      //  if (++ct < 10)
+      //      return;
         //std::cout << "savex: " << savex << std::endl << std::flush;
         //std::cout << "e->xbutton.x: " << e->xbutton.x << std::endl <<
         //std::flush;
@@ -406,12 +406,14 @@ void check_mouse(XEvent *e)
         //std::cout << "e->xbutton.y: " << e->xbutton.y << std::endl <<
         //std::flush;
         //
+        // Reset hover state on mouse movement
+        //bool is_inside_button = false;
         // Handle hover effects based on current screen
         switch (gl.screen) {
             //title(r);
             case Title:
                 // Check if mouse is inside the start button (for hover effect)
-                if (gl.start_button.is_inside(e->xbutton.x, true_y)) {
+              /*  if (gl.start_button.is_inside(e->xbutton.x, true_y)) {
                     gl.start_button.darken = true;
                 }
                 else {
@@ -425,11 +427,19 @@ void check_mouse(XEvent *e)
                 else {
                     gl.title_button.darken = false;
                 }
+                    */
+                    // Apply hover effects for title buttons
+                gl.start_button.darken = gl.start_button.is_inside(e->xbutton.x, true_y);
+                gl.title_button.darken = gl.title_button.is_inside(e->xbutton.x, true_y);
                 break;
 
             case Home:
                 // Call the hover handler for menu items
                 handle_menu_hover(e->xbutton.x, true_y);
+                break;
+                case Instructions:
+            case Settings:
+                // No hover effects needed for popups yet
                 break;
 
             default:
@@ -440,12 +450,14 @@ void check_mouse(XEvent *e)
         if (gl.mouse_cursor_on)
             return;
         //printf("mouse move "); fflush(stdout);
-        if (xdiff > 0) {
+       /*  if (xdiff > 0) {
         }
         else if (xdiff < 0) {
         }
         if (ydiff > 0) {
         }
+        */
+        // Set the mouse position for gameplay
         x11.set_mouse_position(200,200);
         savex = 200;
         savey = 200;
@@ -519,13 +531,22 @@ int check_keys(XEvent *e)
                   } else if (gameState == PAUSED) {
                   gameState = PLAYING;
                   }
-                  */
+                  
                 if (gl.screen == Title || gl.screen == Home || 
                         gl.screen == Instructions || gl.screen == Settings) {
                     // In menus, ESC goes back to main menu
                     printf("ESC pressed in menu - returning to home\n");
+                    */
+                    if (gl.screen == Instructions || gl.screen == Settings) {
+                        // In sub-menus, ESC goes back to main menu
+                        printf("ESC pressed in sub-menu - returning to home\n");
                     gl.screen = Home;
                 } 
+                else if (gl.screen == Home) {
+                    // From main menu, ESC goes back to welcome screen
+                    printf("ESC pressed in main menu - returning to title\n");
+                    gl.screen = Title;
+                }
                 else if (gameState == PLAYING) {
                     gameState = PAUSED;
                 } 
@@ -645,7 +666,7 @@ void physics()
     gl.mainTime->update();
 }
 
-/*void title_render()
+void title_render()
   {
   glClear(GL_COLOR_BUFFER_BIT);
 
@@ -664,11 +685,11 @@ gl.moto_side->render();
 //printf("%f, %f\n", gl.moto_side->pos.x, gl.moto_side->pos.y);
 // Setup text rectangle
 Rect r;  // Rect object for text positioning
-r.bot = gl.yres - 20;  // Set the bottom of the text near the bottom of the screen
-r.left = 10; 
+r.bot = gl.yres - 5;  // Set the bottom of the text near the bottom of the screen
+r.left = 5; 
 //title(r);
 //gl.title_button.render();
-//title(r);
+title(r);
 //physicsforCollision();
 
 // Display game title text
@@ -677,7 +698,7 @@ ggprint8b(&r, 16, 0xffec407a, "Pizza Delivery Simulator");
 // Render start game button
 gl.start_button.render();
 }
-*/
+
 void render()
 {
     Rect r;

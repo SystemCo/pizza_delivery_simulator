@@ -137,9 +137,9 @@ void drawGameOver()
       show_francisco(&r);
       show_lesslie(&r);*/
 
-    r.bot = boxT + 40;
+    r.bot = boxT + 80;
     r.left = gl.xres / 2;
-    ggprint16(&r, 1000,  0xFFCC5C, "PRESS X TO EXIT GAME");
+    ggprint16(&r, 1000,  0xFFCC5C, "PRESS X TO EXIT GAME AND RETURN TO HOME SCREEN");
 
     glDisable(GL_BLEND);
 }   

@@ -21,6 +21,7 @@ const char* background_files[NUM_BACKGROUNDS] = {
 
 Image* backgrounds[NUM_BACKGROUNDS] = {nullptr};
 
+static bool welcome_button_hover = false;
 
 // Initialize all background images
 void init_backgrounds()
@@ -35,6 +36,34 @@ void show_avelina(Rect* r) {
     ggprint8b(r, 16, 0xffec407a, "Lina");
 }
 
+// Function to check for game over state and handle returning to home screen
+void check_gameover_return() {
+       // Debug the current state
+       static int debug_counter = 0;
+       if (debug_counter++ % 60 == 0) { // Print only every 60 frames to avoid spam
+           printf("GameOver check - screen: %d, x key: %d\n", 
+                  gl.screen, gl.keys[XK_x]);
+       }
+       
+    // Check if we're in GameOver state and x is pressed
+    if (gl.screen == GameOver && gl.keys[XK_x]) {
+        printf("X pressed on game over screen - returning to title\n");
+        
+        // Reset game state
+        gl.gameOver = false;
+        gl.gameAttempts = 3; // Reset attempts
+        gl.remainingTime = gl.gameTime; // Reset timer
+        gl.money = MoneySystem(); // Reset money
+        
+        // Change screen to Title
+        gl.screen = Title;
+        
+        // Reset the key state to prevent immediately triggering again
+        gl.keys[XK_x] = 0;
+    }
+}
+
+
 Title_Exit_Button::Title_Exit_Button()
   : Button(200,200)
 {
@@ -44,12 +73,25 @@ Title_Exit_Button::Title_Exit_Button()
     set_dims(200,50);
     */
     set_color(255,100,0);
-    set_pos(gl.xres/2 + 100, gl.yres/2 + 200);
-    set_dims(400,70);
+    // Move button higher on screen
+    //set_pos(gl.xres/2, gl.yres*0.65);
+    // Position at the bottom third of the screen, fully visible
+    set_pos(gl.xres/2, gl.yres*0.75);
+    // Make the button wider and taller to better fit the text
+    set_dims(700,80);
+    
 }
 
 void Title_Exit_Button::click(int x, int y) {
-    if (is_inside(x,y)) {
+   // if (is_inside(x,y)) {
+   // Check if click is inside our custom-drawn button
+   bool is_inside_new_button = 
+   x >= gl.xres/2 - 350 && 
+   x <= gl.xres/2 + 350 && 
+   y >= 80 && 
+   y <= 160;
+   
+if (is_inside_new_button) {
         printf("Title clicked - navigating to Home menu\n");
         gl.screen = Home;
     }
@@ -96,27 +138,80 @@ void render_title_screen() {
     backgrounds[SPLASH_BG]
       ->show(gl.scale, gl.xres/2, gl.yres/2, 0.0f);
     gl.moto_side->render();
-    gl.moto_side2->render();
+    //gl.moto_side2->render();
 
+      // Draw welcome button directly here instead of using Button class
+    // Moved to bottom of screen
+    //glColor3f(1.0f, 0.4f, 0.0f); // Orange color
+     // Change color based on hover state
+     if (welcome_button_hover) {
+        glColor3f(1.0f, 0.5f, 0.1f); // Brighter orange when hovered
+    } else {
+        glColor3f(1.0f, 0.4f, 0.0f); // Normal orange color
+    }
+    glBegin(GL_QUADS);
+    glVertex2f(gl.xres/2 - 350, 80); // Bottom coordinates
+    glVertex2f(gl.xres/2 + 350, 80);
+    glVertex2f(gl.xres/2 + 350, 160); // Top coordinates
+    glVertex2f(gl.xres/2 - 350, 160);
+    glEnd();
+    
+    // Draw text on top of button with black color
+    Rect text_r;
+    text_r.bot = 115; // Centered vertically in the button
+    text_r.left = gl.xres/2;
+    text_r.center = 1; // Center text
+    ggprint16(&text_r, 32, 0x00000000, "WELCOME TO THE PIZZA DELIVERY SIMULATOR!"); // Black text
+   
     Rect r;
+    //r.bot = gl.yres - 20;
+    //r.left = 10;
+     // Position the animated text near the middle of the screen, above the motorcycles
+     r.bot = gl.yres/2 + 100;
+     r.left = gl.xres/2 - 250; // Center the text horizontally
+     r.center = 0; // Don't use built-in centering
 
-r.bot  = gl.yres - 20;
-r.left = 10;
-
-
-title(r);  
-
-
-    ggprint8b(&r, 16, 0xffec407a, "Pizza Delivery Simulator");
-
-    gl.title_button.render();
-    //gl.start_button.render();
+    // This function draws the yellow animated text
+    title(r);  
 }
 
+    // Add function to check if mouse is over the welcome button
+void handle_title_hover(int x, int y) {
+    // Check if mouse coordinates are inside the welcome button
+    welcome_button_hover = 
+        x >= gl.xres/2 - 350 && 
+        x <= gl.xres/2 + 350 && 
+        y >= 80 && 
+        y <= 160;
+}
+
+
+    //ggprint8b(&r, 16, 0xffec407a, "Pizza Delivery Simulator");
+
+    //gl.title_button.render();
+    //gl.start_button.render();
+
+
+
+
+// Update handle_title_input to also handle the click for our custom button
 void handle_title_input(int x, int y, bool is_press) {
     if (!is_press) return;
-    gl.title_button.click(x,y);
+    //gl.title_button.click(x,y);
     //gl.start_button.click(x,y);
+
+
+    // Check if click is inside our custom-drawn button
+    bool is_inside_new_button = 
+        x >= gl.xres/2 - 350 && 
+        x <= gl.xres/2 + 350 && 
+        y >= 80 && 
+        y <= 160;
+        
+    if (is_inside_new_button) {
+        printf("Welcome button clicked - navigating to Home menu\n");
+        gl.screen = Home;
+    }
 }
 
 void handle_menu_click(int x, int y, bool is_press) {

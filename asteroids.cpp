@@ -257,6 +257,7 @@ int main()
                 break;
             case GameOver:
                 drawGameOver();
+                check_gameover_return();
                 break;
         }
         x11.swapBuffers();
@@ -360,8 +361,9 @@ void check_mouse(XEvent *e)
             switch (gl.screen) {
                 case Title:
                     printf("Processing Title screen click\n");
-                    gl.title_button.click(e->xbutton.x, true_y);
-                    gl.start_button.click(e->xbutton.x, true_y);
+                    //gl.title_button.click(e->xbutton.x, true_y);
+                    //gl.start_button.click(e->xbutton.x, true_y);
+                    handle_title_input(e->xbutton.x, true_y, true);
                     break;
                 case Home:
                     printf("Processing Home/Menu screen click\n");
@@ -434,6 +436,8 @@ void check_mouse(XEvent *e)
                     // Apply hover effects for title buttons
                 gl.start_button.darken = gl.start_button.is_inside(e->xbutton.x, true_y);
                 gl.title_button.darken = gl.title_button.is_inside(e->xbutton.x, true_y);
+                // Add hover detection for custom welcome button
+                handle_title_hover(e->xbutton.x, true_y);
                 break;
 
             case Home:
@@ -504,6 +508,9 @@ int check_keys(XEvent *e)
                 break;
             case XK_Down:
                 gl.bike.pedal = Neutral;
+                break;
+            case XK_x:
+                gl.keys[XK_x] = 0; // Make sure X is cleared on key release
                 break;
         }
         return 0;
@@ -584,8 +591,12 @@ int check_keys(XEvent *e)
                 break;
             case XK_x:
                 if (gl.screen == GameOver) { 
-                    return 1;
+                    //return 1;
+                    printf("X KEY PRESSED IN GAME OVER - setting key state\n");
+                    gl.keys[XK_x] = 1;
+                    return 0;
                 }
+                break;
 
         }
     }
@@ -668,6 +679,7 @@ void physics()
     gl.bike.move();
     gl.mainTime->update();
     handle_car_crash();
+    check_gameover_return(); // Check for x key in game over state
     
 }
 

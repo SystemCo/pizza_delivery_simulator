@@ -34,8 +34,12 @@ void handle_settings_click(int x, int y, bool is_press);
 
 void render_title_screen();
 void handle_title_input(int x, int y, bool is_press);
+void handle_title_hover(int x, int y);
 
 void aolmedo_title_physics();
+
+// Function to check for game over state and handle returning to home screen
+void check_gameover_return();
 
 
 

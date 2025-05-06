@@ -73,6 +73,7 @@ extern void timeCopy(struct timespec *dest, struct timespec *source);
 const int carCount = 5;
 void drawPauseMenu();
 void physicsforCollision();
+void title(Rect &r);
 //void textMoveRight();
 Game_Button pauseButton;
 /*enum GameState {
@@ -408,6 +409,7 @@ void check_mouse(XEvent *e)
         //
         // Handle hover effects based on current screen
         switch (gl.screen) {
+            //title(r);
             case Title:
                 // Check if mouse is inside the start button (for hover effect)
                 if (gl.start_button.is_inside(e->xbutton.x, true_y)) {
@@ -639,6 +641,7 @@ void physics()
     cars[0].physics();
     cars[1].physics();
     physicsforCollision();
+    deliveryDetection();
     gl.bike.move();
     gl.mainTime->update();
 }
@@ -707,6 +710,13 @@ void render()
     gl.box8.render();
     gl.box9.render();
     gl.box10.render();
+    gl.box11.render();
+    gl.box12.render();
+    gl.box13.render();
+    gl.box14.render();
+    gl.box15.render();
+    gl.box16.render();
+    myRender(); 
     r.left = 10;
     r.center = 0;
     //ggprint8b(&r, 16, 0x00ff0000, "3350 - Asteroids");

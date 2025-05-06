@@ -15,7 +15,6 @@
 #define NUM_BACKGROUNDS 3
 
 
-
 // Function declarations
 void show_avelina(Rect *r);
 void init_backgrounds();

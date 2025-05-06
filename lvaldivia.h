@@ -70,6 +70,8 @@ void activateRandomDeliveries();
 void manageGame(float dT);
 void drawGameOver();
 void printScoreNTime();
+void checkDelivery(int locIndex);
+
 #endif
 
 //add a counter that calls the physics counter, instead of real time

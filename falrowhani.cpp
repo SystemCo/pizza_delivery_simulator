@@ -11,6 +11,7 @@
 //#include "GL.h"
 #include "dcarter.h"
 #include "fandrade.h"
+#include "lvaldivia.h"
 #include <iostream>
 #include "falrowhani.h"
 #include "shared.h" 
@@ -144,25 +145,7 @@ void title_moto_physics(int frame, Animation animation[5]);
 //modified by Fenoon: me 
 
 
-void title_physics()
-{
-    static int frame = 0;
- Animation  animations[3];
-    animations[0] = {2, 0, 0, 0};
-    animations[1] = {2, 5, 25, 0};
-    animations[2] = {0, 5, 0, 0};
 
-   // title_moto_physics(frame, animations);
-    
-    const int totalFrames = 500; 
-    const int section_count = 3;     
-
-    // calling animate function direcly 
-    gl.moto_side->animate(frame, animations, section_count, totalFrames);
-    frame += 1;
-    frame %= totalFrames;
-
-}
 
 //currently not working 
 
@@ -198,6 +181,32 @@ void title(Rect &r)
         frame++;
     }
 }
+
+
+void title_physics()
+{
+    static int frame = 0;
+    static bool animation_done = false;
+
+    Animation animations[3];
+    animations[0] = {2, 0, 0, 0};
+    animations[1] = {2, 5, 25, 0};
+    animations[2] = {0, 5, 0, 0};
+
+    const int totalFrames = 500;
+    const int section_count = 3;
+
+    if (!animation_done) {
+        gl.moto_side->animate(frame, animations, section_count, totalFrames);
+        frame++;
+
+        if (frame >= totalFrames) {
+            animation_done = true;
+            frame = totalFrames - 1;
+        }
+    }
+}
+
 
 
 
@@ -362,6 +371,9 @@ void physicsforCollision()
 
     bool crashed =false; 
 
+    static bool alreadyDeducted = false;
+
+
     //static bool was_colliding = false;
 
     float motoX = moto.pos.x;
@@ -381,9 +393,9 @@ void physicsforCollision()
 
         gl.bike.crash();
         crashed=true; 
-        deductMoney(money, 5.0f);
+   //     deductMoney(gl.money, 5.0f);
   
-  }
+    }
   
 
 
@@ -399,7 +411,7 @@ void physicsforCollision()
 
         gl.bike.crash();
         crashed=true; 
-        deductMoney(money, 5.0f);
+      //  deductMoney(gl.money, 5.0f);
 
         
     }
@@ -415,7 +427,7 @@ void physicsforCollision()
 
        gl.bike.crash();
        crashed=true; 
-       deductMoney(money, 5.0f);
+      // deductMoney(gl.money, 5.0f);
 
        
     }
@@ -432,9 +444,9 @@ void physicsforCollision()
 
         gl.bike.crash();
         crashed=true; 
-        deductMoney(money, 5.0f);
+        //deductMoney(gl.money, 5.0f);
 
-        }
+    }
        
 
     
@@ -448,7 +460,7 @@ void physicsforCollision()
 
         gl.bike.crash();
         crashed=true; 
-        deductMoney(money, 5.0f);
+      //  deductMoney(gl.money, 5.0f);
 
 
 
@@ -463,11 +475,9 @@ void physicsforCollision()
         show_warning = 1;
         warning_timer = 100;
 
-     gl.bike.crash();
-     crashed=true; 
-     deductMoney(money, 5.0f);
-
-
+        gl.bike.crash();
+        crashed=true; 
+       // deductMoney(gl.money, 5.0f);
     }
     
     
@@ -479,11 +489,11 @@ void physicsforCollision()
         show_warning = 1;
         warning_timer = 100;
 
-    gl.bike.crash();
-    crashed=true; 
-    deductMoney(money, 5.0f);
-        }
-    
+        gl.bike.crash();
+        crashed=true; 
+        //deductMoney(gl.money, 5.0f);
+    }
+
     
     if (gl.bike.pos.x >= gl.box8.pos[0] &&
         gl.bike.pos.x <= gl.box8.pos[0] + gl.box8.width &&
@@ -495,10 +505,9 @@ void physicsforCollision()
 
         gl.bike.crash();
         crashed=true; 
-        deductMoney(money, 5.0f);
+        //deductMoney(gl.money, 5.0f);
     
     }
-   
     
     if (gl.bike.pos.x >= gl.box9.pos[0] &&
         gl.bike.pos.x <= gl.box9.pos[0] + gl.box9.width &&
@@ -510,12 +519,11 @@ void physicsforCollision()
 
         gl.bike.crash();
         crashed=true; 
-        deductMoney(money, 5.0f);
+        //deductMoney(gl.money, 5.0f);
 
 
     
     }
-    
     
     if (gl.bike.pos.x >= gl.box10.pos[0] &&
         gl.bike.pos.x <= gl.box10.pos[0] + gl.box10.width &&
@@ -527,21 +535,24 @@ void physicsforCollision()
 
         gl.bike.crash();
         crashed=true; 
-        deductMoney(money, 5.0f);
+        //deductMoney(gl.money, 5.0f);
      
     }
+    if (crashed && !alreadyDeducted) {
+        deductMoney(gl.money, 5.0f);
+        std::cout << "Crash! -$5\n";
+        alreadyDeducted = true;
+    }
     if (!crashed) {
+        alreadyDeducted = false;
         gl.bike.crash_dir = 0;
     }
-    
-
- 
-
-    
 }   
 
 void deliveryDetection() 
 {
+    static bool detect= false; 
+
     float motoX = gl.bike.pos.x;
     float motoY = gl.bike.pos.y;
 
@@ -549,8 +560,9 @@ void deliveryDetection()
         motoX <= gl.box11.pos[0] + gl.box11.width &&
         motoY >= gl.box11.pos[1] &&
         motoY <= gl.box11.pos[1] + gl.box11.height) {
-       // std::cout << "Delivery at box11!\n";
-       addMoney(money, 10.0f);
+        std::cout << "Delivery at box11!\n";
+       checkDelivery(0);
+       //addMoney(gl.money, 10.0f);
 
     }
 
@@ -558,8 +570,9 @@ void deliveryDetection()
         motoX <= gl.box12.pos[0] + gl.box12.width &&
         motoY >= gl.box12.pos[1] &&
         motoY <= gl.box12.pos[1] + gl.box12.height) {
-        //std::cout << "Delivery at box12!\n";
-        addMoney(money, 10.0f);
+        std::cout << "Delivery at box12!\n";
+        checkDelivery(1);
+        //addMoney(gl.money, 10.0f);
 
     }
 
@@ -568,7 +581,8 @@ void deliveryDetection()
         motoY >= gl.box13.pos[1] &&
         motoY <= gl.box13.pos[1] + gl.box13.height) {
         std::cout << "Delivery at box13!\n";
-        addMoney(money, 10.0f);
+        checkDelivery(2);
+        //addMoney(gl.money, 10.0f);
 
     }
 
@@ -576,8 +590,9 @@ void deliveryDetection()
         motoX <= gl.box14.pos[0] + gl.box14.width &&
         motoY >= gl.box14.pos[1] &&
         motoY <= gl.box14.pos[1] + gl.box14.height) {
-       // std::cout << "Delivery at box14!\n";
-        addMoney(money, 10.0f);
+       std::cout << "Delivery at box14!\n";
+       checkDelivery(3);
+        //addMoney(gl.money, 10.0f);
 
     }
 
@@ -585,8 +600,9 @@ void deliveryDetection()
         motoX <= gl.box15.pos[0] + gl.box15.width &&
         motoY >= gl.box15.pos[1] &&
         motoY <= gl.box15.pos[1] + gl.box15.height) {
-        //std::cout << "Delivery at box15!\n";
-        addMoney(money, 10.0f);
+        std::cout << "Delivery at box15!\n";
+        checkDelivery(4);
+       // addMoney(gl.money, 10.0f);
 
     }
 
@@ -595,9 +611,19 @@ void deliveryDetection()
         motoX <= gl.box16.pos[0] + gl.box16.width &&
         motoY >= gl.box16.pos[1] &&
         motoY <= gl.box16.pos[1] + gl.box16.height) {
-       // std::cout << "Delivery at box16!\n";
-       addMoney(money, 10.0f);
+       std::cout << "Delivery at box16!\n";
+       //checkDelivery(5);
+       //ddMoney(gl.money, 10.0f);
 
+    }
+
+    if (detect) {
+        addMoney(gl.money, 10.0f);
+        detect = true;
+    }
+    if (!detect) {
+        detect = false;
+     
     }
 
 }
@@ -607,6 +633,8 @@ void deliveryDetection()
 void myRender()
 {
     Rect r; 
+
+   
 
     gl.box.render();
     gl.box2.render();
@@ -657,14 +685,13 @@ void Motorcycle::crash()
 
 
     if (crash_dir == 0) {
+        if (velocity.get() > 0) {
+            crash_dir = 1;  //moving forward
+        } else {
+            crash_dir = -1; // Moving backward
+        }
+
         velocity.set(0.0);
-    }
-
-
-    if (velocity.get() > 0) {
-        crash_dir = 1;  //moving forward
-    } else {
-        crash_dir = -1; // Moving backward
     }
 
 }

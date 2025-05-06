@@ -67,6 +67,7 @@ class Global { // Originally from Asteroids framework
     int show_bike;
     Motorcycle bike;
     Entity* moto_side;
+    Entity* moto_side2;
     Title_Exit_Button title_button;
     StartGame_Button  start_button;
     Game_Button pause_button;

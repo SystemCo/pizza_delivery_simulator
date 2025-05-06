@@ -116,6 +116,7 @@ Global::Global()
     // mouse value 1 = true = mouse is a regular mouse.
     mouse_cursor_on = 1;
     moto_side = new Entity("images/moto_side.gif");
+    moto_side2 = new Entity("images/moto_side.gif");
     scale = resolution_scale(&background);
     gameState = PLAYING;
 
@@ -218,7 +219,7 @@ int main()
             case Title:
                 while (physicsCountdown >= physicsRate) {
                     //coommenting this out 
-                    //aolmedo_title_physics();
+                    aolmedo_title_physics();
                     title_physics();
                     physicsCountdown -= physicsRate;
                 }
@@ -304,6 +305,7 @@ void init_opengl(void)
     //called intro image here 
     gl.show.init_gl();
     gl.moto_side->init_gl();
+    gl.moto_side2->init_gl();
     for (int i = 0; i < carCount; i++)
         cars[i].init_gl();
     //timerList.initAll();

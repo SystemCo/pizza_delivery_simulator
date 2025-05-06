@@ -73,8 +73,8 @@ void aolmedo_title_physics() {
     float radius = 30.0f;
     float cx = gl.xres/2 - 200, cy = gl.yres/2 + 100;
     float ang = moto_offset * (3.14159f/180.0f);
-    gl.moto_side->pos.x = cx + radius * cos(ang);
-    gl.moto_side->pos.y = cy + radius * sin(ang);
+    gl.moto_side2->pos.x = cx + radius * cos(ang);
+    gl.moto_side2->pos.y = cy + radius * sin(ang);
 
     // hover-fade on the Start button
     if (gl.start_button.darken)
@@ -88,6 +88,7 @@ void render_title_screen() {
     backgrounds[SPLASH_BG]
       ->show(gl.scale, gl.xres/2, gl.yres/2, 0.0f);
     gl.moto_side->render();
+    gl.moto_side2->render();
 
     Rect r;
 r.bot  = gl.yres - 20;

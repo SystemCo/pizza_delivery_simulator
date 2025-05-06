@@ -158,7 +158,7 @@ void title(Rect &r)
 
     char buffer[64] = {0};
     strncpy(buffer, sentence, letters_to_show);
-    ggprint8b(&r, 62, 0xFFFFFF00, "%s", buffer);
+    ggprint16(&r, 62, 0xFFFFFF00, "%s", buffer);
 
     if (letters_to_show < (int)strlen(sentence)) {
         frame++;
@@ -169,7 +169,7 @@ void title(Rect &r)
 void title_physics()
 {
     static int frame = 0;
-    static bool animation_done = false;
+    //static bool animation_done = false;
 
     Animation animations[3];
     animations[0] = {2, 0, 0, 0};
@@ -179,15 +179,16 @@ void title_physics()
     const int totalFrames = 210;
     const int section_count = 3;
 
-    if (!animation_done) {
-        gl.moto_side->animate(frame, animations, section_count, totalFrames);
-        frame++;
+    //if (!animation_done) {
+    gl.moto_side->animate(frame, animations, section_count, totalFrames);
+    frame++;
+    frame %= totalFrames;
 
-        if (frame >= totalFrames) {
-            animation_done = true;
-            frame = totalFrames - 1;
-        }
-    }
+        //if (frame >= totalFrames) {
+            //animation_done = true;
+            //frame = totalFrames - 1;
+        //}
+    //}
 }
 
 

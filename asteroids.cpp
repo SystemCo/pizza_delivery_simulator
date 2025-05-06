@@ -304,9 +304,9 @@ void init_opengl(void)
     //called intro image here 
     gl.show.init_gl();
     gl.moto_side->init_gl();
-    cars[0].init_gl();
+    for (int i = 0; i < carCount; i++)
+        cars[i].init_gl();
     //timerList.initAll();
-    cars[1].init_gl();
     //gl.attempts.init_gl();
     for (int i = 0; i < 3; i++) {
         gl.attempts[i].init_gl();
@@ -636,10 +636,10 @@ int check_keys(XEvent *e)
 
 void physics()
 {
-    cars[0].update_frame();
-    cars[1].update_frame();
-    cars[0].physics();
-    cars[1].physics();
+    for (int i = 0; i < carCount; i++)
+        cars[i].update_frame();
+    for (int i = 0; i < carCount; i++)
+        cars[i].physics();
     physicsforCollision();
     deliveryDetection();
     gl.bike.move();
@@ -750,9 +750,8 @@ void render()
         //  physicsforCollision();
         // Commented this so title button would disappear during playing state
         //gl.title_button.render();
-        cars[0].render();
-        cars[1].render();
-        //printf("%f\n", cars[0].pos.x);
+        for (int i = 0; i < carCount; i++)
+            cars[i].render();
         attemptsRender(&r);
         //  gl.box.render();
         //added this here

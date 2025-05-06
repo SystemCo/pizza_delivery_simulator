@@ -600,6 +600,23 @@ void Motorcycle::init_gl()
     head.init_gl();
 }
 
+bool Motorcycle::collides(Line_Follower obstacle)
+{
+    const int obstacleWidth  = obstacle.scale;
+    const int obstacleHeight = obstacle.scale * (obstacle.height / rows) /
+                                                (width / cols);
+    const float leftBound  = obstacle.pos.x - obstacleWidth;
+    const float rightBound = obstacle.pos.x + obstacleWidth;
+    const float topBound   = obstacle.pos.y + obstacleHeight;
+    const float lowerBound = obstacle.pos.y - obstacleHeight;
+
+    if ((pos.x >= leftBound && pos.x <= rightBound &&
+        pos.y >= lowerBound && pos.y <= topBound))
+        return true;
+    else
+        return false;
+}
+
 // ***************** Button Method Implementations *******************
 // *******************************************************************
 Button::Button(float x, float y)

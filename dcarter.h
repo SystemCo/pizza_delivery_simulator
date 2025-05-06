@@ -176,7 +176,7 @@ class Motorcycle : public Entity {
         void move();
         void render();
         void init_gl();
-        bool collides_with_box(const Box& box);
+        bool collides(Line_Follower obstacle);
         void crash();
     };
 

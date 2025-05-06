@@ -17,6 +17,9 @@ void show_fps(Rect* r);
 // Define the path for all cars
 void initCars();
 
+// Handles all explosion logic and checking for motorcycle crash with cars
+void handle_car_crash();
+
 // Rendering and physics for the title screen
 struct Animation {
     float delta_x;
@@ -155,7 +158,6 @@ struct RectStruct;
 // Models the main playable character
 class Motorcycle : public Entity {
     private:
-        Percent velocity;
         //Percent turn_dir;
         float direction = 0;
        // -1 for backward, 1 for forward
@@ -163,6 +165,7 @@ class Motorcycle : public Entity {
         Image head {"./images/Moto_head.jpg"}; // white alphaColor
         void set_turn();
     public:
+        Percent velocity;
         bool right;
         int crash_dir = 0; 
         bool left;
@@ -176,7 +179,7 @@ class Motorcycle : public Entity {
         void move();
         void render();
         void init_gl();
-        bool collides_with_box(const Box& box);
+        bool collides(Line_Follower &obstacle);
         void crash();
     };
 

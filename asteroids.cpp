@@ -116,6 +116,7 @@ Global::Global()
     // mouse value 1 = true = mouse is a regular mouse.
     mouse_cursor_on = 1;
     moto_side = new Entity("images/moto_side.gif");
+    moto_side2 = new Entity("images/moto_side.gif");
     scale = resolution_scale(&background);
     gameState = PLAYING;
 
@@ -219,7 +220,7 @@ int main()
                 while (physicsCountdown >= physicsRate) {
                     //coommenting this out 
                     aolmedo_title_physics();
-                    //  title_physics();
+                    title_physics();
                     physicsCountdown -= physicsRate;
                 }
                 render_title_screen();
@@ -303,13 +304,15 @@ void init_opengl(void)
     //called intro image here 
     gl.show.init_gl();
     gl.moto_side->init_gl();
-    cars[0].init_gl();
+    gl.moto_side2->init_gl();
+    for (int i = 0; i < carCount; i++)
+        cars[i].init_gl();
     //timerList.initAll();
-    cars[1].init_gl();
     //gl.attempts.init_gl();
     for (int i = 0; i < 3; i++) {
         gl.attempts[i].init_gl();
     }
+    gl.explosion.init_gl();
     initGame();
     initDeliveryLocations();
 
@@ -656,14 +659,16 @@ int check_keys(XEvent *e)
 
 void physics()
 {
-    cars[0].update_frame();
-    cars[1].update_frame();
-    cars[0].physics();
-    cars[1].physics();
+    for (int i = 0; i < carCount; i++)
+        cars[i].update_frame();
+    for (int i = 0; i < carCount; i++)
+        cars[i].physics();
     physicsforCollision();
     deliveryDetection();
     gl.bike.move();
     gl.mainTime->update();
+    handle_car_crash();
+    
 }
 
 void title_render()
@@ -713,9 +718,6 @@ void render()
     // Use the game background from the background array when playing
     backgrounds[GAME_BG]->show(gl.scale, gl.xres/2, gl.yres/2, 0.0f);
 
-
-
-
     r.bot = gl.yres - 20;
 
     /* Debugging..*/
@@ -741,7 +743,6 @@ void render()
     r.center = 0;
     //ggprint8b(&r, 16, 0x00ff0000, "3350 - Asteroids");
 
-
     show_fps(&r);
     gl.timerList->renderAll();
     gl.mainTime->timeRender();
@@ -763,17 +764,24 @@ void render()
            show_francisco(&r);
            show_lesslie(&r);
 
+<<<<<<< HEAD
            } */
         if (gl.show_bike)
             gl.bike.render();
+=======
+        //} */
+        gl.bike.render();
+>>>>>>> c22b46b430e47bd4c6c216f93f28d358f40e670e
         printScoreNTime();
         //  physicsforCollision();
         // Commented this so title button would disappear during playing state
         //gl.title_button.render();
-        cars[0].render();
-        cars[1].render();
-        //printf("%f\n", cars[0].pos.x);
+        for (int i = 0; i < carCount; i++)
+            cars[i].render();
         attemptsRender(&r);
+        if (gl.expl_pos.x > -1)
+            gl.explosion.render(30.0f, gl.expl_pos, 0.0f);
+
         //  gl.box.render();
         //added this here
         //  if (gameState == PAUSED) {
@@ -783,6 +791,6 @@ void render()
         //   if (gameState == PAUSED) {
         //     drawPauseMenu();
         //}
-}
+    }
 }
 

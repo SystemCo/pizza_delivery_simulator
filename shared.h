@@ -40,6 +40,7 @@ class Global { // Originally from Asteroids framework
     Box box14; 
     Box box15; 
     Box box16;
+    Box box17; 
 
     //float deliveryLocations[10][2]; //index can be changed depending of delievery locations
     int numActiveDelieries;
@@ -66,6 +67,7 @@ class Global { // Originally from Asteroids framework
     int show_bike;
     Motorcycle bike;
     Entity* moto_side;
+    Entity* moto_side2;
     Title_Exit_Button title_button;
     StartGame_Button  start_button;
     Game_Button pause_button;
@@ -88,6 +90,9 @@ class Global { // Originally from Asteroids framework
         {830, 690, 25.0f, 0.0f, "./images/pizza.png", black, 1, 1}
     };
 
+    Sprite explosion = {"./images/exp44.png", black, 4, 4};
+    Position expl_pos = {-10, -10};
+
      //Entity attempts { 
     //  580, 440,10.0f , 0.0f, "./images/pizza.png", black, 1, 1
     // };
@@ -99,7 +104,6 @@ class Global { // Originally from Asteroids framework
     MoneySystem money;
     Global();
     ~Global();
-
 };
 
 

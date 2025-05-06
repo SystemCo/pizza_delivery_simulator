@@ -3,6 +3,7 @@
 
 
 #include "fonts.h"
+#include "fandrade.h"
 #include <GL/glx.h>
 
 
@@ -28,6 +29,7 @@ void physicsforCollision();
 void title(Rect &r);
 void myRender();
 void deliveryDetection();
+void deductMoney(MoneySystem &money, float amount) ;
 //bool checkCollision(Motorcycle& moto);
 
 

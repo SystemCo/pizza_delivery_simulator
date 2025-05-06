@@ -147,35 +147,18 @@ void title_moto_physics(int frame, Animation animation[5]);
 
 
 
-//currently not working 
-
-
-/*void title(Rect &r) 
-{
-    const char* sentence = "Pizza Delivery Simulator";
-
-    r.bot = gl.yres - 20;
-
-    // Iterate through each character in the sentence and print it with a delay
-    for (int i = 0; sentence[i] != '\0'; i++) {
-        ggprint8b(&r, 16, 0xFFFFFF00, "%c", sentence[i]);
-        usleep(200000);  // Sleep for 0.2 seconds between characters
-        r.left += 16;  // Move the text position to the right 
-    }
-}
-*/
 void title(Rect &r) 
 {
     static int frame = 0;
     const char* sentence = "Pizza Delivery Simulator";
-    int letters_to_show = frame / 80;
+    int letters_to_show = frame / 100;
 
     r.bot = 400;
     r.left = 500 - ((int)strlen(sentence) * 9);
 
     char buffer[64] = {0};
     strncpy(buffer, sentence, letters_to_show);
-    ggprint8b(&r, 62, 0xFFFFFF00, "%s", buffer);
+    ggprint16(&r, 62, 0xFFFFFF00, "%s", buffer);
 
     if (letters_to_show < (int)strlen(sentence)) {
         frame++;
@@ -186,26 +169,32 @@ void title(Rect &r)
 void title_physics()
 {
     static int frame = 0;
-    static bool animation_done = false;
+    //static bool animation_done = false;
 
     Animation animations[3];
     animations[0] = {2, 0, 0, 0};
     animations[1] = {2, 5, 25, 0};
     animations[2] = {0, 5, 0, 0};
 
-    const int totalFrames = 500;
+    const int totalFrames = 210;
     const int section_count = 3;
 
-    if (!animation_done) {
-        gl.moto_side->animate(frame, animations, section_count, totalFrames);
-        frame++;
+    //if (!animation_done) {
+    gl.moto_side->animate(frame, animations, section_count, totalFrames);
+    frame++;
+    frame %= totalFrames;
 
-        if (frame >= totalFrames) {
-            animation_done = true;
-            frame = totalFrames - 1;
-        }
-    }
+        //if (frame >= totalFrames) {
+            //animation_done = true;
+            //frame = totalFrames - 1;
+        //}
+    //}
 }
+
+
+
+// Global (or static) variables scoped to this file
+
 
 
 
@@ -242,14 +231,14 @@ void initGame()
     gl.box5.pos[0] = 235.0f; 
     gl.box5.pos[1] = 300.0f;
 
-    gl.box6.width = 375;
+    gl.box6.width = 145;
     gl.box6.height = 20;
 
     gl.box6.pos[0] = 235.0f; 
     gl.box6.pos[1] = 160.0f;
 
     gl.box7.width = 110;
-    gl.box7.height = 110;
+    gl.box7.height = 80;
 
     gl.box7.pos[0] = 365.0f; 
     gl.box7.pos[1] = 65.0f;
@@ -343,6 +332,12 @@ void initGame()
 
     gl.box16.pos[0] =  890.0f; 
     gl.box16.pos[1] = 150.0f;
+
+    gl.box17.width = 140;
+    gl.box17.height = 20;
+
+    gl.box17.pos[0] = 480.0f; 
+    gl.box17.pos[1] = 160.0f;
     
 
 }
@@ -404,14 +399,14 @@ void physicsforCollision()
         gl.bike.pos.y >= gl.box2.pos[1] &&
         gl.bike.pos.y <= gl.box2.pos[1] + gl.box2.height) {
         
-        //std::cout << "Collision with box 2!\n";
+    
         show_warning = 1;
         warning_timer = 100;
         
 
         gl.bike.crash();
         crashed=true; 
-      //  deductMoney(gl.money, 5.0f);
+    
 
         
     }
@@ -540,7 +535,6 @@ void physicsforCollision()
     }
     if (crashed && !alreadyDeducted) {
         deductMoney(gl.money, 5.0f);
-        std::cout << "Crash! -$5\n";
         alreadyDeducted = true;
     }
     if (!crashed) {
@@ -652,6 +646,7 @@ void myRender()
     gl.box14.render();
     gl.box15.render();
     gl.box16.render();
+    gl.box17.render();
 
 
     if (show_warning) {

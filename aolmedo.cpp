@@ -3,6 +3,7 @@
 /***********************************************************************************/
 #include "shared.h"
 #include "aolmedo.h"
+#include "falrowhani.h"
 #include <cstdio>
 #include <GL/gl.h>
 #include <cmath>
@@ -79,8 +80,8 @@ void aolmedo_title_physics() {
     float radius = 30.0f;
     float cx = gl.xres/2 - 200, cy = gl.yres/2 + 100;
     float ang = moto_offset * (3.14159f/180.0f);
-    gl.moto_side->pos.x = cx + radius * cos(ang);
-    gl.moto_side->pos.y = cy + radius * sin(ang);
+    gl.moto_side2->pos.x = cx + radius * cos(ang);
+    gl.moto_side2->pos.y = cy + radius * sin(ang);
 
     /* hover-fade on the Start button
     if (gl.start_button.darken)
@@ -95,10 +96,20 @@ void render_title_screen() {
     backgrounds[SPLASH_BG]
       ->show(gl.scale, gl.xres/2, gl.yres/2, 0.0f);
     gl.moto_side->render();
+    gl.moto_side2->render();
 
     Rect r;
+<<<<<<< HEAD
     r.bot  = gl.yres - 20;
     r.left = 10;
+=======
+r.bot  = gl.yres - 20;
+r.left = 10;
+
+
+title(r);  
+
+>>>>>>> c22b46b430e47bd4c6c216f93f28d358f40e670e
     ggprint8b(&r, 16, 0xffec407a, "Pizza Delivery Simulator");
 
     gl.title_button.render();

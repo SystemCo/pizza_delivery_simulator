@@ -125,6 +125,30 @@ void initCars()
     }
 }
 
+void handle_car_crash()
+{
+if (gl.expl_pos.x > -1) {
+        gl.explosion.update_frame();
+        if (gl.explosion.frame == 0) {
+            gl.expl_pos.x = -10;
+        }
+    } else {
+        for (int i = 0; i < 5; i++) {
+            if (gl.bike.collides(cars[i])) {
+                gl.expl_pos.x = gl.bike.pos.x;
+                gl.expl_pos.y = gl.bike.pos.y;
+                gl.explosion.frame = 1;
+                gl.explosion.delay = 2; 
+                // explosion takes 2 * (16 / 60) = 1/2 second
+            }
+        }
+        if (gl.expl_pos.x > -1) {
+            deductMoney(gl.money, 5.0f);
+            gl.bike.velocity.set(0.0f);
+        }
+    }
+}
+
 // **************** Convenient Math funcs *****************
 template <typename T>
 T abs_diff(T a, T b)
@@ -159,16 +183,6 @@ int resolution_scale(int width, int height)
 int resolution_scale(Image* img)
 {
     return resolution_scale(img->width, img->height);
-}
-
-// *********** Animation for Title sceen ******************
-// void Entity::jump_edges();
-// void Entity::animate();
-void title_moto_physics(int frame, Animation animations[5])
-{
-    const int total_frames = 500;
-    const int section_count = 5;
-    gl.moto_side->animate(frame, animations, section_count, total_frames);
 }
 
 // ********** OpenGL Wrapper Functions ********************
@@ -298,9 +312,11 @@ void Sprite::render(float scale, Position pos, float angle)
     const int   frame_col = frame % cols;
     const float delta_x   = 1.0f / (float)cols;
     const float delta_y   = 1.0f / (float)rows;
-    const float left      = (float)(frame_col - 1) / (float)cols;
+    //const float left      = (float)(frame_col - 1) / (float)cols;
+    const float left      = (float)(frame_col) / (float)cols;
     const float right     = left + delta_x;
-    const float bottom    = (float) (frame_row - 1) / (float)rows;
+    //const float bottom    = (float) (frame_row - 1) / (float)rows;
+    const float bottom    = (float) (frame_row) / (float)rows;
     const float top       = bottom + delta_y;
 
     glColor4ub(255,255,255,255);
@@ -598,6 +614,23 @@ void Motorcycle::init_gl()
 {
     Image::init_gl();
     head.init_gl();
+}
+
+bool Motorcycle::collides(Line_Follower &obstacle)
+{
+    const int obstacleWidth  = obstacle.scale;
+    const int obstacleHeight = obstacle.scale * (obstacle.height / rows) /
+                                                (width / cols);
+    const float leftBound  = obstacle.pos.x - obstacleWidth;
+    const float rightBound = obstacle.pos.x + obstacleWidth;
+    const float topBound   = obstacle.pos.y + obstacleHeight;
+    const float lowerBound = obstacle.pos.y - obstacleHeight;
+
+    if ((pos.x >= leftBound && pos.x <= rightBound &&
+        pos.y >= lowerBound && pos.y <= topBound))
+        return true;
+    else
+        return false;
 }
 
 // ***************** Button Method Implementations *******************

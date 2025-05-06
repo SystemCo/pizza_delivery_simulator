@@ -8,19 +8,19 @@ using namespace std;
 extern Global gl;
 extern TimerList timerList;
 
-
 void manageDeliveries(float dT);
 void initDeliveryLocations();
 void manageGame(float dT);
 void drawGameOver();
 void printScoreNTime();
 void checkDelivery(int locIndex);
-
+void addMoney(MoneySystem &money, float amount);
 void checkDelivery(int locIndex)
 {
     for(int i = 0; i < gl.timerList->count; i++) {
        if (gl.timerLocation[i] == locIndex && gl.activeDeliveryLocations[locIndex]) {
            cout << "delivery completed" << endl;
+           addMoney(gl.money, 10.0f);
            gl.timerList->removeTimer(i);
        }
     }

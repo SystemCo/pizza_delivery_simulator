@@ -311,6 +311,7 @@ void init_opengl(void)
     for (int i = 0; i < 3; i++) {
         gl.attempts[i].init_gl();
     }
+    gl.explosion.init_gl();
     initGame();
     initDeliveryLocations();
 
@@ -644,6 +645,8 @@ void physics()
     deliveryDetection();
     gl.bike.move();
     gl.mainTime->update();
+    handle_car_crash();
+    
 }
 
 /*void title_render()
@@ -693,9 +696,6 @@ void render()
     // Use the game background from the background array when playing
     backgrounds[GAME_BG]->show(gl.scale, gl.xres/2, gl.yres/2, 0.0f);
 
-
-
-
     r.bot = gl.yres - 20;
 
     /* Debugging..*/
@@ -721,7 +721,6 @@ void render()
     r.center = 0;
     //ggprint8b(&r, 16, 0x00ff0000, "3350 - Asteroids");
 
-
     show_fps(&r);
     gl.timerList->renderAll();
     gl.mainTime->timeRender();
@@ -743,9 +742,8 @@ void render()
             show_francisco(&r);
             show_lesslie(&r);
 
-        } */
-        if (gl.show_bike)
-            gl.bike.render();
+        //} */
+        gl.bike.render();
         printScoreNTime();
         //  physicsforCollision();
         // Commented this so title button would disappear during playing state
@@ -753,6 +751,9 @@ void render()
         for (int i = 0; i < carCount; i++)
             cars[i].render();
         attemptsRender(&r);
+        if (gl.expl_pos.x > -1)
+            gl.explosion.render(30.0f, gl.expl_pos, 0.0f);
+
         //  gl.box.render();
         //added this here
         //  if (gameState == PAUSED) {
@@ -762,6 +763,6 @@ void render()
         //   if (gameState == PAUSED) {
         //     drawPauseMenu();
         //}
-}
+    }
 }
 
